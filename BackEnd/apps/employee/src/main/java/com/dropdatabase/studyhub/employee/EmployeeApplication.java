@@ -1,13 +1,13 @@
-package com.dropdatabase.H2025;
+package com.dropdatabase.studyhub.employee;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class PersonelApplication {
+public class EmployeeApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(PersonelApplication.class, args);
+		SpringApplication.run(EmployeeApplication.class, args);
 	}
 
 }
