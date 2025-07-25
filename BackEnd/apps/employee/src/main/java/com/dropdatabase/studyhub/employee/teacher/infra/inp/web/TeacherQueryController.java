@@ -5,6 +5,7 @@ import com.dropdatabase.studyhub.employee.teacher.domain.Teacher;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/teacher")
@@ -14,6 +15,11 @@ public class TeacherQueryController {
 
     public TeacherQueryController(TeacherQueryUseCase teacherQueryUseCase) {
         this.teacherQueryUseCase = teacherQueryUseCase;
+    }
+
+    @GetMapping("/{id}")
+    public Teacher get(@PathVariable UUID id){
+        return teacherQueryUseCase.get(id);
     }
 
     @GetMapping

@@ -1,5 +1,6 @@
 package com.dropdatabase.studyhub.employee.teacher.infra.inp.web;
 
+import com.dropdatabase.studyhub.employee.common.domain.MessageResponse;
 import com.dropdatabase.studyhub.employee.teacher.application.TeacherCommandUseCase;
 import com.dropdatabase.studyhub.employee.teacher.application.command.UpdateTeacherCommand;
 import org.springframework.web.bind.annotation.*;
@@ -18,12 +19,17 @@ public class TeacherCommandController {
     }
 
     @PostMapping
-    public String add(@RequestBody AddTeacherCommand addTeacherCommand){
+    public MessageResponse add(@RequestBody AddTeacherCommand addTeacherCommand){
         return teacherCommandUseCase.add(addTeacherCommand);
     }
 
     @PutMapping("/{id}")
-    public String update(@PathVariable UUID id, @RequestBody UpdateTeacherCommand updateTeacherCommand){
+    public MessageResponse update(@PathVariable UUID id, @RequestBody UpdateTeacherCommand updateTeacherCommand){
         return teacherCommandUseCase.update(id, updateTeacherCommand);
+    }
+
+    @DeleteMapping("/{id}")
+    public MessageResponse delete(@PathVariable UUID id){
+        return teacherCommandUseCase.delete(id);
     }
 }

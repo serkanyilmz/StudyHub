@@ -19,6 +19,11 @@ public class TeacherJpaAdapter implements TeacherCommandPort {
     }
 
     @Override
+    public boolean exists(UUID id) {
+        return teacherJpaRepository.existsById(id.toString());
+    }
+
+    @Override
     @Transactional
     public Teacher get(UUID id) {
         Optional<TeacherJpaEntity> teacherJpaEntity = teacherJpaRepository.findById(id.toString());
@@ -27,17 +32,22 @@ public class TeacherJpaAdapter implements TeacherCommandPort {
 
     @Override
     @Transactional
-    public Teacher add(Teacher newTeacher) {
+    public void add(Teacher newTeacher) {
         TeacherJpaEntity newTeacherJpaEntity = new TeacherJpaEntity(newTeacher);
         TeacherJpaEntity savedTeacherJpaEntity = teacherJpaRepository.save(newTeacherJpaEntity);
-        return savedTeacherJpaEntity.toDomainEntity();
     }
 
     @Override
     @Transactional
-    public Teacher update(Teacher updatedTeacher) {
+    public void update(Teacher updatedTeacher) {
         TeacherJpaEntity updatedTeacherJpaEntity = new TeacherJpaEntity(updatedTeacher);
         TeacherJpaEntity savedTeacherJpaEntity = teacherJpaRepository.save(updatedTeacherJpaEntity);
-        return savedTeacherJpaEntity.toDomainEntity();
+        savedTeacherJpaEntity.toDomainEntity();
+    }
+
+    @Override
+    @Transactional
+    public void delete(UUID id) {
+        teacherJpaRepository.deleteById(id.toString());
     }
 }
