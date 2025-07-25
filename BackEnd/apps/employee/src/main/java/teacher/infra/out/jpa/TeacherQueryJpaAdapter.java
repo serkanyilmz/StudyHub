@@ -21,7 +21,7 @@ public class TeacherQueryJpaAdapter implements TeacherQueryPort {
     public List<Teacher> getAll() {
         List<TeacherJpaEntity> teachersJpaList = teacherJpaRepository.findAll();
         List<Teacher> teachers = teachersJpaList.stream()
-                .map(TeacherJpaEntity::toDomainEntity) // Her entity için toDomainEntity metodunu çağır
+                .map(TeacherJpaEntity::toDomainEntity)
                 .collect(Collectors.toList());
         return teachers;
     }

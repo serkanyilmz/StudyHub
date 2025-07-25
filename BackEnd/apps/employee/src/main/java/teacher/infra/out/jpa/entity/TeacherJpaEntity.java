@@ -1,10 +1,10 @@
 package teacher.infra.out.jpa.entity;
 
 import teacher.domain.Teacher;
-import jakarta.persistence.*; // JPA anotasyonları
+import jakarta.persistence.*;
 
-import java.time.LocalDateTime; // Yeni ekledik
-import java.util.Objects; // Yeni ekledik
+import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -21,7 +21,6 @@ public class TeacherJpaEntity {
     public TeacherJpaEntity() {
     }
 
-    // Mevcut Teacher'ı veritabanından yüklemek için constructor
     public TeacherJpaEntity(UUID id, String firstName, String lastName, String email, String phoneNumber, LocalDateTime registrationDate) {
         this.id = id.toString();
         this.firstName = firstName;
