@@ -1,6 +1,6 @@
-package teacher.application.port;
+package com.dropdatabase.studyhub.employee.teacher.application.port;
 
-import teacher.domain.Teacher;
+import com.dropdatabase.studyhub.employee.teacher.domain.Teacher;
 
 import java.util.UUID;
 

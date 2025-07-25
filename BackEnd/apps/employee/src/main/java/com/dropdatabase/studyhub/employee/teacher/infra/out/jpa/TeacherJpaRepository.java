@@ -1,6 +1,6 @@
-package teacher.infra.out.jpa;
+package com.dropdatabase.studyhub.employee.teacher.infra.out.jpa;
 
-import teacher.infra.out.jpa.entity.TeacherJpaEntity;
+import com.dropdatabase.studyhub.employee.teacher.infra.out.jpa.entity.TeacherJpaEntity;
 import org.springframework.data.jpa.repository.JpaRepository; // JpaRepository'yi import edin
 import org.springframework.stereotype.Repository; // @Repository anotasyonunu import edin
 

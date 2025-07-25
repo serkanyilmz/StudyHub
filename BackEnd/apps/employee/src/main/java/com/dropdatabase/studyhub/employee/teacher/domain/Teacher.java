@@ -1,4 +1,4 @@
-package teacher.domain;
+package com.dropdatabase.studyhub.employee.teacher.domain;
 
 import lombok.Getter;
 

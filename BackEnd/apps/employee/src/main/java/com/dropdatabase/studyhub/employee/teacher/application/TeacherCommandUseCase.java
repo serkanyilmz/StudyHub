@@ -1,9 +1,9 @@
-package teacher.application;
+package com.dropdatabase.studyhub.employee.teacher.application;
 
-import teacher.application.command.AddTeacherCommand;
-import teacher.application.command.UpdateTeacherCommand;
-import teacher.application.port.TeacherCommandPort;
-import teacher.domain.Teacher;
+import com.dropdatabase.studyhub.employee.teacher.application.command.AddTeacherCommand;
+import com.dropdatabase.studyhub.employee.teacher.application.command.UpdateTeacherCommand;
+import com.dropdatabase.studyhub.employee.teacher.application.port.TeacherCommandPort;
+import com.dropdatabase.studyhub.employee.teacher.domain.Teacher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

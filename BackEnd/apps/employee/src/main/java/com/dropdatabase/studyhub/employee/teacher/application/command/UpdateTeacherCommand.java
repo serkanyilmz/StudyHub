@@ -1,4 +1,4 @@
-package teacher.application.command;
+package com.dropdatabase.studyhub.employee.teacher.application.command;
 
 
 public record UpdateTeacherCommand(

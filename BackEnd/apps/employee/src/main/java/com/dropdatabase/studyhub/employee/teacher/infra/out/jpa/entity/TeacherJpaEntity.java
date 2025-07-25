@@ -1,6 +1,6 @@
-package teacher.infra.out.jpa.entity;
+package com.dropdatabase.studyhub.employee.teacher.infra.out.jpa.entity;
 
-import teacher.domain.Teacher;
+import com.dropdatabase.studyhub.employee.teacher.domain.Teacher;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;

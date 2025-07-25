@@ -1,7 +1,7 @@
-package teacher.infra.inp.web;
+package com.dropdatabase.studyhub.employee.teacher.infra.inp.web;
 
-import teacher.application.TeacherQueryUseCase;
-import teacher.domain.Teacher;
+import com.dropdatabase.studyhub.employee.teacher.application.TeacherQueryUseCase;
+import com.dropdatabase.studyhub.employee.teacher.domain.Teacher;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

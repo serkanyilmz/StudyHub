@@ -1,7 +1,7 @@
-package teacher.application;
+package com.dropdatabase.studyhub.employee.teacher.application;
 
-import teacher.application.port.TeacherQueryPort;
-import teacher.domain.Teacher;
+import com.dropdatabase.studyhub.employee.teacher.application.port.TeacherQueryPort;
+import com.dropdatabase.studyhub.employee.teacher.domain.Teacher;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

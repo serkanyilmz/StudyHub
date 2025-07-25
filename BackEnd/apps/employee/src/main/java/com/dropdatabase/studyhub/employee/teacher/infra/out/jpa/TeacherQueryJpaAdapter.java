@@ -1,8 +1,8 @@
-package teacher.infra.out.jpa;// src/main/java/teacher/infra/out/persistence/TeacherJpaAdapter.java
+package com.dropdatabase.studyhub.employee.teacher.infra.out.jpa;// src/main/java/com.dropdatabase.studyhub.employee.teacher/infra/out/persistence/TeacherJpaAdapter.java
 
-import teacher.application.port.TeacherQueryPort;
-import teacher.domain.Teacher;
-import teacher.infra.out.jpa.entity.TeacherJpaEntity;
+import com.dropdatabase.studyhub.employee.teacher.application.port.TeacherQueryPort;
+import com.dropdatabase.studyhub.employee.teacher.domain.Teacher;
+import com.dropdatabase.studyhub.employee.teacher.infra.out.jpa.entity.TeacherJpaEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

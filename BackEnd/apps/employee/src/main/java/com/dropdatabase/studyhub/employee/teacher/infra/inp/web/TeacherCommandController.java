@@ -1,9 +1,9 @@
-package teacher.infra.inp.web;
+package com.dropdatabase.studyhub.employee.teacher.infra.inp.web;
 
-import teacher.application.TeacherCommandUseCase;
-import teacher.application.command.UpdateTeacherCommand;
+import com.dropdatabase.studyhub.employee.teacher.application.TeacherCommandUseCase;
+import com.dropdatabase.studyhub.employee.teacher.application.command.UpdateTeacherCommand;
 import org.springframework.web.bind.annotation.*;
-import teacher.application.command.AddTeacherCommand;
+import com.dropdatabase.studyhub.employee.teacher.application.command.AddTeacherCommand;
 
 import java.util.UUID;
 
