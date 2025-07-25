@@ -5,7 +5,7 @@ plugins {
 }
 
 springBoot {
-	mainClass = 'personel.PersonelApplication'
+	mainClass = 'EmployeeApplication.java'
 }
 
 dependencies {
