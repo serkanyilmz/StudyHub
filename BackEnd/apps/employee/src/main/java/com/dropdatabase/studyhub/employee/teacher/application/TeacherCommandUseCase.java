@@ -1,7 +1,7 @@
 package com.dropdatabase.studyhub.employee.teacher.application;
 
-import com.dropdatabase.studyhub.employee.common.domain.MessageResponse;
-import com.dropdatabase.studyhub.employee.common.domain.MessageType;
+import com.dropdatabase.studyhub.employee.common.MessageResponse;
+import com.dropdatabase.studyhub.employee.common.MessageType;
 import com.dropdatabase.studyhub.employee.teacher.application.command.AddTeacherCommand;
 import com.dropdatabase.studyhub.employee.teacher.application.command.UpdateTeacherCommand;
 import com.dropdatabase.studyhub.employee.teacher.application.port.TeacherCommandPort;
@@ -50,6 +50,12 @@ public class TeacherCommandUseCase {
     }
 
     public MessageResponse delete(UUID id) {
+        if (!teacherCommandPort.exists(id)) {
+            return new MessageResponse("Teacher does not exist", MessageType.ERROR);
+        }
+        if (teacherCommandPort.hasClassroom(id)) {
+            return new MessageResponse("Teacher cannot be deleted because of having classrooms", MessageType.ERROR);
+        }
         teacherCommandPort.delete(id);
         return new MessageResponse("Teacher has deleted successfully", MessageType.SUCCESS);
     }

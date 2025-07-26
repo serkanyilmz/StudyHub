@@ -1,5 +1,6 @@
 package com.dropdatabase.studyhub.employee.teacher.infra.out.jpa;// src/main/java/com.dropdatabase.studyhub.employee.teacher/infra/out/persistence/TeacherJpaAdapter.java
 
+import com.dropdatabase.studyhub.employee.classroom.infra.out.jpa.ClassroomJpaRepository;
 import com.dropdatabase.studyhub.employee.teacher.application.port.TeacherCommandPort;
 import com.dropdatabase.studyhub.employee.teacher.domain.Teacher;
 import com.dropdatabase.studyhub.employee.teacher.infra.out.jpa.entity.TeacherJpaEntity;
@@ -10,12 +11,15 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Component
-public class TeacherJpaAdapter implements TeacherCommandPort {
+public class TeacherCommandJpaAdapter implements TeacherCommandPort {
 
     private final TeacherJpaRepository teacherJpaRepository;
+    private final ClassroomJpaRepository classroomJpaRepository;
 
-    public TeacherJpaAdapter(TeacherJpaRepository teacherJpaRepository) {
+    public TeacherCommandJpaAdapter(TeacherJpaRepository teacherJpaRepository,
+                                    ClassroomJpaRepository classroomJpaRepository) {
         this.teacherJpaRepository = teacherJpaRepository;
+        this.classroomJpaRepository = classroomJpaRepository;
     }
 
     @Override
@@ -49,5 +53,10 @@ public class TeacherJpaAdapter implements TeacherCommandPort {
     @Transactional
     public void delete(UUID id) {
         teacherJpaRepository.deleteById(id.toString());
+    }
+
+    @Override
+    public boolean hasClassroom(UUID id) {
+        return classroomJpaRepository.existsByTeacherId(id.toString());
     }
 }

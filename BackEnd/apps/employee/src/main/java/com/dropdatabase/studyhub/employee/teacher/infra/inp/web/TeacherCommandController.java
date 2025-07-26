@@ -1,6 +1,6 @@
 package com.dropdatabase.studyhub.employee.teacher.infra.inp.web;
 
-import com.dropdatabase.studyhub.employee.common.domain.MessageResponse;
+import com.dropdatabase.studyhub.employee.common.MessageResponse;
 import com.dropdatabase.studyhub.employee.teacher.application.TeacherCommandUseCase;
 import com.dropdatabase.studyhub.employee.teacher.application.command.UpdateTeacherCommand;
 import org.springframework.web.bind.annotation.*;

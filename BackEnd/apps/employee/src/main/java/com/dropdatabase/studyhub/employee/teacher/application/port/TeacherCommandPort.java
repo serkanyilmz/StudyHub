@@ -10,4 +10,5 @@ public interface TeacherCommandPort {
     void add(Teacher newTeacher);
     void update(Teacher updatedTeacher);
     void delete(UUID id);
+    boolean hasClassroom(UUID id);
 }
