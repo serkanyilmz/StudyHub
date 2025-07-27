@@ -5,7 +5,10 @@ import com.dropdatabase.studyhub.employee.teacher.domain.Teacher;
 import java.util.UUID;
 
 public interface TeacherCommandPort {
+    boolean exists(UUID id);
     Teacher get(UUID id);
-    Teacher add(Teacher newTeacher);
-    Teacher update(Teacher updatedTeacher);
+    void add(Teacher newTeacher);
+    void update(Teacher updatedTeacher);
+    void delete(UUID id);
+    boolean hasClassroom(UUID id);
 }

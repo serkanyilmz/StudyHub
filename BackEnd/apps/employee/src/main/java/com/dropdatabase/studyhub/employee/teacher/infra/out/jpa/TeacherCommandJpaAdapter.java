@@ -1,5 +1,6 @@
 package com.dropdatabase.studyhub.employee.teacher.infra.out.jpa;// src/main/java/com.dropdatabase.studyhub.employee.teacher/infra/out/persistence/TeacherJpaAdapter.java
 
+import com.dropdatabase.studyhub.employee.classroom.infra.out.jpa.ClassroomJpaRepository;
 import com.dropdatabase.studyhub.employee.teacher.application.port.TeacherCommandPort;
 import com.dropdatabase.studyhub.employee.teacher.domain.Teacher;
 import com.dropdatabase.studyhub.employee.teacher.infra.out.jpa.entity.TeacherJpaEntity;
@@ -10,12 +11,20 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Component
-public class TeacherJpaAdapter implements TeacherCommandPort {
+public class TeacherCommandJpaAdapter implements TeacherCommandPort {
 
     private final TeacherJpaRepository teacherJpaRepository;
+    private final ClassroomJpaRepository classroomJpaRepository;
 
-    public TeacherJpaAdapter(TeacherJpaRepository teacherJpaRepository) {
+    public TeacherCommandJpaAdapter(TeacherJpaRepository teacherJpaRepository,
+                                    ClassroomJpaRepository classroomJpaRepository) {
         this.teacherJpaRepository = teacherJpaRepository;
+        this.classroomJpaRepository = classroomJpaRepository;
+    }
+
+    @Override
+    public boolean exists(UUID id) {
+        return teacherJpaRepository.existsById(id.toString());
     }
 
     @Override
@@ -27,17 +36,27 @@ public class TeacherJpaAdapter implements TeacherCommandPort {
 
     @Override
     @Transactional
-    public Teacher add(Teacher newTeacher) {
+    public void add(Teacher newTeacher) {
         TeacherJpaEntity newTeacherJpaEntity = new TeacherJpaEntity(newTeacher);
         TeacherJpaEntity savedTeacherJpaEntity = teacherJpaRepository.save(newTeacherJpaEntity);
-        return savedTeacherJpaEntity.toDomainEntity();
     }
 
     @Override
     @Transactional
-    public Teacher update(Teacher updatedTeacher) {
+    public void update(Teacher updatedTeacher) {
         TeacherJpaEntity updatedTeacherJpaEntity = new TeacherJpaEntity(updatedTeacher);
         TeacherJpaEntity savedTeacherJpaEntity = teacherJpaRepository.save(updatedTeacherJpaEntity);
-        return savedTeacherJpaEntity.toDomainEntity();
+        savedTeacherJpaEntity.toDomainEntity();
+    }
+
+    @Override
+    @Transactional
+    public void delete(UUID id) {
+        teacherJpaRepository.deleteById(id.toString());
+    }
+
+    @Override
+    public boolean hasClassroom(UUID id) {
+        return classroomJpaRepository.existsByTeacherId(id.toString());
     }
 }

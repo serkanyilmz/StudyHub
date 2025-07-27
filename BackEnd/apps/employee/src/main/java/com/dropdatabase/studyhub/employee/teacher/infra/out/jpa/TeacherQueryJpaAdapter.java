@@ -6,6 +6,8 @@ import com.dropdatabase.studyhub.employee.teacher.infra.out.jpa.entity.TeacherJp
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Component
@@ -15,6 +17,12 @@ public class TeacherQueryJpaAdapter implements TeacherQueryPort {
 
     public TeacherQueryJpaAdapter(TeacherJpaRepository teacherJpaRepository) {
         this.teacherJpaRepository = teacherJpaRepository;
+    }
+
+    @Override
+    public Teacher get(UUID id) {
+        Optional<TeacherJpaEntity> teacherJpaEntityOptional = teacherJpaRepository.findById(id.toString());
+        return teacherJpaEntityOptional.get().toDomainEntity();
     }
 
     @Override

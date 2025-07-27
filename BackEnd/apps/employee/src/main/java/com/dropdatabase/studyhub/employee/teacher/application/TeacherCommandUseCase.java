@@ -1,5 +1,7 @@
 package com.dropdatabase.studyhub.employee.teacher.application;
 
+import com.dropdatabase.studyhub.employee.common.MessageResponse;
+import com.dropdatabase.studyhub.employee.common.MessageType;
 import com.dropdatabase.studyhub.employee.teacher.application.command.AddTeacherCommand;
 import com.dropdatabase.studyhub.employee.teacher.application.command.UpdateTeacherCommand;
 import com.dropdatabase.studyhub.employee.teacher.application.port.TeacherCommandPort;
@@ -25,14 +27,17 @@ public class TeacherCommandUseCase {
     }
 
     @Transactional
-    public String add(AddTeacherCommand addTeacherCommand) {
+    public MessageResponse add(AddTeacherCommand addTeacherCommand) {
         Teacher newTeacher = addTeacherCommand.toDomainEntity();
         teacherCommandPort.add(newTeacher);
-        return "Teacher has added successfully";
+        return new MessageResponse("Teacher has added successfully", MessageType.SUCCESS);
     }
 
     @Transactional
-    public String update(UUID id, UpdateTeacherCommand updateTeacherCommand) {
+    public MessageResponse update(UUID id, UpdateTeacherCommand updateTeacherCommand) {
+        if (!teacherCommandPort.exists(id)) {
+            return new MessageResponse("Teacher does not exist", MessageType.ERROR);
+        }
         Teacher existingTeacher = teacherCommandPort.get(id);
         Teacher updatedTeacher = new Teacher(existingTeacher.getId(),
                 updateTeacherCommand.firstName(),
@@ -41,6 +46,17 @@ public class TeacherCommandUseCase {
                 updateTeacherCommand.phoneNumber(),
                 existingTeacher.getRegistrationDate());
         teacherCommandPort.update(updatedTeacher);
-        return "Teacher has updated successfully";
+        return new MessageResponse("Teacher has updated successfully", MessageType.SUCCESS);
+    }
+
+    public MessageResponse delete(UUID id) {
+        if (!teacherCommandPort.exists(id)) {
+            return new MessageResponse("Teacher does not exist", MessageType.ERROR);
+        }
+        if (teacherCommandPort.hasClassroom(id)) {
+            return new MessageResponse("Teacher cannot be deleted because of having classrooms", MessageType.ERROR);
+        }
+        teacherCommandPort.delete(id);
+        return new MessageResponse("Teacher has deleted successfully", MessageType.SUCCESS);
     }
 }
