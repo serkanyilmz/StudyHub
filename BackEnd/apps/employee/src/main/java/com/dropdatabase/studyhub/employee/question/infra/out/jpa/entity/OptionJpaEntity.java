@@ -14,10 +14,10 @@ public class OptionJpaEntity {
     @Column(name = "id")
     private String id;
 
-    @Column(name = "text", unique = true, nullable = false)
+    @Column(name = "text", nullable = false)
     private String text;
 
-    @Column(name = "isCorrect", nullable = false)
+    @Column(name = "is_correct", nullable = false)
     private boolean isCorrect;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

@@ -20,7 +20,7 @@ public class QuestionJpaEntity {
     @Column(name = "id")
     private String id;
 
-    @Column(name = "text", unique = true, nullable = false)
+    @Column(name = "text", nullable = false)
     private String text;
 
     @OneToMany(mappedBy = "questionJpaEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
@@ -44,11 +44,10 @@ public class QuestionJpaEntity {
                     .collect(Collectors.toList());
         }
 
-        Question question = new Question(
+        return new Question(
                 UUID.fromString(this.id),
                 this.text,
                 options
         );
-        return question;
     }
 }
