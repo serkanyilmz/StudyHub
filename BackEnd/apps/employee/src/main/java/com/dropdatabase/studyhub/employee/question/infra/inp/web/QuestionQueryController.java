@@ -1,7 +1,7 @@
 package com.dropdatabase.studyhub.employee.question.infra.inp.web;
 
 import com.dropdatabase.studyhub.employee.question.application.QuestionQueryUseCase;
-import com.dropdatabase.studyhub.employee.question.domain.Question;
+import com.dropdatabase.studyhub.employee.question.application.query.QuestionViewModel;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,12 +18,12 @@ public class QuestionQueryController {
     }
 
     @GetMapping("/{id}")
-    public Question get(@PathVariable UUID id){
+    public QuestionViewModel get(@PathVariable UUID id){
         return questionQueryUseCase.get(id);
     }
 
     @GetMapping
-    public List<Question> getAll(){
+    public List<QuestionViewModel> getAll(){
         return questionQueryUseCase.getAll();
     }
 }

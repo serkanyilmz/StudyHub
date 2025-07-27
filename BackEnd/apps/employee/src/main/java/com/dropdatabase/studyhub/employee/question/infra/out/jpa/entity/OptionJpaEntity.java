@@ -35,8 +35,7 @@ public class OptionJpaEntity {
         return new Option(
                 UUID.fromString(id),
                 this.text,
-                this.isCorrect,
-                this.questionJpaEntity.toDomainEntity()
+                this.isCorrect
         );
     }
 }

@@ -1,5 +1,6 @@
 package com.dropdatabase.studyhub.employee.question.domain;
 
+import com.dropdatabase.studyhub.employee.question.application.query.OptionViewModel;
 import lombok.Getter;
 import java.util.UUID;
 
@@ -8,19 +9,24 @@ public class Option {
     private UUID id;
     private String text;
     private boolean isCorrect;
-    private Question question;
 
-    public Option(String text, boolean isCorrect, Question question) {
+    public Option(String text, boolean isCorrect) {
         this.id = UUID.randomUUID();
         this.text = text;
         this.isCorrect = isCorrect;
-        this.question = question;
     }
 
-    public Option(UUID id, String text, boolean isCorrect, Question question) {
+    public Option(UUID id, String text, boolean isCorrect) {
         this.id = id;
         this.text = text;
         this.isCorrect = isCorrect;
-        this.question = question;
+    }
+
+    public OptionViewModel toViewModel(){
+        return new OptionViewModel(
+                this.id,
+                this.text,
+                this.isCorrect
+        );
     }
 }

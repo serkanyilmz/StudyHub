@@ -37,8 +37,7 @@ public class QuestionCommandUseCase {
         List<Option> options = addQuestionCommand.options().stream()
                 .map(optionCommand -> new Option(
                         optionCommand.text(),
-                        optionCommand.isCorrect(),
-                        newQuestion
+                        optionCommand.isCorrect()
                 ))
                 .collect(Collectors.toList());
         newQuestion.setOptions(options);
@@ -62,8 +61,7 @@ public class QuestionCommandUseCase {
                         // TODO: it needs to update options in database
 
                         optionCommand.text(),
-                        optionCommand.isCorrect(),
-                        updatedQuestion
+                        optionCommand.isCorrect()
                 ))
                 .collect(Collectors.toList());
         updatedQuestion.setOptions(options);
