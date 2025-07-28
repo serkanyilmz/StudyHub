@@ -30,7 +30,7 @@ INSERT INTO writer (id, first_name, last_name, email, phone_number, registration
 --Topic
 INSERT INTO topic (id, name, parent_topic_id) VALUES
     ('ALG_ROOT', 'Algebra', NULL),
-    ('TR_ROOT', 'History of the Turkish Revolution', NULL)
+    ('529314fc-a65c-44a9-ada7-f5cc12c8a664', 'History of the Turkish Revolution', NULL)
     ON CONFLICT (id) DO NOTHING;
 
 -- ALGEBRA TOPICS
@@ -91,20 +91,20 @@ INSERT INTO topic (id, name, parent_topic_id) VALUES
 
 -- HISTORY OF THE TURKISH REVOLUTION TOPICS
 INSERT INTO topic (id, name, parent_topic_id) VALUES
-    ('TR_INTRO', 'Introduction to the Revolution', 'TR_ROOT'),
-    ('TR_WWI_ARMISTICE', 'The Period of World War I and Armistices', 'TR_ROOT'),
-    ('TR_NATIONAL_STRUGGLE', 'The National Struggle (Kurtuluş Savaşı)', 'TR_ROOT'),
-    ('TR_BATTLES', 'The Regular Army and Major Battles', 'TR_ROOT'),
-    ('TR_REPUBLIC_REVOLUTIONS', 'The Proclamation of the Republic and Revolutions (İnkılaplar)', 'TR_ROOT'),
-    ('TR_FOREIGN_POLICY', 'Atatürk''s Foreign Policy', 'TR_ROOT'),
-    ('TR_CONCLUSION', 'Conclusion of the Revolution Period', 'TR_ROOT')
+    ('529314fc-a65c-44a9-ada7-f5cc12c8a664', 'Introduction to the Revolution', '529314fc-a65c-44a9-ada7-f5cc12c8a664'),
+    ('TR_WWI_ARMISTICE', 'The Period of World War I and Armistices', '529314fc-a65c-44a9-ada7-f5cc12c8a664'),
+    ('TR_NATIONAL_STRUGGLE', 'The National Struggle (Kurtuluş Savaşı)', '529314fc-a65c-44a9-ada7-f5cc12c8a664'),
+    ('TR_BATTLES', 'The Regular Army and Major Battles', '529314fc-a65c-44a9-ada7-f5cc12c8a664'),
+    ('TR_REPUBLIC_REVOLUTIONS', 'The Proclamation of the Republic and Revolutions (İnkılaplar)', '529314fc-a65c-44a9-ada7-f5cc12c8a664'),
+    ('TR_FOREIGN_POLICY', 'Atatürk''s Foreign Policy', '529314fc-a65c-44a9-ada7-f5cc12c8a664'),
+    ('TR_CONCLUSION', 'Conclusion of the Revolution Period', '529314fc-a65c-44a9-ada7-f5cc12c8a664')
     ON CONFLICT (id) DO NOTHING;
 
 INSERT INTO topic (id, name, parent_topic_id) VALUES
-    ('TR_INTRO_DEF', 'Definition and Scope of Revolution', 'TR_INTRO'),
-    ('TR_INTRO_DECLINE_CAUSES', 'Causes and Background of the Ottoman Empire''s Decline', 'TR_INTRO'),
-    ('TR_INTRO_WEST_MOVEMENTS', 'Westernization Movements in the Ottoman Empire (Tanzimat, Islahat)', 'TR_INTRO'),
-    ('TR_INTRO_NATIONALISM', 'Rise of Nationalism and the Idea of Turkism', 'TR_INTRO'),
+    ('TR_INTRO_DEF', 'Definition and Scope of Revolution', '529314fc-a65c-44a9-ada7-f5cc12c8a664'),
+    ('TR_INTRO_DECLINE_CAUSES', 'Causes and Background of the Ottoman Empire''s Decline', '529314fc-a65c-44a9-ada7-f5cc12c8a664'),
+    ('6406b56f-2480-47a4-9604-37d967b5556e', 'Westernization Movements in the Ottoman Empire (Tanzimat, Islahat)', '529314fc-a65c-44a9-ada7-f5cc12c8a664'),
+    ('TR_INTRO_NATIONALISM', 'Rise of Nationalism and the Idea of Turkism', '529314fc-a65c-44a9-ada7-f5cc12c8a664'),
 
     ('TR_WWI_CONSEQUENCE', 'Ottoman Empire''s Entry into WWI and Its Consequences', 'TR_WWI_ARMISTICE'),
     ('TR_WWI_MONDROS', 'The Mondros Armistice (October 30, 1918)', 'TR_WWI_ARMISTICE'),

@@ -39,7 +39,17 @@ CREATE TABLE IF NOT EXISTS topic (
 
 CREATE TABLE IF NOT EXISTS question (
     id VARCHAR(255) PRIMARY KEY,
-    text TEXT NOT NULL
+    text TEXT NOT NULL,
+    topic_id VARCHAR(255),
+    writer_id VARCHAR(255),
+    CONSTRAINT fk_question_topic
+    FOREIGN KEY (topic_id)
+    REFERENCES topic (id)
+    ON DELETE CASCADE,
+    CONSTRAINT fk_question_writer
+    FOREIGN KEY (writer_id)
+    REFERENCES writer (id)
+    ON DELETE CASCADE
     );
 
 CREATE TABLE IF NOT EXISTS option (
