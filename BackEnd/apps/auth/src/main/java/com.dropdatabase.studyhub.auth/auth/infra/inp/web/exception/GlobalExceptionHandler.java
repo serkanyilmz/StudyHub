@@ -1,4 +1,4 @@
-package com.dropdatabase.studyhub.auth.auth.infra.inp.web;
+package com.dropdatabase.studyhub.auth.auth.infra.inp.web.exception;
 
 import com.dropdatabase.studyhub.auth.auth.infra.exception.*;
 import org.springframework.http.HttpStatus;

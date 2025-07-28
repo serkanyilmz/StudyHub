@@ -1,4 +1,4 @@
-package com.dropdatabase.studyhub.auth.auth.infra.inp.web;
+package com.dropdatabase.studyhub.auth.auth.infra.inp.web.controller;
 
 
 import com.dropdatabase.studyhub.auth.auth.application.AuthCommandUseCase;

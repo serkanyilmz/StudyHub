@@ -1,4 +1,4 @@
-package com.dropdatabase.studyhub.auth.auth.infra.security;
+package com.dropdatabase.studyhub.auth.auth.application.security;
 
 import com.dropdatabase.studyhub.auth.auth.application.AuthQueryUseCase;
 import jakarta.servlet.FilterChain;

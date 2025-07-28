@@ -14,13 +14,6 @@ public class AuthQueryJpaAdapter implements AuthQueryPort {
     private final UserJpaRepository userJpaRepository;
     private final TokenBlacklistJpaRepository tokenBlacklistJpaRepository;
 
-
-    @Override
-    public Optional<User> findByUsername(String username) {
-        Optional<UserJpaEntity> entityOpt = userJpaRepository.findByUsername(username);
-        return entityOpt.map(UserJpaEntity::toDomainEntity);
-    }
-
     @Override
     public boolean isTokenBlacklisted(String jti) {
         return tokenBlacklistJpaRepository.existsById(jti);

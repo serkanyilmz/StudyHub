@@ -1,9 +1,8 @@
-package com.dropdatabase.studyhub.auth.auth.infra.security;
+package com.dropdatabase.studyhub.auth.auth.application.security;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

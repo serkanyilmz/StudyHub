@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.Optional;
 
 @AllArgsConstructor
 @Component
@@ -27,6 +28,12 @@ public class AuthJpaAdapter implements AuthCommandPort {
     @Override
     public void save(User user) {
             userJpaRepository.save(new UserJpaEntity(user));
+    }
+
+    @Override
+    public Optional<User> findByUsername(String username) {
+        Optional<UserJpaEntity> entityOpt = userJpaRepository.findByUsername(username);
+        return entityOpt.map(UserJpaEntity::toDomainEntity);
     }
 
 }

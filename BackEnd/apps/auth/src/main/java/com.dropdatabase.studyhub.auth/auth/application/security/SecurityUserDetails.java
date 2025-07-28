@@ -1,4 +1,4 @@
-package com.dropdatabase.studyhub.auth.auth.infra.security;
+package com.dropdatabase.studyhub.auth.auth.application.security;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

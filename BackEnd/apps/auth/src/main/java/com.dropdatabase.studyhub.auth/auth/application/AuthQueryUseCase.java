@@ -1,15 +1,16 @@
 package com.dropdatabase.studyhub.auth.auth.application;
 
+
 import com.dropdatabase.studyhub.auth.auth.application.port.AuthQueryPort;
-import com.dropdatabase.studyhub.auth.auth.domain.model.User;
+
 import com.dropdatabase.studyhub.auth.auth.infra.exception.InvalidTokenException;
-import com.dropdatabase.studyhub.auth.auth.infra.security.JwtTokenProvider;
+import com.dropdatabase.studyhub.auth.auth.application.security.JwtTokenProvider;
 import io.jsonwebtoken.JwtException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.Optional;
+
 
 @AllArgsConstructor
 @Service
@@ -17,9 +18,6 @@ public class AuthQueryUseCase {
     private final AuthQueryPort authQueryPort;
     private final JwtTokenProvider jwtTokenProvider;
 
-    Optional<User> findByUsername(String username) {
-        return authQueryPort.findByUsername(username);
-    }
 
     public boolean isTokenBlacklisted(String token) {
         try {

@@ -1,5 +1,6 @@
-package com.dropdatabase.studyhub.auth.auth.infra.security;
+package com.dropdatabase.studyhub.auth.auth.application.security;
 
+import com.dropdatabase.studyhub.auth.auth.application.port.AuthCommandPort;
 import com.dropdatabase.studyhub.auth.auth.application.port.AuthQueryPort;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -11,15 +12,15 @@ import java.util.List;
 @Service
 public class SecurityUserDetailsService implements UserDetailsService {
 
-    private final AuthQueryPort authQueryPort;
+    private final AuthCommandPort authCommandPort;
 
-    public SecurityUserDetailsService(AuthQueryPort authQueryPort) {
-        this.authQueryPort = authQueryPort;
+    public SecurityUserDetailsService(AuthCommandPort authCommandPort) {
+        this.authCommandPort = authCommandPort;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return authQueryPort.findByUsername(username)
+        return authCommandPort.findByUsername(username)
                 .map(user -> new org.springframework.security.core.userdetails.User(
                         user.getUsername(),
                         user.getPassword(),

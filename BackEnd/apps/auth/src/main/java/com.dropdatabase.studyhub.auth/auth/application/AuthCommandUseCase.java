@@ -3,15 +3,13 @@ package com.dropdatabase.studyhub.auth.auth.application;
 import com.dropdatabase.studyhub.auth.auth.application.command.LoginResponseCommand;
 import com.dropdatabase.studyhub.auth.auth.application.command.TokensCommand;
 import com.dropdatabase.studyhub.auth.auth.application.port.AuthCommandPort;
-import com.dropdatabase.studyhub.auth.auth.application.port.AuthQueryPort;
 import com.dropdatabase.studyhub.auth.auth.domain.model.Role;
 import com.dropdatabase.studyhub.auth.auth.domain.model.User;
 import com.dropdatabase.studyhub.auth.auth.infra.exception.InvalidCredentialsException;
 import com.dropdatabase.studyhub.auth.auth.infra.exception.InvalidRefreshTokenException;
 import com.dropdatabase.studyhub.auth.auth.infra.exception.UserNotApprovedException;
 import com.dropdatabase.studyhub.auth.auth.infra.exception.UserNotFoundException;
-import com.dropdatabase.studyhub.auth.auth.infra.security.JwtTokenProvider;
-import lombok.AllArgsConstructor;
+import com.dropdatabase.studyhub.auth.auth.application.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -20,20 +18,25 @@ import java.time.LocalDateTime;
 
 import java.util.Date;
 
-@AllArgsConstructor
+
 @Service
 public class AuthCommandUseCase {
 
     private final AuthCommandPort authCommandPort;
-    private final AuthQueryPort authQueryPort;
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthQueryUseCase authQueryUseCase;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    public AuthCommandUseCase(PasswordEncoder passwordEncoder, AuthQueryUseCase authQueryUseCase, AuthCommandPort authCommandPort, JwtTokenProvider jwtTokenProvider) {
+        this.passwordEncoder = passwordEncoder;
+        this.authQueryUseCase = authQueryUseCase;
+        this.authCommandPort = authCommandPort;
+        this.jwtTokenProvider = jwtTokenProvider;
+    }
 
     public LoginResponseCommand login(String username, String password) {
-        User user = authQueryPort.findByUsername(username)
+        User user = authCommandPort.findByUsername(username)
                 .orElseThrow(UserNotFoundException::new);
 
         if (!passwordEncoder.matches(password, user.getPassword())) {
@@ -78,7 +81,7 @@ public class AuthCommandUseCase {
         }
 
         String username = jwtTokenProvider.getUsername(refreshToken);
-        User user = authQueryPort.findByUsername(username)
+        User user = authCommandPort.findByUsername(username)
                 .orElseThrow(UserNotFoundException::new);
 
         String newAccessToken = jwtTokenProvider.generateAccessToken(user.getUsername(), user.getRole().toString());
