@@ -24,7 +24,7 @@ public class QuestionJpaEntity {
     private String text;
 
     @OneToMany(mappedBy = "questionJpaEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<OptionJpaEntity> options = new ArrayList<>();
+    private List<OptionJpaEntity> options;
 
     public QuestionJpaEntity(Question question) {
         this.id = question.getId().toString();

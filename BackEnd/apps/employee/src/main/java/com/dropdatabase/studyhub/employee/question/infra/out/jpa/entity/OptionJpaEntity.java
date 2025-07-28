@@ -20,7 +20,7 @@ public class OptionJpaEntity {
     @Column(name = "is_correct", nullable = false)
     private boolean isCorrect;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "question_id", referencedColumnName = "id", nullable = false)
     private QuestionJpaEntity questionJpaEntity;
 
