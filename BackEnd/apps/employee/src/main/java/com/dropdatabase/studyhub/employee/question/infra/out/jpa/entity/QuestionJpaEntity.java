@@ -1,7 +1,10 @@
 package com.dropdatabase.studyhub.employee.question.infra.out.jpa.entity;
 import com.dropdatabase.studyhub.employee.question.domain.Option;
 import com.dropdatabase.studyhub.employee.question.domain.Question;
+import com.dropdatabase.studyhub.employee.topic.infra.out.jpa.entity.TopicJpaEntity;
+import com.dropdatabase.studyhub.employee.writer.infra.out.jpa.entity.WriterJpaEntity;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -14,6 +17,7 @@ import java.util.stream.Collectors;
 @Table(name = "question")
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 public class QuestionJpaEntity {
 
     @Id
@@ -26,9 +30,19 @@ public class QuestionJpaEntity {
     @OneToMany(mappedBy = "questionJpaEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<OptionJpaEntity> options;
 
-    public QuestionJpaEntity(Question question) {
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "writer_id", referencedColumnName = "id", nullable = false)
+    private WriterJpaEntity writerJpaEntity;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "topic_id", referencedColumnName = "id", nullable = false)
+    private TopicJpaEntity topicJpaEntity;
+
+    public QuestionJpaEntity(Question question, TopicJpaEntity topicJpaEntity, WriterJpaEntity writerJpaEntity) {
         this.id = question.getId().toString();
         this.text = question.getText();
+        this.topicJpaEntity = topicJpaEntity;
+        this.writerJpaEntity = writerJpaEntity;
         if (question.getOptions() != null) {
             this.options = question.getOptions().stream()
                     .map(option -> new OptionJpaEntity(option, this))
@@ -47,7 +61,9 @@ public class QuestionJpaEntity {
         return new Question(
                 UUID.fromString(this.id),
                 this.text,
-                options
+                options,
+                this.topicJpaEntity.toDomainEntity(),
+                this.writerJpaEntity.toDomainEntity()
         );
     }
 }

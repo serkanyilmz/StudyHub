@@ -3,11 +3,12 @@ package com.dropdatabase.studyhub.employee.question.application;
 import com.dropdatabase.studyhub.employee.common.MessageResponse;
 import com.dropdatabase.studyhub.employee.common.MessageType;
 import com.dropdatabase.studyhub.employee.question.application.command.AddQuestionCommand;
-import com.dropdatabase.studyhub.employee.question.application.command.OptionCommand;
 import com.dropdatabase.studyhub.employee.question.application.command.UpdateQuestionCommand;
 import com.dropdatabase.studyhub.employee.question.application.port.QuestionCommandPort;
 import com.dropdatabase.studyhub.employee.question.domain.Option;
 import com.dropdatabase.studyhub.employee.question.domain.Question;
+import com.dropdatabase.studyhub.employee.topic.application.port.TopicCommandPort;
+import com.dropdatabase.studyhub.employee.writer.application.port.WriterCommandPort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,20 +20,29 @@ import java.util.stream.Collectors;
 public class QuestionCommandUseCase {
 
     private final QuestionCommandPort questionCommandPort;
+    private final TopicCommandPort topicCommandPort;
+    private final WriterCommandPort writerCommandPort;
 
-    public QuestionCommandUseCase(QuestionCommandPort questionCommandPort) {
+    public QuestionCommandUseCase(QuestionCommandPort questionCommandPort,
+                                  TopicCommandPort topicCommandPort,
+                                  WriterCommandPort writerCommandPort) {
         this.questionCommandPort = questionCommandPort;
+        this.topicCommandPort = topicCommandPort;
+        this.writerCommandPort = writerCommandPort;
     }
 
     @Transactional
     public Question get(UUID id) {
-        Question question = questionCommandPort.get(id);
-        return question;
+        return questionCommandPort.get(id);
     }
 
     @Transactional
     public MessageResponse add(AddQuestionCommand addQuestionCommand) {
-        Question newQuestion = new Question(addQuestionCommand.text());
+        Question newQuestion = new Question(
+                addQuestionCommand.text(),
+                topicCommandPort.get(UUID.fromString(addQuestionCommand.topicId())),
+                writerCommandPort.get(UUID.fromString(addQuestionCommand.writerId()))
+        );
 
         List<Option> options = addQuestionCommand.options().stream()
                 .map(optionCommand -> new Option(
@@ -53,13 +63,13 @@ public class QuestionCommandUseCase {
         }
         Question existingQuestion = questionCommandPort.get(id);
 
-        Question updatedQuestion = new Question(existingQuestion.getId(), updateQuestionCommand.text());
+        Question updatedQuestion = new Question(existingQuestion.getId(), updateQuestionCommand.text(),
+                topicCommandPort.get(UUID.fromString(updateQuestionCommand.topicId())),
+                writerCommandPort.get(UUID.fromString(updateQuestionCommand.writerId()))
+        );
 
         List<Option> options = updateQuestionCommand.options().stream()
                 .map(optionCommand -> new Option(
-
-                        // TODO: it needs to update options in database
-
                         optionCommand.text(),
                         optionCommand.isCorrect()
                 ))

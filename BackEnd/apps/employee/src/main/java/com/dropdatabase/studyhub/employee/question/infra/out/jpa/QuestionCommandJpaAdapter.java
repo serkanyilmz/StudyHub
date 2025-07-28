@@ -2,8 +2,11 @@ package com.dropdatabase.studyhub.employee.question.infra.out.jpa;// src/main/ja
 
 import com.dropdatabase.studyhub.employee.question.application.port.QuestionCommandPort;
 import com.dropdatabase.studyhub.employee.question.domain.Question;
-import com.dropdatabase.studyhub.employee.question.infra.out.jpa.QuestionJpaRepository;
 import com.dropdatabase.studyhub.employee.question.infra.out.jpa.entity.QuestionJpaEntity;
+import com.dropdatabase.studyhub.employee.topic.infra.out.jpa.TopicJpaRepository;
+import com.dropdatabase.studyhub.employee.topic.infra.out.jpa.entity.TopicJpaEntity;
+import com.dropdatabase.studyhub.employee.writer.infra.out.jpa.WriterJpaRepository;
+import com.dropdatabase.studyhub.employee.writer.infra.out.jpa.entity.WriterJpaEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,9 +17,15 @@ import java.util.UUID;
 public class QuestionCommandJpaAdapter implements QuestionCommandPort {
 
     private final com.dropdatabase.studyhub.employee.question.infra.out.jpa.QuestionJpaRepository questionJpaRepository;
+    private final TopicJpaRepository topicJpaRepository;
+    private final WriterJpaRepository writerJpaRepository;
 
-    public QuestionCommandJpaAdapter(QuestionJpaRepository questionJpaRepository) {
+    public QuestionCommandJpaAdapter(QuestionJpaRepository questionJpaRepository,
+                                     WriterJpaRepository writerJpaRepository,
+                                     TopicJpaRepository topicJpaRepository) {
         this.questionJpaRepository = questionJpaRepository;
+        this.topicJpaRepository = topicJpaRepository;
+        this.writerJpaRepository = writerJpaRepository;
     }
 
     @Override
@@ -34,16 +43,27 @@ public class QuestionCommandJpaAdapter implements QuestionCommandPort {
     @Override
     @Transactional
     public void add(Question newQuestion) {
-        QuestionJpaEntity newQuestionJpaEntity = new QuestionJpaEntity(newQuestion);
-        QuestionJpaEntity savedQuestionJpaEntity = questionJpaRepository.save(newQuestionJpaEntity);
+        TopicJpaEntity topicJpaEntity = topicJpaRepository.findById(newQuestion.getTopic().getId().toString())
+                .orElseThrow(() -> new RuntimeException("Topic not found"));
+        WriterJpaEntity writerJpaEntity = writerJpaRepository.findById(newQuestion.getWriter().getId().toString())
+                    .orElseThrow(() -> new RuntimeException("Writer not found with"));
+        QuestionJpaEntity newQuestionJpaEntity = new QuestionJpaEntity(newQuestion,
+                    topicJpaEntity,
+                    writerJpaEntity);
+        questionJpaRepository.save(newQuestionJpaEntity);
     }
 
     @Override
     @Transactional
     public void update(Question updatedQuestion) {
-        QuestionJpaEntity updatedQuestionJpaEntity = new QuestionJpaEntity(updatedQuestion);
-        QuestionJpaEntity savedQuestionJpaEntity = questionJpaRepository.save(updatedQuestionJpaEntity);
-        savedQuestionJpaEntity.toDomainEntity();
+        TopicJpaEntity topicJpaEntity = topicJpaRepository.findById(updatedQuestion.getTopic().getId().toString())
+                .orElseThrow(() -> new RuntimeException("Topic not found"));
+        WriterJpaEntity writerJpaEntity = writerJpaRepository.findById(updatedQuestion.getWriter().getId().toString())
+                .orElseThrow(() -> new RuntimeException("Writer not found with"));
+        QuestionJpaEntity updatedQuestionJpaEntity = new QuestionJpaEntity(updatedQuestion,
+                topicJpaEntity,
+                writerJpaEntity);
+        questionJpaRepository.save(updatedQuestionJpaEntity);
     }
 
     @Override

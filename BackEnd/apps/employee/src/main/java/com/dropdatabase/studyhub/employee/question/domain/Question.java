@@ -1,7 +1,8 @@
 package com.dropdatabase.studyhub.employee.question.domain;
 
-import com.dropdatabase.studyhub.employee.question.application.query.OptionViewModel;
 import com.dropdatabase.studyhub.employee.question.application.query.QuestionViewModel;
+import com.dropdatabase.studyhub.employee.topic.domain.Topic;
+import com.dropdatabase.studyhub.employee.writer.domain.Writer;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,23 +17,31 @@ public class Question {
     private UUID id;
     private String text;
     private List<Option> options;
+    private Topic topic;
+    private Writer writer;
 
-    public Question(String text) {
+    public Question(String text, Topic topic, Writer writer) {
         this.id = UUID.randomUUID();
         this.text = text;
         this.options = new ArrayList<>();
+        this.topic = topic;
+        this.writer = writer;
     }
 
-    public Question(UUID id, String text) {
+    public Question(UUID id, String text, Topic topic, Writer writer) {
         this.id = id;
         this.text = text;
         this.options = new ArrayList<>();
+        this.topic = topic;
+        this.writer = writer;
     }
 
-    public Question(UUID id, String text, List<Option> options) {
+    public Question(UUID id, String text, List<Option> options, Topic topic, Writer writer) {
         this.id = id;
         this.text = text;
         this.options = options;
+        this.topic = topic;
+        this.writer = writer;
     }
 
     public QuestionViewModel toViewModel(){

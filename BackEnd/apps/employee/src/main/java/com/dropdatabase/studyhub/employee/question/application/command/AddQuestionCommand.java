@@ -4,5 +4,7 @@ import java.util.List;
 
 public record AddQuestionCommand(
         String text,
-        List<OptionCommand> options) {
+        List<OptionCommand> options,
+        String topicId,
+        String writerId) {
 }
