@@ -1,3 +1,4 @@
 rootProject.name = 'Hackathon-2025'
 
 include ':apps:employee'
+include ':apps:auth'
