@@ -1,3 +1,5 @@
+DELETE FROM homework_quiz;
+DELETE FROM homework;
 DELETE FROM option;
 DELETE FROM quiz_question;
 DELETE FROM quiz;
@@ -428,3 +430,29 @@ INSERT INTO option (id, text, is_correct, question_id) VALUES
     ('b3c5a708-1d90-174a-6789-8f6d5f5f5a4a', 'Substitution', FALSE, 'da825e6f-b6c7-9012-345c-f0123456789a'),
     ('c4d6b819-2ea1-285b-7890-907e60606b5b', 'Factoring', FALSE, 'da825e6f-b6c7-9012-345c-f0123456789a')
     ON CONFLICT (id) DO NOTHING;
+
+INSERT INTO quiz (id, name, topic_id, writer_id) VALUES
+    ('0c1861a2-2b60-4ce2-bc80-2214ac783a07', 'Test1', '6406b56f-2480-47a4-9604-37d967b5556e', '37318be1-2d85-491d-8a19-8618b9256045'),
+    ('8bfb4bea-e842-4ce0-82bf-58b1099c0b02', 'Functions', '6406b56f-2480-47a4-9604-37d967b5556e', '37318be1-2d85-491d-8a19-8618b9256045')
+    ON CONFLICT (id) DO NOTHING;
+
+INSERT INTO quiz_question (quiz_id, question_id, question_no) VALUES
+    ('0c1861a2-2b60-4ce2-bc80-2214ac783a07', '1ec6d0e1-f2a3-5b6c-7d8e-9f0123456789', 1),
+    ('0c1861a2-2b60-4ce2-bc80-2214ac783a07', '853d7e8f-a9b0-2345-6789-abcde0f12345', 2),
+    ('0c1861a2-2b60-4ce2-bc80-2214ac783a07', '2fd7b8c9-e9f0-2345-6781-456789abcdef', 3),
+    ('8bfb4bea-e842-4ce0-82bf-58b1099c0b02', 'b860a1b2-d2e3-5678-9abc-def012345678', 1),
+    ('8bfb4bea-e842-4ce0-82bf-58b1099c0b02', 'da825e6f-b6c7-9012-345c-f0123456789a', 2),
+    ('8bfb4bea-e842-4ce0-82bf-58b1099c0b02', '2fd7b8c9-e9f0-2345-6781-456789abcdef', 3)
+ON CONFLICT (quiz_id, question_id) DO NOTHING;
+
+INSERT INTO homework (id, name, classroom_id, deadline) VALUES
+    ('c435b74f-98dc-4ce3-a043-a7b46ec6411a', 'HW1', '6afc06b9-8b54-4ae8-ad61-21afb5541b6c', '2025-08-15T20:59:59Z'),
+    ('96bdad4a-79d1-496b-b159-9d235906740c', 'HW2', '6afc06b9-8b54-4ae8-ad61-21afb5541b6c', '2025-08-15T23:59:59+03:00[Europe/Istanbul]')
+ON CONFLICT (id) DO NOTHING;
+
+INSERT INTO homework_quiz (homework_id, quiz_id) VALUES
+    ('c435b74f-98dc-4ce3-a043-a7b46ec6411a', '0c1861a2-2b60-4ce2-bc80-2214ac783a07'),
+    ('c435b74f-98dc-4ce3-a043-a7b46ec6411a', '8bfb4bea-e842-4ce0-82bf-58b1099c0b02'),
+    ('96bdad4a-79d1-496b-b159-9d235906740c', '8bfb4bea-e842-4ce0-82bf-58b1099c0b02')
+;
+
