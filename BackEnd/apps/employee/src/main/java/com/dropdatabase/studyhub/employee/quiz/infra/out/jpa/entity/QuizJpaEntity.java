@@ -4,12 +4,14 @@ import com.dropdatabase.studyhub.employee.quiz.domain.Quiz;
 import com.dropdatabase.studyhub.employee.quiz.domain.QuizQuestion;
 import com.dropdatabase.studyhub.employee.topic.infra.out.jpa.entity.TopicJpaEntity;
 import com.dropdatabase.studyhub.employee.writer.infra.out.jpa.entity.WriterJpaEntity;
+import com.dropdatabase.studyhub.employee.homework.infra.out.jpa.entity.HomeworkJpaEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -37,6 +39,10 @@ public class QuizJpaEntity {
 
     @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<QuizQuestionJpaEntity> quizQuestions;
+
+    @ManyToMany(mappedBy = "quizzes")
+    private List<HomeworkJpaEntity> homeworks = new ArrayList<>();
+
 
     public QuizJpaEntity(Quiz quiz,
                          TopicJpaEntity topic,

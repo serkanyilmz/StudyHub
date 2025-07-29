@@ -73,3 +73,21 @@ CREATE TABLE IF NOT EXISTS quiz_question (
    FOREIGN KEY (question_id) REFERENCES question(id)
 );
 
+
+CREATE TABLE IF NOT EXISTS homework (
+    id VARCHAR(255) PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    classroom_id VARCHAR(255) NOT NULL,
+    deadline VARCHAR(255) NOT NULL,
+    CONSTRAINT fk_classroom
+    FOREIGN KEY (classroom_id)
+    REFERENCES classroom (id)
+    );
+
+CREATE TABLE IF NOT EXISTS homework_quiz (
+    homework_id VARCHAR(255) NOT NULL,
+    quiz_id VARCHAR(255) NOT NULL,
+    PRIMARY KEY (quiz_id, homework_id),
+    FOREIGN KEY (quiz_id) REFERENCES quiz(id),
+    FOREIGN KEY (homework_id) REFERENCES homework(id)
+    );
