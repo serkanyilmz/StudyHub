@@ -218,7 +218,7 @@ export function AdminDashboard({ activeView }: AdminDashboardProps) {
               <TableBody>
                 {users.map((user) => (
                   <TableRow key={user.id}>
-                    <TableCell className="font-medium">{user.name}</TableCell>
+                    <TableCell className="font-medium">{user.username}</TableCell>
                     <TableCell>{user.email}</TableCell>
                     <TableCell>
                       <Badge variant="outline">{user.role}</Badge>

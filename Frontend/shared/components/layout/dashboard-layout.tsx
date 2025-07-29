@@ -150,10 +150,10 @@ export function DashboardLayout({ user, onLogout }: DashboardLayoutProps) {
             <div className="p-3 space-y-3">
               <div className="flex items-center gap-3">
                 <Avatar className="h-8 w-8">
-                  <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+                  <AvatarFallback>{user.username.charAt(0)}</AvatarFallback>
                 </Avatar>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium truncate">{user.name}</p>
+                  <p className="text-sm font-medium truncate">{user.username}</p>
                   <Badge className={`${getRoleColor()} text-white text-xs`}>
                     {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
                   </Badge>
@@ -175,7 +175,7 @@ export function DashboardLayout({ user, onLogout }: DashboardLayoutProps) {
           <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
             <SidebarTrigger />
             <div className="flex items-center gap-2 text-sm text-gray-600">
-              <span>Welcome back, {user.name}</span>
+              <span>Welcome back, {user.username}</span>
             </div>
           </header>
           <main className="flex-1 p-6">{renderContent()}</main>
