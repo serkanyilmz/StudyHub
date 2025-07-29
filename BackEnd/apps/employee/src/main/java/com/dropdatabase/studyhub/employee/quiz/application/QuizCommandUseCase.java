@@ -51,7 +51,8 @@ public class QuizCommandUseCase {
                     )
             );
         });
-        Quiz newQuiz = new Quiz(quizQuestionList,
+        Quiz newQuiz = new Quiz(addQuizCommand.name(),
+                quizQuestionList,
                 topicCommandPort.get(addQuizCommand.topicId()),
                 writerCommandPort.get(addQuizCommand.writerId()));
         quizCommandPort.add(newQuiz);
@@ -76,6 +77,7 @@ public class QuizCommandUseCase {
         });
 
         Quiz updatedQuiz = new Quiz(existingQuiz.getId(),
+                updateQuizCommand.name(),
                 updatedQuizQuestionList,
                 topicCommandPort.get(updateQuizCommand.topicId()),
                 writerCommandPort.get(updateQuizCommand.writerId()));

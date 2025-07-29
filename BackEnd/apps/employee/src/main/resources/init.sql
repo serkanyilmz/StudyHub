@@ -65,6 +65,7 @@ CREATE TABLE IF NOT EXISTS option (
 
 CREATE TABLE IF NOT EXISTS quiz_question (
    quiz_id VARCHAR(255) NOT NULL,
+   name VARCHAR(255) NOT NULL,
    question_id VARCHAR(255) NOT NULL,
    question_no INT NOT NULL,
    PRIMARY KEY (quiz_id, question_id),

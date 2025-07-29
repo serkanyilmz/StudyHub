@@ -24,6 +24,9 @@ public class QuizJpaEntity {
     @Id
     private String id;
 
+    @Column
+    private String name;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "topic_id", nullable = false)
     private TopicJpaEntity topic;
@@ -39,6 +42,7 @@ public class QuizJpaEntity {
                          TopicJpaEntity topic,
                          WriterJpaEntity writer) {
         this.id = quiz.getId().toString();
+        this.name = quiz.getName();
         this.topic = topic;
         this.writer = writer;
     }
@@ -50,6 +54,7 @@ public class QuizJpaEntity {
 
         return new Quiz(
                 UUID.fromString(id),
+                this.name,
                 domainQuizQuestions,
                 this.topic.toDomainEntity(),
                 this.writer.toDomainEntity()
