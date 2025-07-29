@@ -1,4 +1,6 @@
 DELETE FROM option;
+DELETE FROM quiz_question;
+DELETE FROM quiz;
 DELETE FROM question;
 DELETE FROM classroom;
 DELETE FROM topic;

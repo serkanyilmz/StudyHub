@@ -1,6 +1,7 @@
 package com.dropdatabase.studyhub.employee.question.infra.out.jpa.entity;
 import com.dropdatabase.studyhub.employee.question.domain.Option;
 import com.dropdatabase.studyhub.employee.question.domain.Question;
+import com.dropdatabase.studyhub.employee.quiz.infra.out.jpa.entity.QuizQuestionJpaEntity;
 import com.dropdatabase.studyhub.employee.topic.infra.out.jpa.entity.TopicJpaEntity;
 import com.dropdatabase.studyhub.employee.writer.infra.out.jpa.entity.WriterJpaEntity;
 import jakarta.persistence.*;
@@ -37,6 +38,9 @@ public class QuestionJpaEntity {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "topic_id", referencedColumnName = "id", nullable = false)
     private TopicJpaEntity topicJpaEntity;
+
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<QuizQuestionJpaEntity> quizQuestions = new ArrayList<>();
 
     public QuestionJpaEntity(Question question, TopicJpaEntity topicJpaEntity, WriterJpaEntity writerJpaEntity) {
         this.id = question.getId().toString();

@@ -63,3 +63,12 @@ CREATE TABLE IF NOT EXISTS option (
     ON DELETE CASCADE
     );
 
+CREATE TABLE IF NOT EXISTS quiz_question (
+   quiz_id VARCHAR(255) NOT NULL,
+   question_id VARCHAR(255) NOT NULL,
+   question_no INT NOT NULL,
+   PRIMARY KEY (quiz_id, question_id),
+   FOREIGN KEY (quiz_id) REFERENCES quiz(id),
+   FOREIGN KEY (question_id) REFERENCES question(id)
+);
+
