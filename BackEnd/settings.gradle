@@ -1,4 +1,5 @@
-rootProject.name = 'Hackathon-2025'
+rootProject.name = 'StudyHub'
 
-include ':apps:employee'
 include ':apps:auth'
+include ':apps:employee'
+include ':apps:student'
