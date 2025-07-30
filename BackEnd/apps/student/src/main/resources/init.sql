@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS quiz (
     writer_id VARCHAR(255) NOT NULL,
     FOREIGN KEY (topic_id) REFERENCES topic(id),
     FOREIGN KEY (writer_id) REFERENCES writer(id)
-    );
+);
 
 CREATE TABLE IF NOT EXISTS quiz_question (
     quiz_id VARCHAR(255) NOT NULL,
@@ -78,7 +78,7 @@ CREATE TABLE IF NOT EXISTS quiz_question (
     question_no INT NOT NULL,
     PRIMARY KEY (quiz_id, question_id),
     FOREIGN KEY (quiz_id) REFERENCES quiz(id)
-    );
+);
 
 CREATE TABLE IF NOT EXISTS homework (
     id VARCHAR(255) PRIMARY KEY,
