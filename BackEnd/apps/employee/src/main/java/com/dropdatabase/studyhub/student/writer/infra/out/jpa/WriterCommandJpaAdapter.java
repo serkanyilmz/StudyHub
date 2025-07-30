@@ -15,8 +15,7 @@ public class WriterCommandJpaAdapter implements WriterCommandPort {
 
     private final com.dropdatabase.studyhub.student.writer.infra.out.jpa.WriterJpaRepository writerJpaRepository;
 
-    public WriterCommandJpaAdapter(WriterJpaRepository writerJpaRepository,
-                                    ClassroomJpaRepository classroomJpaRepository) {
+    public WriterCommandJpaAdapter(WriterJpaRepository writerJpaRepository) {
         this.writerJpaRepository = writerJpaRepository;
     }
 
