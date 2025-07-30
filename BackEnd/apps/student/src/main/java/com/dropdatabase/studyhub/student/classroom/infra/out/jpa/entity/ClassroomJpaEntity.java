@@ -5,7 +5,9 @@ import com.dropdatabase.studyhub.student.student.infra.out.jpa.entity.StudentJpa
 import com.dropdatabase.studyhub.student.teacher.domain.Teacher;
 import com.dropdatabase.studyhub.student.teacher.infra.out.jpa.entity.TeacherJpaEntity;
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +16,8 @@ import java.util.UUID;
 @Entity
 @Table(name = "classroom")
 @NoArgsConstructor
+@Getter
+@Setter
 public class ClassroomJpaEntity {
 
     @Id
@@ -32,7 +36,7 @@ public class ClassroomJpaEntity {
 
     @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinTable(
-            name = "clasroom_student",
+            name = "classroom_student",
             joinColumns = @JoinColumn(name = "classroom_id"),
             inverseJoinColumns = @JoinColumn(name = "student_id")
     )

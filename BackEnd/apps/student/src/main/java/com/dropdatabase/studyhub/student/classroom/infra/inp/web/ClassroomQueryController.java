@@ -23,7 +23,7 @@ public class ClassroomQueryController {
     }
 
     @GetMapping
-    public List<Classroom> getAll(){
-        return classroomQueryUseCase.getAll();
+    public List<Classroom> getAll(@RequestParam UUID studentId){
+        return classroomQueryUseCase.getAll(studentId);
     }
 }

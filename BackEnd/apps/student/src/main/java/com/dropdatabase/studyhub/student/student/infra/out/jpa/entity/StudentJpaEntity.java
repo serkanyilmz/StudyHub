@@ -6,7 +6,9 @@ import com.dropdatabase.studyhub.student.homework.infra.out.jpa.entity.HomeworkJ
 import com.dropdatabase.studyhub.student.quiz.infra.out.jpa.entity.QuizJpaEntity;
 import com.dropdatabase.studyhub.student.student.domain.Student;
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -16,6 +18,8 @@ import java.util.UUID;
 @Entity
 @Table(name = "student")
 @NoArgsConstructor
+@Getter
+@Setter
 public class StudentJpaEntity {
     @Id
     private String id;
@@ -47,4 +51,5 @@ public class StudentJpaEntity {
                 this.registrationDate
         );
     }
+
 }

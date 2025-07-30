@@ -16,8 +16,8 @@ public class ClassroomQueryUseCase {
         this.classroomQueryPort = classroomQueryPort;
     }
 
-    public List<Classroom> getAll() {
-        return classroomQueryPort.getAll();
+    public List<Classroom> getAll(UUID studentId) {
+        return classroomQueryPort.getAll(studentId);
     }
 
     public Classroom get(UUID id) {return classroomQueryPort.get(id);

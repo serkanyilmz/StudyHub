@@ -3,7 +3,6 @@ package com.dropdatabase.studyhub.student.classroom.application;
 import com.dropdatabase.studyhub.student.common.MessageResponse;
 import com.dropdatabase.studyhub.student.common.MessageType;
 import com.dropdatabase.studyhub.student.classroom.application.command.AddClassroomCommand;
-import com.dropdatabase.studyhub.student.classroom.application.command.UpdateClassroomCommand;
 import com.dropdatabase.studyhub.student.classroom.application.port.ClassroomCommandPort;
 import com.dropdatabase.studyhub.student.classroom.domain.Classroom;
 import com.dropdatabase.studyhub.student.teacher.application.port.TeacherCommandPort;
@@ -43,20 +42,6 @@ public class ClassroomCommandUseCase {
         return new MessageResponse("Classroom has added successfully", MessageType.SUCCESS);
     }
 
-    @Transactional
-    public MessageResponse update(UUID id, UpdateClassroomCommand updateClassroomCommand) {
-        if (!classroomCommandPort.exists(id)) {
-            return new MessageResponse("Classroom does not exist", MessageType.ERROR);
-        }
-        Classroom existingClassroom = classroomCommandPort.get(id);
-        Classroom updatedClassroom = new Classroom(existingClassroom.getId(),
-                updateClassroomCommand.code(),
-                updateClassroomCommand.name(),
-                teacherCommandPort.get(updateClassroomCommand.teacherId()));
-        classroomCommandPort.update(updatedClassroom);
-        return new MessageResponse("Classroom has updated successfully", MessageType.SUCCESS);
-    }
-
     public MessageResponse delete(UUID id) {
         if (!classroomCommandPort.exists(id)) {
             return new MessageResponse("Classroom does not exist", MessageType.ERROR);
@@ -64,5 +49,10 @@ public class ClassroomCommandUseCase {
 
         classroomCommandPort.delete(id);
         return new MessageResponse("Classroom has deleted successfully", MessageType.SUCCESS);
+    }
+
+    public MessageResponse addStudent(UUID classroomId, UUID studentId) {
+        classroomCommandPort.addStudent(classroomId, studentId);
+        return new MessageResponse("You are added to classroom", MessageType.SUCCESS);
     }
 }

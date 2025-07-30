@@ -3,9 +3,13 @@ package com.dropdatabase.studyhub.student.classroom.infra.out.jpa;// src/main/ja
 import com.dropdatabase.studyhub.student.classroom.application.port.ClassroomCommandPort;
 import com.dropdatabase.studyhub.student.classroom.domain.Classroom;
 import com.dropdatabase.studyhub.student.classroom.infra.out.jpa.entity.ClassroomJpaEntity;
+import com.dropdatabase.studyhub.student.student.domain.Student;
+import com.dropdatabase.studyhub.student.student.infra.out.jpa.StudentJpaRepository;
+import com.dropdatabase.studyhub.student.student.infra.out.jpa.entity.StudentJpaEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -13,9 +17,12 @@ import java.util.UUID;
 public class ClassroomCommandJpaAdapter implements ClassroomCommandPort {
 
     private final ClassroomJpaRepository classroomJpaRepository;
+    private final StudentJpaRepository studentJpaRepository;
 
-    public ClassroomCommandJpaAdapter(ClassroomJpaRepository classroomJpaRepository) {
+    public ClassroomCommandJpaAdapter(ClassroomJpaRepository classroomJpaRepository,
+                                      StudentJpaRepository studentJpaRepository) {
         this.classroomJpaRepository = classroomJpaRepository;
+        this.studentJpaRepository = studentJpaRepository;
     }
 
     @Override
@@ -39,15 +46,20 @@ public class ClassroomCommandJpaAdapter implements ClassroomCommandPort {
 
     @Override
     @Transactional
-    public void update(Classroom updatedClassroom) {
-        ClassroomJpaEntity updatedClassroomJpaEntity = new ClassroomJpaEntity(updatedClassroom);
-        ClassroomJpaEntity savedClassroomJpaEntity = classroomJpaRepository.save(updatedClassroomJpaEntity);
-        savedClassroomJpaEntity.toDomainEntity();
+    public void delete(UUID id) {
+        classroomJpaRepository.deleteById(id.toString());
     }
 
     @Override
     @Transactional
-    public void delete(UUID id) {
-        classroomJpaRepository.deleteById(id.toString());
+    public void addStudent(UUID classroomId, UUID studentId) {
+        ClassroomJpaEntity classroomJpaEntity = classroomJpaRepository.findById(classroomId.toString()).get();
+        StudentJpaEntity studentJpaEntity = studentJpaRepository.findById(studentId.toString()).get();
+
+        List<StudentJpaEntity> studentList = classroomJpaEntity.getStudents();
+        studentList.add(studentJpaEntity);
+        classroomJpaEntity.setStudents(studentList);
+
+        classroomJpaRepository.save(classroomJpaEntity);
     }
 }
