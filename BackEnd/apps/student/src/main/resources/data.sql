@@ -1,15 +1,15 @@
-DELETE FROM homework_quiz;
-DELETE FROM homework;
-DELETE FROM option;
-DELETE FROM quiz_question;
-DELETE FROM quiz;
-DELETE FROM question;
-DELETE FROM classroom_student;
-DELETE FROM classroom;
-DELETE FROM topic;
-DELETE FROM teacher;
-DELETE FROM writer;
-
+TRUNCATE TABLE classroom_student RESTART IDENTITY CASCADE;
+TRUNCATE TABLE homework_quiz RESTART IDENTITY CASCADE;
+TRUNCATE TABLE homework RESTART IDENTITY CASCADE;
+TRUNCATE TABLE option RESTART IDENTITY CASCADE;
+TRUNCATE TABLE quiz_question RESTART IDENTITY CASCADE;
+TRUNCATE TABLE quiz RESTART IDENTITY CASCADE;
+TRUNCATE TABLE question RESTART IDENTITY CASCADE;
+TRUNCATE TABLE classroom RESTART IDENTITY CASCADE;
+TRUNCATE TABLE topic RESTART IDENTITY CASCADE;
+TRUNCATE TABLE teacher RESTART IDENTITY CASCADE;
+TRUNCATE TABLE writer RESTART IDENTITY CASCADE;
+TRUNCATE TABLE student RESTART IDENTITY CASCADE;
 --Teacher
 INSERT INTO teacher (id, first_name, last_name, email, phone_number, registration_date) VALUES
                                                                                             ('6ac7e45f-6860-454a-a349-a031a7abb979', 'Erkim Berk', 'Unsal', 'elif.demir@studyhub.com', '5301234567', CURRENT_TIMESTAMP),
@@ -457,3 +457,15 @@ INSERT INTO homework_quiz (homework_id, quiz_id) VALUES
                                                      ('96bdad4a-79d1-496b-b159-9d235906740c', '8bfb4bea-e842-4ce0-82bf-58b1099c0b02')
 ;
 
+INSERT INTO student (id, first_name, last_name, email, phone_number, registration_date) VALUES
+    ('02ce1001-197a-420a-b88d-7f60c0646020', 'Sumeyye', 'Sakar', 'elif.demir@studyhub.com', '5301234567', CURRENT_TIMESTAMP),
+    ('f3087d3e-d436-489e-ba96-fc8b36e71582', 'Burak', 'Can', 'burak.can@studyhub.com', '5329876543', CURRENT_TIMESTAMP),
+    ('253493d6-0cf0-4b3b-a2db-e189abee4e6d', 'Zeynep', 'Kaya', 'zeynep.kaya@studyhub.com', '5351122334', CURRENT_TIMESTAMP)
+    ON CONFLICT (id) DO NOTHING;
+
+
+INSERT INTO classroom_student (classroom_id, student_id) VALUES
+    ('6afc06b9-8b54-4ae8-ad61-21afb5541b6c', '02ce1001-197a-420a-b88d-7f60c0646020'),
+    ('6afc06b9-8b54-4ae8-ad61-21afb5541b6c', 'f3087d3e-d436-489e-ba96-fc8b36e71582'),
+    ('6afc06b9-8b54-4ae8-ad61-21afb5541b6c', '253493d6-0cf0-4b3b-a2db-e189abee4e6d')
+;

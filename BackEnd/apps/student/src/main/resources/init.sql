@@ -111,6 +111,6 @@ CREATE TABLE IF NOT EXISTS classroom_student (
     classroom_id VARCHAR(255) NOT NULL,
     student_id VARCHAR(255) NOT NULL,
     PRIMARY KEY (classroom_id, student_id),
-    FOREIGN KEY (classroom_id) REFERENCES classroom(id),
+    FOREIGN KEY (classroom_id) REFERENCES classroom(id) ON DELETE CASCADE,
     FOREIGN KEY (student_id) REFERENCES student(id)
     );
