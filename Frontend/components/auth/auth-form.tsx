@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -21,7 +21,7 @@ interface AuthFormProps {
 export function AuthForm({ onLogin }: AuthFormProps) {
   const [activeTab, setActiveTab] = useState("login")
   const [selectedRole, setSelectedRole] = useState<"admin" | "writer" | "teacher" | "student">("student")
-
+useEffect
   const handleLogin = (role: "admin" | "writer" | "teacher" | "student") => {
     onLogin({
       id: "1",
