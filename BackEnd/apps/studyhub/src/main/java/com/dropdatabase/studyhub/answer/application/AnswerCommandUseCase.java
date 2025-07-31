@@ -7,6 +7,7 @@ import com.dropdatabase.studyhub.answer.application.port.AnswerCommandPort;
 import com.dropdatabase.studyhub.answer.domain.Answer;
 import com.dropdatabase.studyhub.question.application.port.OptionCommandPort;
 import com.dropdatabase.studyhub.question.application.port.QuestionCommandPort;
+import com.dropdatabase.studyhub.question.domain.Option;
 import com.dropdatabase.studyhub.quiz.application.port.QuizCommandPort;
 import com.dropdatabase.studyhub.student.application.port.StudentCommandPort;
 import org.springframework.stereotype.Service;
@@ -42,21 +43,30 @@ public class AnswerCommandUseCase {
     }
 
     @Transactional
-    public MessageResponse add(List<AddAnswerCommand> addAnswerCommands, UUID studentId,
+    public int submitQuiz(List<AddAnswerCommand> addAnswerCommands, UUID studentId,
                                UUID quizId) {
         var student = studentCommandPort.get(studentId);
         var quiz = quizCommandPort.get(quizId);
 
+        int correct = 0;
+
         for (AddAnswerCommand addAnswerCommand : addAnswerCommands) {
+            Option option = optionCommandPort.get(addAnswerCommand.optionId());
+            if (option.isCorrect()){
+                correct++;
+            }
+
             Answer newAnswer = new Answer(
                     student,
                     quiz,
                     questionCommandPort.get(addAnswerCommand.questionId()),
-                    optionCommandPort.get(addAnswerCommand.optionId())
+                    option
             );
             answerCommandPort.add(newAnswer);
         }
-        return new MessageResponse("Answers has added successfully", MessageType.SUCCESS);
+        int questionNumber = quizCommandPort.getQuestionNumber(quizId);
+        return (int) ((double) correct / questionNumber * 100);
+
     }
 
     public MessageResponse delete(UUID id) {

@@ -10,4 +10,5 @@ public interface QuizCommandPort {
     void add(Quiz newQuiz);
     void update(Quiz updatedQuiz);
     void delete(UUID id);
+    int getQuestionNumber(UUID quizId);
 }

@@ -97,4 +97,9 @@ public class QuizCommandJpaAdapter implements QuizCommandPort {
         quizJpaRepository.deleteById(id.toString());
     }
 
+    @Override
+    @Transactional
+    public int getQuestionNumber(UUID quizId){
+        return quizJpaRepository.findById(quizId.toString()).get().getQuizQuestions().size();
+    }
 }
