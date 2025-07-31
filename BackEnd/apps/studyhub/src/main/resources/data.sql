@@ -33,7 +33,7 @@ INSERT INTO classroom (id, code, name, teacher_id) VALUES
     ('6afc06b9-8b54-4ae8-ad61-21afb5541b6c', 'ALGEB101', 'Introduction to Algebra', '6ac7e45f-6860-454a-a349-a031a7abb979'),
     ('4af50907-aad0-443d-926a-335acc58ef93', 'INTEG101', 'Introduction to Integral', '6ac7e45f-6860-454a-a349-a031a7abb979'),
     ('b6d74e9e-1f21-4f73-a500-da0cd1d9b242', 'LOG101', 'Introduction to Logarithms', '6ac7e45f-6860-454a-a349-a031a7abb979'),
-    ('class_sci_101_uuid', 'SCI101', 'General Science', 'f3087d3e-d436-489e-ba96-fc8b36e71582')
+    ('753de14c-3fad-4f6c-96d0-2b8512ce2be6', 'SCI101', 'General Science', 'f3087d3e-d436-489e-ba96-fc8b36e71582')
     ON CONFLICT (id) DO NOTHING;
 
 --Writer
