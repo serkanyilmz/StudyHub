@@ -26,8 +26,8 @@ public class HomeworkQueryJpaAdapter implements HomeworkQueryPort {
     }
 
     @Override
-    public List<Homework> getAll() {
-        List<HomeworkJpaEntity> homeworksJpaList = homeworkJpaRepository.findAll();
+    public List<Homework> getAllByClassroomId(UUID classroomId) {
+        List<HomeworkJpaEntity> homeworksJpaList = homeworkJpaRepository.findAllByClassroomId(classroomId.toString());
         return homeworksJpaList.stream()
                 .map(HomeworkJpaEntity::toDomainEntity)
                 .collect(Collectors.toList());

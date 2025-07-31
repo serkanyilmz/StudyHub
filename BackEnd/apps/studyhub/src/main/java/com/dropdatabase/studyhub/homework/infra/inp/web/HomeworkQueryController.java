@@ -23,7 +23,9 @@ public class HomeworkQueryController {
     }
 
     @GetMapping
-    public List<Homework> getAll(){
-        return homeworkQueryUseCase.getAll();
+    public List<Homework> getAllByClassroomId(@RequestParam UUID classroomId){
+        return homeworkQueryUseCase.getAllByClassroomId(classroomId);
     }
+
+
 }

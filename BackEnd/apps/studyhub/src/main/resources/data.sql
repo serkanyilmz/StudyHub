@@ -17,8 +17,8 @@ DELETE FROM users;
 --Users
 INSERT INTO users (id, username, password, full_name, role, created_at, updated_at, approved) VALUES
       ('37318be1-2d85-491d-8a19-8618b9256045', 'serkan.yilmaz', 'hashed-password-1', 'Serkan Yilmaz', 'STUDENT', CURRENT_TIMESTAMP, NULL, true),
-      ('11111111-2222-3333-4444-555555555555', 'deniz.celik', 'hashed-password-2', 'Deniz Çelik', 'TEACHER', CURRENT_TIMESTAMP, NULL, false),
-      ('02ce1001-197a-420a-b88d-7f60c0646020', 'sumeyye.sakar', 'hashed-password-3', 'Asli Mansur', 'STUDENT', CURRENT_TIMESTAMP, NULL, false)
+      ('11111111-2222-3333-4444-555555555555', 'deniz.celik', 'hashed-password-2', 'Deniz Çelik', 'TEACHER', CURRENT_TIMESTAMP, NULL, true),
+      ('02ce1001-197a-420a-b88d-7f60c0646020', 'sumeyye.sakar', '$2a$10$5ybVE4tJhjyi3oE0JWCd8OI/Si17u67t.eU2RyHgo9O32eu5xOONW', 'Asli Mansur', 'STUDENT', CURRENT_TIMESTAMP, NULL, true)
     ON CONFLICT (id) DO NOTHING;
 
 --Teacher
