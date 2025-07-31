@@ -42,13 +42,15 @@ public class AnswerCommandUseCase {
     }
 
     @Transactional
-    public MessageResponse add(List<AddAnswerCommand> addAnswerCommands, UUID studentId) {
-        var student = studentCommandPort.get(studentId); // Öğrenci her seferinde değişmeyecek, başta alınabilir.
+    public MessageResponse add(List<AddAnswerCommand> addAnswerCommands, UUID studentId,
+                               UUID quizId) {
+        var student = studentCommandPort.get(studentId);
+        var quiz = quizCommandPort.get(quizId);
 
         for (AddAnswerCommand addAnswerCommand : addAnswerCommands) {
             Answer newAnswer = new Answer(
                     student,
-                    quizCommandPort.get(addAnswerCommand.quizId()),
+                    quiz,
                     questionCommandPort.get(addAnswerCommand.questionId()),
                     optionCommandPort.get(addAnswerCommand.optionId())
             );
