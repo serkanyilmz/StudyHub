@@ -1,6 +1,7 @@
 package com.dropdatabase.studyhub.student.domain;
 
 import com.dropdatabase.studyhub.classroom.domain.Classroom;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@AllArgsConstructor
 @Getter
 public class Student {
     private UUID id;

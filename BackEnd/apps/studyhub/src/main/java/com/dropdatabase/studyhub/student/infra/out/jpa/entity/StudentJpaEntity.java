@@ -42,13 +42,19 @@ public class StudentJpaEntity {
     }
 
     public Student toDomainEntity() {
+        List<Classroom> classrooms = new ArrayList<>();
+        for (ClassroomJpaEntity classroomJpaEntity : this.classrooms) {
+            Classroom classroom = classroomJpaEntity.toDomainEntity();
+            classrooms.add(classroom);
+        }
         return new Student(
                 UUID.fromString(id),
                 this.firstName,
                 this.lastName,
                 this.email,
                 this.phoneNumber,
-                this.registrationDate
+                this.registrationDate,
+                classrooms
         );
     }
 
