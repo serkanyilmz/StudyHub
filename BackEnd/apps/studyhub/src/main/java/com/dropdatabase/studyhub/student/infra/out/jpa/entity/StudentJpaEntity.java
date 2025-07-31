@@ -1,9 +1,9 @@
 package com.dropdatabase.studyhub.student.infra.out.jpa.entity;
 
-import com.dropdatabase.studyhub.student.classroom.domain.Classroom;
-import com.dropdatabase.studyhub.student.classroom.infra.out.jpa.entity.ClassroomJpaEntity;
-import com.dropdatabase.studyhub.student.homework.infra.out.jpa.entity.HomeworkJpaEntity;
-import com.dropdatabase.studyhub.student.quiz.infra.out.jpa.entity.QuizJpaEntity;
+import com.dropdatabase.studyhub.classroom.domain.Classroom;
+import com.dropdatabase.studyhub.classroom.infra.out.jpa.entity.ClassroomJpaEntity;
+import com.dropdatabase.studyhub.homework.infra.out.jpa.entity.HomeworkJpaEntity;
+import com.dropdatabase.studyhub.quiz.infra.out.jpa.entity.QuizJpaEntity;
 import com.dropdatabase.studyhub.student.domain.Student;
 import jakarta.persistence.*;
 import lombok.Getter;

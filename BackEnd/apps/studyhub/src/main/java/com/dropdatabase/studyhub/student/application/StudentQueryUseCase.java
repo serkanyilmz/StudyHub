@@ -1,7 +1,7 @@
 package com.dropdatabase.studyhub.student.application;
 
-import com.dropdatabase.studyhub.student.student.application.port.StudentQueryPort;
-import com.dropdatabase.studyhub.student.student.domain.Student;
+import com.dropdatabase.studyhub.student.application.port.StudentQueryPort;
+import com.dropdatabase.studyhub.student.domain.Student;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

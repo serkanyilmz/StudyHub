@@ -1,6 +1,6 @@
 package com.dropdatabase.studyhub.student.infra.inp.web;
 
-import com.dropdatabase.studyhub.student.common.MessageResponse;
+import com.dropdatabase.studyhub.common.MessageResponse;
 import com.dropdatabase.studyhub.student.application.StudentCommandUseCase;
 import com.dropdatabase.studyhub.student.application.command.AddStudentCommand;
 import com.dropdatabase.studyhub.student.application.command.UpdateStudentCommand;

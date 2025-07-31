@@ -1,8 +1,8 @@
-package com.dropdatabase.studyhub.student.infra.out.jpa;// src/main/java/com.dropdatabase.studyhub.student.student/infra/out/persistence/StudentJpaAdapter.java
+package com.dropdatabase.studyhub.student.infra.out.jpa;// src/main/java/com.dropdatabase.studyhub.student/infra/out/persistence/StudentJpaAdapter.java
 
 import com.dropdatabase.studyhub.student.application.port.StudentCommandPort;
 import com.dropdatabase.studyhub.student.domain.Student;
-import com.dropdatabase.studyhub.student.student.infra.out.jpa.entity.StudentJpaEntity;
+import com.dropdatabase.studyhub.student.infra.out.jpa.entity.StudentJpaEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 

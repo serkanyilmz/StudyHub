@@ -1,6 +1,6 @@
 package com.dropdatabase.studyhub.student.application.port;
 
-import com.dropdatabase.studyhub.student.student.domain.Student;
+import com.dropdatabase.studyhub.student.domain.Student;
 
 import java.util.List;
 import java.util.UUID;

@@ -1,11 +1,11 @@
 package com.dropdatabase.studyhub.student.application;
 
-import com.dropdatabase.studyhub.student.common.MessageResponse;
-import com.dropdatabase.studyhub.student.common.MessageType;
-import com.dropdatabase.studyhub.student.student.application.command.AddStudentCommand;
-import com.dropdatabase.studyhub.student.student.application.command.UpdateStudentCommand;
-import com.dropdatabase.studyhub.student.student.application.port.StudentCommandPort;
-import com.dropdatabase.studyhub.student.student.domain.Student;
+import com.dropdatabase.studyhub.common.MessageResponse;
+import com.dropdatabase.studyhub.common.MessageType;
+import com.dropdatabase.studyhub.student.application.command.AddStudentCommand;
+import com.dropdatabase.studyhub.student.application.command.UpdateStudentCommand;
+import com.dropdatabase.studyhub.student.application.port.StudentCommandPort;
+import com.dropdatabase.studyhub.student.domain.Student;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
