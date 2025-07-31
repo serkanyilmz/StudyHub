@@ -1,19 +1,24 @@
+DELETE FROM classroom_student;
+DELETE FROM answer;
+DELETE FROM student;
 DELETE FROM homework_quiz;
 DELETE FROM homework;
 DELETE FROM option;
 DELETE FROM quiz_question;
 DELETE FROM quiz;
 DELETE FROM question;
+DELETE FROM classroom_student;
 DELETE FROM classroom;
 DELETE FROM topic;
 DELETE FROM teacher;
 DELETE FROM writer;
+DELETE FROM users;
 
 --Users
 INSERT INTO users (id, username, password, full_name, role, created_at, updated_at, approved) VALUES
       ('37318be1-2d85-491d-8a19-8618b9256045', 'serkan.yilmaz', 'hashed-password-1', 'Serkan Yilmaz', 'STUDENT', CURRENT_TIMESTAMP, NULL, true),
       ('11111111-2222-3333-4444-555555555555', 'deniz.celik', 'hashed-password-2', 'Deniz Çelik', 'TEACHER', CURRENT_TIMESTAMP, NULL, false),
-      ('5adee6b9-da8d-4039-8f5c-11c0d3255c09', 'asli.mansur', 'hashed-password-3', 'Asli Mansur', 'WRITER', CURRENT_TIMESTAMP, NULL, false)
+      ('02ce1001-197a-420a-b88d-7f60c0646020', 'sumeyye.sakar', 'hashed-password-3', 'Asli Mansur', 'STUDENT', CURRENT_TIMESTAMP, NULL, false)
     ON CONFLICT (id) DO NOTHING;
 
 --Teacher
@@ -28,7 +33,7 @@ INSERT INTO classroom (id, code, name, teacher_id) VALUES
     ('6afc06b9-8b54-4ae8-ad61-21afb5541b6c', 'ALGEB101', 'Introduction to Algebra', '6ac7e45f-6860-454a-a349-a031a7abb979'),
     ('4af50907-aad0-443d-926a-335acc58ef93', 'INTEG101', 'Introduction to Integral', '6ac7e45f-6860-454a-a349-a031a7abb979'),
     ('b6d74e9e-1f21-4f73-a500-da0cd1d9b242', 'LOG101', 'Introduction to Logarithms', '6ac7e45f-6860-454a-a349-a031a7abb979'),
-    ('class_sci_101_uuid', 'SCI101', 'General Science', 'f3087d3e-d436-489e-ba96-fc8b36e71582')
+    ('753de14c-3fad-4f6c-96d0-2b8512ce2be6', 'SCI101', 'General Science', 'f3087d3e-d436-489e-ba96-fc8b36e71582')
     ON CONFLICT (id) DO NOTHING;
 
 --Writer
@@ -463,3 +468,15 @@ INSERT INTO homework_quiz (homework_id, quiz_id) VALUES
     ('96bdad4a-79d1-496b-b159-9d235906740c', '8bfb4bea-e842-4ce0-82bf-58b1099c0b02')
 ;
 
+INSERT INTO student (id, first_name, last_name, email, phone_number, registration_date) VALUES
+    ('02ce1001-197a-420a-b88d-7f60c0646020', 'Sumeyye', 'Sakar', 'elif.demir@studyhub.com', '5301234567', CURRENT_TIMESTAMP),
+    ('f3087d3e-d436-489e-ba96-fc8b36e71582', 'Burak', 'Can', 'burak.can@studyhub.com', '5329876543', CURRENT_TIMESTAMP),
+    ('253493d6-0cf0-4b3b-a2db-e189abee4e6d', 'Zeynep', 'Kaya', 'zeynep.kaya@studyhub.com', '5351122334', CURRENT_TIMESTAMP)
+    ON CONFLICT (id) DO NOTHING;
+
+
+INSERT INTO classroom_student (classroom_id, student_id) VALUES
+    ('6afc06b9-8b54-4ae8-ad61-21afb5541b6c', '02ce1001-197a-420a-b88d-7f60c0646020'),
+    ('6afc06b9-8b54-4ae8-ad61-21afb5541b6c', 'f3087d3e-d436-489e-ba96-fc8b36e71582'),
+    ('6afc06b9-8b54-4ae8-ad61-21afb5541b6c', '253493d6-0cf0-4b3b-a2db-e189abee4e6d')
+;

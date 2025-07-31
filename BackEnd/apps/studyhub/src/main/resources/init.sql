@@ -109,3 +109,20 @@ CREATE TABLE IF NOT EXISTS homework_quiz (
     FOREIGN KEY (quiz_id) REFERENCES quiz(id),
     FOREIGN KEY (homework_id) REFERENCES homework(id)
     );
+
+CREATE TABLE IF NOT EXISTS student (
+    id VARCHAR(255) PRIMARY KEY,
+    first_name VARCHAR(255),
+    last_name VARCHAR(255),
+    email VARCHAR(255),
+    phone_number VARCHAR(255),
+    registration_date TIMESTAMP
+    );
+
+CREATE TABLE IF NOT EXISTS classroom_student (
+    classroom_id VARCHAR(255) NOT NULL,
+    student_id VARCHAR(255) NOT NULL,
+    PRIMARY KEY (classroom_id, student_id),
+    FOREIGN KEY (classroom_id) REFERENCES classroom(id) ON DELETE CASCADE,
+    FOREIGN KEY (student_id) REFERENCES student(id)
+    );

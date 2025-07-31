@@ -33,4 +33,14 @@ public class ClassroomQueryJpaAdapter implements ClassroomQueryPort {
                 .collect(Collectors.toList());
         return classrooms;
     }
-}
+
+    @Override
+    public List<Classroom> getAll(UUID studentId) {
+        List<ClassroomJpaEntity> classroomsJpaList = classroomJpaRepository.findAll();
+        List<Classroom> classrooms = classroomsJpaList.stream()
+                .filter(classroomJpaEntity -> classroomJpaEntity.getStudents().stream()
+                        .anyMatch(studentJpaEntity -> studentJpaEntity.getId().equals(studentId.toString())))
+                .map(ClassroomJpaEntity::toDomainEntity)
+                .collect(Collectors.toList());
+        return classrooms;
+}}

@@ -36,7 +36,7 @@ public class AuthCommandController {
     public ResponseEntity<String> register(@RequestBody RegisterRequestCommand request) {
         authCommandUseCase.register(request.username(), request.password(), request.fullName(), request.role());
 
-        boolean needsApproval = request.role() == Role.TEACHER || request.role() == Role.WRITER;
+        boolean needsApproval = false;
 
         if (needsApproval) {
             return ResponseEntity.status(HttpStatus.ACCEPTED)
