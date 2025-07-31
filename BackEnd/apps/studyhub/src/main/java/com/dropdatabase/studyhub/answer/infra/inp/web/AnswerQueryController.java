@@ -1,7 +1,7 @@
 package com.dropdatabase.studyhub.answer.infra.inp.web;
 
-import com.dropdatabase.studyhub.writer.application.WriterQueryUseCase;
-import com.dropdatabase.studyhub.writer.domain.Writer;
+import com.dropdatabase.studyhub.answer.application.AnswerQueryUseCase;
+import com.dropdatabase.studyhub.answer.domain.Answer;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,22 +11,22 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/writer")
+@RequestMapping("/answer")
 public class AnswerQueryController {
 
-    private final WriterQueryUseCase writerQueryUseCase;
+    private final AnswerQueryUseCase answerQueryUseCase;
 
-    public AnswerQueryController(WriterQueryUseCase writerQueryUseCase) {
-        this.writerQueryUseCase = writerQueryUseCase;
+    public AnswerQueryController(AnswerQueryUseCase answerQueryUseCase) {
+        this.answerQueryUseCase = answerQueryUseCase;
     }
 
     @GetMapping("/{id}")
-    public Writer get(@PathVariable UUID id){
-        return writerQueryUseCase.get(id);
+    public Answer get(@PathVariable UUID id){
+        return answerQueryUseCase.get(id);
     }
 
     @GetMapping
-    public List<Writer> getAll(){
-        return writerQueryUseCase.getAll();
+    public List<Answer> getAll(){
+        return answerQueryUseCase.getAll();
     }
 }

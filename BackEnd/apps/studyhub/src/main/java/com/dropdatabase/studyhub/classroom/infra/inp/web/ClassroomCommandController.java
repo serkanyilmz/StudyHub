@@ -32,4 +32,10 @@ public class ClassroomCommandController {
     public MessageResponse delete(@PathVariable UUID id){
         return classroomCommandUseCase.delete(id);
     }
+
+    @PostMapping("/{classroomId}/addStudent")
+    public MessageResponse addStudent(@PathVariable UUID classroomId,
+                                      @RequestParam UUID studentId){
+        return classroomCommandUseCase.addStudent(classroomId,studentId);
+    }
 }

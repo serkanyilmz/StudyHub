@@ -54,7 +54,7 @@ public class AuthCommandUseCase {
     }
 
     public void register(String username, String password, String fullName, Role role) {
-        boolean needsApproval = role == Role.TEACHER || role == Role.WRITER;
+        boolean needsApproval = false;
 
         User user = new User(
                 username,
@@ -63,7 +63,7 @@ public class AuthCommandUseCase {
                 role,
                 LocalDateTime.now(),
                 null,
-                !needsApproval // Öğretmen/Yazar false, diğer roller true
+                !needsApproval
         );
 
         authCommandPort.save(user);

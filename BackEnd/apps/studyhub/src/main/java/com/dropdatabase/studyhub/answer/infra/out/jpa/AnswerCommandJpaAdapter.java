@@ -4,6 +4,14 @@ import com.dropdatabase.studyhub.answer.infra.out.jpa.entity.AnswerJpaEntity;
 import com.dropdatabase.studyhub.classroom.infra.out.jpa.ClassroomJpaRepository;
 import com.dropdatabase.studyhub.answer.application.port.AnswerCommandPort;
 import com.dropdatabase.studyhub.answer.domain.Answer;
+import com.dropdatabase.studyhub.question.infra.out.jpa.OptionJpaRepository;
+import com.dropdatabase.studyhub.question.infra.out.jpa.QuestionJpaRepository;
+import com.dropdatabase.studyhub.question.infra.out.jpa.entity.OptionJpaEntity;
+import com.dropdatabase.studyhub.question.infra.out.jpa.entity.QuestionJpaEntity;
+import com.dropdatabase.studyhub.quiz.infra.out.jpa.QuizJpaRepository;
+import com.dropdatabase.studyhub.quiz.infra.out.jpa.entity.QuizJpaEntity;
+import com.dropdatabase.studyhub.student.infra.out.jpa.StudentJpaRepository;
+import com.dropdatabase.studyhub.student.infra.out.jpa.entity.StudentJpaEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,10 +22,21 @@ import java.util.UUID;
 public class AnswerCommandJpaAdapter implements AnswerCommandPort {
 
     private final AnswerJpaRepository answerJpaRepository;
+    private final StudentJpaRepository studentJpaRepository;
+    private final QuizJpaRepository quizJpaRepository;
+    private final QuestionJpaRepository questionJpaRepository;
+    private final OptionJpaRepository optionJpaRepository;
 
     public AnswerCommandJpaAdapter(AnswerJpaRepository answerJpaRepository,
-                                   ClassroomJpaRepository classroomJpaRepository) {
+                                   StudentJpaRepository studentJpaRepository,
+                                   QuizJpaRepository quizJpaRepository,
+                                   QuestionJpaRepository questionJpaRepository,
+                                   OptionJpaRepository optionJpaRepository) {
         this.answerJpaRepository = answerJpaRepository;
+        this.studentJpaRepository = studentJpaRepository;
+        this.quizJpaRepository = quizJpaRepository;
+        this.questionJpaRepository = questionJpaRepository;
+        this.optionJpaRepository = optionJpaRepository;
     }
 
     @Override
@@ -34,8 +53,17 @@ public class AnswerCommandJpaAdapter implements AnswerCommandPort {
 
     @Override
     @Transactional
-    public void add(Answer newAnswer) {
-        AnswerJpaEntity newAnswerJpaEntity = new AnswerJpaEntity(newAnswer);
+    public void add(Answer answer) {
+        StudentJpaEntity student = studentJpaRepository.findById(answer.getId().toString()).get();
+        QuizJpaEntity quiz = quizJpaRepository.findById(answer.getId().toString()).get();
+        QuestionJpaEntity question = questionJpaRepository.findById(answer.getId().toString()).get();
+        OptionJpaEntity option = optionJpaRepository.findById(answer.getId().toString()).get();
+
+        AnswerJpaEntity newAnswerJpaEntity = new AnswerJpaEntity(answer,
+                student,
+                quiz,
+                question,
+                option);
         AnswerJpaEntity savedAnswerJpaEntity = answerJpaRepository.save(newAnswerJpaEntity);
     }
 

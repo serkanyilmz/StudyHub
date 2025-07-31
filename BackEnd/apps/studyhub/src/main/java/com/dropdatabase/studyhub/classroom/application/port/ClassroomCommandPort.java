@@ -10,4 +10,5 @@ public interface ClassroomCommandPort {
     void add(Classroom newClassroom);
     void update(Classroom updatedClassroom);
     void delete(UUID id);
+    void addStudent(UUID classroomId, UUID studentId);
 }

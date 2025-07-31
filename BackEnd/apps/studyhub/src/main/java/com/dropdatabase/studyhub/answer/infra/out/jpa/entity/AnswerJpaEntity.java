@@ -1,12 +1,11 @@
 package com.dropdatabase.studyhub.answer.infra.out.jpa.entity;
 
 import com.dropdatabase.studyhub.answer.domain.Answer;
-import com.dropdatabase.studyhub.question.domain.Option;
-import com.dropdatabase.studyhub.question.domain.Question;
-import com.dropdatabase.studyhub.quiz.domain.Quiz;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.dropdatabase.studyhub.question.infra.out.jpa.entity.OptionJpaEntity;
+import com.dropdatabase.studyhub.question.infra.out.jpa.entity.QuestionJpaEntity;
+import com.dropdatabase.studyhub.quiz.infra.out.jpa.entity.QuizJpaEntity;
+import com.dropdatabase.studyhub.student.infra.out.jpa.entity.StudentJpaEntity;
+import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -19,28 +18,41 @@ public class AnswerJpaEntity {
     @Id
     private String id;
 
-    private Student student;
-    private Quiz quiz;
-    private Question question;
-    private Option option;
+    @ManyToOne
+    @JoinColumn(name = "student_id", nullable = false)
+    private StudentJpaEntity student;
 
-    public AnswerJpaEntity(Answer answer) {
+    @ManyToOne
+    @JoinColumn(name = "quiz_id", nullable = false)
+    private QuizJpaEntity quiz;
+
+    @ManyToOne
+    @JoinColumn(name = "question_id", nullable = false)
+    private QuestionJpaEntity question;
+
+    @ManyToOne
+    @JoinColumn(name = "option_id", nullable = false)
+    private OptionJpaEntity option;
+
+    public AnswerJpaEntity(Answer answer,
+                           StudentJpaEntity student,
+                           QuizJpaEntity quiz,
+                           QuestionJpaEntity question,
+                           OptionJpaEntity option) {
         this.id = answer.getId().toString();
-        this.firstName = answer.getFirstName();
-        this.lastName = answer.getLastName();
-        this.email = answer.getEmail();
-        this.phoneNumber = answer.getPhoneNumber();
-        this.registrationDate = LocalDateTime.now();
+        this.student = student;
+        this.quiz = quiz;
+        this.question = question;
+        this.option = option;
     }
 
     public Answer toDomainEntity() {
         return new Answer(
                 UUID.fromString(id),
-                this.firstName,
-                this.lastName,
-                this.email,
-                this.phoneNumber,
-                this.registrationDate
+                this.student.toDomainEntity(),
+                this.quiz.toDomainEntity(),
+                this.question.toDomainEntity(),
+                this.option.toDomainEntity()
         );
     }
 }

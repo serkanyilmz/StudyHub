@@ -1,14 +1,21 @@
 package com.dropdatabase.studyhub.classroom.infra.out.jpa.entity;
 import com.dropdatabase.studyhub.classroom.domain.Classroom;
+import com.dropdatabase.studyhub.student.infra.out.jpa.entity.StudentJpaEntity;
 import com.dropdatabase.studyhub.teacher.infra.out.jpa.entity.TeacherJpaEntity;
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Table(name = "classroom")
 @NoArgsConstructor
+@Getter
+@Setter
 public class ClassroomJpaEntity {
 
     @Id
@@ -24,6 +31,14 @@ public class ClassroomJpaEntity {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "teacher_id", referencedColumnName = "id", nullable = false)
     private TeacherJpaEntity teacher;
+
+    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JoinTable(
+            name = "classroom_student",
+            joinColumns = @JoinColumn(name = "classroom_id"),
+            inverseJoinColumns = @JoinColumn(name = "student_id")
+    )
+    private List<StudentJpaEntity> students = new ArrayList<>();
 
     public ClassroomJpaEntity(Classroom classroom) {
         this.id = classroom.getId().toString();

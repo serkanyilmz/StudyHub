@@ -20,6 +20,10 @@ public class ClassroomQueryUseCase {
         return classroomQueryPort.getAll();
     }
 
+    public List<Classroom> getAll(UUID studentId) {
+        return classroomQueryPort.getAll(studentId);
+    }
+
     public Classroom get(UUID id) {return classroomQueryPort.get(id);
     }
 }

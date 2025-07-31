@@ -65,4 +65,9 @@ public class ClassroomCommandUseCase {
         classroomCommandPort.delete(id);
         return new MessageResponse("Classroom has deleted successfully", MessageType.SUCCESS);
     }
+
+    public MessageResponse addStudent(UUID classroomId, UUID studentId) {
+        classroomCommandPort.addStudent(classroomId, studentId);
+        return new MessageResponse("You are added to classroom", MessageType.SUCCESS);
+    }
 }

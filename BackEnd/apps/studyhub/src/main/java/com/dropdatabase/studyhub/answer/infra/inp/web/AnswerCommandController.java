@@ -1,35 +1,30 @@
 package com.dropdatabase.studyhub.answer.infra.inp.web;
 
 import com.dropdatabase.studyhub.common.MessageResponse;
-import com.dropdatabase.studyhub.writer.application.WriterCommandUseCase;
-import com.dropdatabase.studyhub.writer.application.command.AddWriterCommand;
-import com.dropdatabase.studyhub.writer.application.command.UpdateWriterCommand;
+import com.dropdatabase.studyhub.answer.application.AnswerCommandUseCase;
+import com.dropdatabase.studyhub.answer.application.command.AddAnswerCommand;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/writer")
+@RequestMapping("/answer")
 public class AnswerCommandController {
 
-    private final WriterCommandUseCase writerCommandUseCase;
+    private final AnswerCommandUseCase answerCommandUseCase;
 
-    public AnswerCommandController(WriterCommandUseCase writerCommandUseCase) {
-        this.writerCommandUseCase = writerCommandUseCase;
+    public AnswerCommandController(AnswerCommandUseCase answerCommandUseCase) {
+        this.answerCommandUseCase = answerCommandUseCase;
     }
 
     @PostMapping
-    public MessageResponse add(@RequestBody AddWriterCommand addWriterCommand){
-        return writerCommandUseCase.add(addWriterCommand);
-    }
-
-    @PutMapping("/{id}")
-    public MessageResponse update(@PathVariable UUID id, @RequestBody UpdateWriterCommand updateWriterCommand){
-        return writerCommandUseCase.update(id, updateWriterCommand);
+    public MessageResponse add(@RequestBody AddAnswerCommand addAnswerCommand,
+                               @RequestParam UUID studentId) {
+        return answerCommandUseCase.add(addAnswerCommand, studentId);
     }
 
     @DeleteMapping("/{id}")
     public MessageResponse delete(@PathVariable UUID id){
-        return writerCommandUseCase.delete(id);
+        return answerCommandUseCase.delete(id);
     }
 }
