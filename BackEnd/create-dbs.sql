@@ -1,3 +1,2 @@
 CREATE DATABASE auth;
 CREATE DATABASE employee;
-CREATE DATABASE student;
