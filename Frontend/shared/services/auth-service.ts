@@ -21,7 +21,7 @@ export interface RegisterRequest {
 export async function loginApi(credentials: LoginCredentials): Promise<LoginResponse> {
   try {
     const response = await axios.post<LoginResponse>(
-      'http://localhost:8080/api/auth/login',
+      'http://localhost:8080/auth/login',
       {
         username: credentials.username,
         password: credentials.password,
@@ -40,7 +40,7 @@ export async function loginApi(credentials: LoginCredentials): Promise<LoginResp
 
 export async function logoutApi(accessToken: string, refreshToken: string) {
    return axios.post(
-    'http://localhost:8080/api/auth/logout',
+    'http://localhost:8080/auth/logout',
     { refreshToken, accessToken },
     {
       headers: {
@@ -52,7 +52,7 @@ export async function logoutApi(accessToken: string, refreshToken: string) {
 
 export async function validateAccessTokenApi(accessToken: string, refreshToken: string) {
   return axios.post(
-    "http://localhost:8080/api/auth/validate-access",
+    "http://localhost:8080/auth/validate-access",
     { accessToken, refreshToken },
     { headers: { Authorization: `Bearer ${accessToken}` } }
   );
@@ -60,7 +60,7 @@ export async function validateAccessTokenApi(accessToken: string, refreshToken: 
 
 export async function refreshAccessTokenApi(refreshToken: string, accessToken: string) {
   return axios.post(
-    "http://localhost:8080/api/auth/refresh-access",
+    "http://localhost:8080/auth/refresh-access",
     { accessToken, refreshToken },
     { headers: { Authorization: `Bearer ${accessToken}` } }
   );
@@ -70,5 +70,5 @@ export async function refreshAccessTokenApi(refreshToken: string, accessToken: s
 
 
 export async function registerApi(RegisterRequest: RegisterRequest) {
-  return axios.post("http://localhost:8080/api/auth/register", RegisterRequest);
+  return axios.post("http://localhost:8080/auth/register", RegisterRequest);
 }

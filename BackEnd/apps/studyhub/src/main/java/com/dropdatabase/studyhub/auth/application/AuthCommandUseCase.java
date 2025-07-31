@@ -49,9 +49,9 @@ public class AuthCommandUseCase {
             throw new InvalidCredentialsException();
         }
 
-        if (!user.isApproved()) {
-            throw new UserNotApprovedException();
-        }
+        //if (!user.isApproved()) {
+        //   throw new UserNotApprovedException();
+        //}
 
         String access = jwtTokenProvider.generateAccessToken(user);
         String refresh = jwtTokenProvider.generateRefreshToken(user);

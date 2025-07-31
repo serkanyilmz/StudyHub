@@ -1,6 +1,7 @@
 import * as Yup from 'yup';
 
-const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d])[A-Za-z\d\S]{8,}$/;
+
 const usernameRegex = /^[a-zA-Z0-9._]{3,30}$/;
 
 const registerValidationSchema = Yup.object({
