@@ -10,6 +10,8 @@ import com.dropdatabase.studyhub.auth.infra.exception.InvalidRefreshTokenExcepti
 import com.dropdatabase.studyhub.auth.infra.exception.UserNotApprovedException;
 import com.dropdatabase.studyhub.auth.infra.exception.UserNotFoundException;
 import com.dropdatabase.studyhub.auth.application.security.JwtTokenProvider;
+import com.dropdatabase.studyhub.teacher.application.port.TeacherCommandPort;
+import com.dropdatabase.studyhub.writer.application.port.WriterCommandPort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -23,15 +25,19 @@ import java.util.Date;
 public class AuthCommandUseCase {
 
     private final AuthCommandPort authCommandPort;
+    private final TeacherCommandPort teacherCommandPort;
+    private final WriterCommandPort writerCommandPort;
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthQueryUseCase authQueryUseCase;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public AuthCommandUseCase(PasswordEncoder passwordEncoder, AuthQueryUseCase authQueryUseCase, AuthCommandPort authCommandPort, JwtTokenProvider jwtTokenProvider) {
+    public AuthCommandUseCase(PasswordEncoder passwordEncoder, AuthQueryUseCase authQueryUseCase, AuthCommandPort authCommandPort, JwtTokenProvider jwtTokenProvider, TeacherCommandPort teacherCommandPort, WriterCommandPort writerCommandPort) {
         this.passwordEncoder = passwordEncoder;
         this.authQueryUseCase = authQueryUseCase;
         this.authCommandPort = authCommandPort;
+        this.teacherCommandPort = teacherCommandPort;
+        this.writerCommandPort = writerCommandPort;
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
@@ -47,8 +53,8 @@ public class AuthCommandUseCase {
             throw new UserNotApprovedException();
         }
 
-        String access = jwtTokenProvider.generateAccessToken(user.getUsername(), user.getRole().toString());
-        String refresh = jwtTokenProvider.generateRefreshToken(user.getUsername());
+        String access = jwtTokenProvider.generateAccessToken(user);
+        String refresh = jwtTokenProvider.generateRefreshToken(user);
 
         return new LoginResponseCommand(access, refresh);
     }
@@ -67,6 +73,12 @@ public class AuthCommandUseCase {
         );
 
         authCommandPort.save(user);
+
+        switch (role) {
+            case TEACHER -> teacherCommandPort.saveTeacherFromUser(user);
+            case WRITER -> writerCommandPort.saveWriterFromUser(user);
+            // TODO: case STUDENT -> studentCommandPort.saveStudentFromUser(user)
+        }
     }
 
     public void blacklistRefreshToken(String token) {
@@ -84,10 +96,10 @@ public class AuthCommandUseCase {
         User user = authCommandPort.findByUsername(username)
                 .orElseThrow(UserNotFoundException::new);
 
-        String newAccessToken = jwtTokenProvider.generateAccessToken(user.getUsername(), user.getRole().toString());
+        String newAccessToken = jwtTokenProvider.generateAccessToken(user);
 
         if (authQueryUseCase.shouldRefresh(refreshToken)) {
-            String newRefreshToken = jwtTokenProvider.generateRefreshToken(user.getUsername());
+            String newRefreshToken = jwtTokenProvider.generateRefreshToken(user);
             return new TokensCommand(newAccessToken, newRefreshToken);
         }
 

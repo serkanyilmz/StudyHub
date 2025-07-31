@@ -1,5 +1,9 @@
 package com.dropdatabase.studyhub.writer.infra.out.jpa;// src/main/java/com.dropdatabase.studyhub.employee.writer/infra/out/persistence/WriterJpaAdapter.java
 
+import com.dropdatabase.studyhub.auth.application.port.AuthCommandPort;
+import com.dropdatabase.studyhub.auth.domain.model.User;
+import com.dropdatabase.studyhub.auth.infra.exception.UserNotFoundException;
+import com.dropdatabase.studyhub.auth.infra.out.jpa.entity.UserJpaEntity;
 import com.dropdatabase.studyhub.classroom.infra.out.jpa.ClassroomJpaRepository;
 import com.dropdatabase.studyhub.writer.application.port.WriterCommandPort;
 import com.dropdatabase.studyhub.writer.domain.Writer;
@@ -7,6 +11,8 @@ import com.dropdatabase.studyhub.writer.infra.out.jpa.entity.WriterJpaEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -14,10 +20,12 @@ import java.util.UUID;
 public class WriterCommandJpaAdapter implements WriterCommandPort {
 
     private final WriterJpaRepository writerJpaRepository;
+    private final AuthCommandPort authCommandPort;
 
     public WriterCommandJpaAdapter(WriterJpaRepository writerJpaRepository,
-                                    ClassroomJpaRepository classroomJpaRepository) {
+                                    ClassroomJpaRepository classroomJpaRepository, AuthCommandPort authCommandPort) {
         this.writerJpaRepository = writerJpaRepository;
+        this.authCommandPort = authCommandPort;
     }
 
     @Override
@@ -51,6 +59,35 @@ public class WriterCommandJpaAdapter implements WriterCommandPort {
     @Transactional
     public void delete(UUID id) {
         writerJpaRepository.deleteById(id.toString());
+    }
+
+    @Override
+    public void saveWriterFromUser(User user) {
+        String fullName = user.getFullName().trim();
+        String[] nameParts = fullName.split("\\s+");
+
+        String firstName;
+        String lastName;
+
+        if (nameParts.length == 1) {
+            firstName = nameParts[0];
+            lastName = "";
+        } else {
+            lastName = nameParts[nameParts.length - 1];
+            firstName = String.join(" ", Arrays.copyOfRange(nameParts, 0, nameParts.length - 1));
+        }
+
+        Writer writer = new Writer(
+                user.getId(),
+                firstName,
+                lastName,
+                "",
+                "",
+                LocalDateTime.now()
+        );
+
+        WriterJpaEntity entity = new WriterJpaEntity(writer);
+        writerJpaRepository.save(entity);
     }
 
 }

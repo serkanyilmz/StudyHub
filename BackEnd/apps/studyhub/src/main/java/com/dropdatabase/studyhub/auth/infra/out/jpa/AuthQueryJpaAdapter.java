@@ -1,6 +1,7 @@
 package com.dropdatabase.studyhub.auth.infra.out.jpa;
 
 import com.dropdatabase.studyhub.auth.application.port.AuthQueryPort;
+import com.dropdatabase.studyhub.auth.infra.out.jpa.entity.UserJpaEntity;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -14,4 +15,8 @@ public class AuthQueryJpaAdapter implements AuthQueryPort {
     public boolean isTokenBlacklisted(String jti) {
         return tokenBlacklistJpaRepository.existsById(jti);
     }
+
+
+
+
 }
