@@ -1,5 +1,7 @@
 package com.dropdatabase.studyhub.auth.application.security;
 
+import com.dropdatabase.studyhub.auth.domain.model.User;
+import com.dropdatabase.studyhub.auth.infra.out.jpa.AuthJpaAdapter;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
@@ -17,6 +19,7 @@ import java.util.UUID;
 @Component
 public class JwtTokenProvider {
     private final SecurityUserDetailsService userDetailsService;
+    private final AuthJpaAdapter authJpaAdapter;
 
     @Value("${jwt.secret}")
     private String secret;
@@ -32,18 +35,20 @@ public class JwtTokenProvider {
         secretKey = Keys.hmacShaKeyFor(Base64.getDecoder().decode(secret));
     }
 
-    public JwtTokenProvider(SecurityUserDetailsService userDetailsService) {
+    public JwtTokenProvider(SecurityUserDetailsService userDetailsService, AuthJpaAdapter authJpaAdapter) {
         this.userDetailsService = userDetailsService;
+        this.authJpaAdapter = authJpaAdapter;
     }
 
-    public String generateAccessToken(String username, String role) {
+    public String generateAccessToken(User user) {
         Date now = new Date();
         Date expiry = new Date(now.getTime() + accessTokenValidityMs);
         String jti = UUID.randomUUID().toString();
 
         return Jwts.builder()
-                .setSubject(username)
-                .claim("role", role)
+                .setSubject(user.getUsername())
+                .claim("role", user.getRole().toString())
+                .claim("userId", user.getId())
                 .setId(jti)
                 .setIssuedAt(now)
                 .setExpiration(expiry)
@@ -51,13 +56,15 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public String generateRefreshToken(String username) {
+    public String generateRefreshToken(User user) {
         Date now = new Date();
         Date expiry = new Date(now.getTime() + refreshTokenValidityMs);
         String jti = UUID.randomUUID().toString();
 
         return Jwts.builder()
-                .setSubject(username)
+                .setSubject(user.getUsername())
+                .claim("role", user.getRole().toString())
+                .claim("userId", user.getId())
                 .setId(jti)
                 .setIssuedAt(now)
                 .setExpiration(expiry)
@@ -92,6 +99,10 @@ public class JwtTokenProvider {
 
     public Date getExpiry(String token) {
         return parseToken(token).getExpiration();
+    }
+
+    public String getUserId(String token) {
+        return parseToken(token).get("userId", String.class);
     }
 
     public Authentication getAuthentication(String token) {
