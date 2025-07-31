@@ -5,6 +5,7 @@ import com.dropdatabase.studyhub.answer.application.AnswerCommandUseCase;
 import com.dropdatabase.studyhub.answer.application.command.AddAnswerCommand;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -18,9 +19,9 @@ public class AnswerCommandController {
     }
 
     @PostMapping
-    public MessageResponse add(@RequestBody AddAnswerCommand addAnswerCommand,
+    public MessageResponse add(@RequestBody List<AddAnswerCommand> addAnswerCommands,
                                @RequestParam UUID studentId) {
-        return answerCommandUseCase.add(addAnswerCommand, studentId);
+        return answerCommandUseCase.add(addAnswerCommands, studentId);
     }
 
     @DeleteMapping("/{id}")

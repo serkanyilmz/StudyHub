@@ -12,6 +12,7 @@ import com.dropdatabase.studyhub.student.application.port.StudentCommandPort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -41,13 +42,19 @@ public class AnswerCommandUseCase {
     }
 
     @Transactional
-    public MessageResponse add(AddAnswerCommand addAnswerCommand, UUID studentId) {
-        Answer newAnswer = new Answer(studentCommandPort.get(studentId),
-                quizCommandPort.get(addAnswerCommand.quizId()),
-                questionCommandPort.get(addAnswerCommand.questionId()),
-                optionCommandPort.get(addAnswerCommand.optionId()));
-        answerCommandPort.add(newAnswer);
-        return new MessageResponse("Answer has added successfully", MessageType.SUCCESS);
+    public MessageResponse add(List<AddAnswerCommand> addAnswerCommands, UUID studentId) {
+        var student = studentCommandPort.get(studentId); // Öğrenci her seferinde değişmeyecek, başta alınabilir.
+
+        for (AddAnswerCommand addAnswerCommand : addAnswerCommands) {
+            Answer newAnswer = new Answer(
+                    student,
+                    quizCommandPort.get(addAnswerCommand.quizId()),
+                    questionCommandPort.get(addAnswerCommand.questionId()),
+                    optionCommandPort.get(addAnswerCommand.optionId())
+            );
+            answerCommandPort.add(newAnswer);
+        }
+        return new MessageResponse("Answers has added successfully", MessageType.SUCCESS);
     }
 
     public MessageResponse delete(UUID id) {

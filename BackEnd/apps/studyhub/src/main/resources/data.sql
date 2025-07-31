@@ -1,4 +1,5 @@
 DELETE FROM classroom_student;
+DELETE FROM answer;
 DELETE FROM student;
 DELETE FROM homework_quiz;
 DELETE FROM homework;
@@ -6,6 +7,7 @@ DELETE FROM option;
 DELETE FROM quiz_question;
 DELETE FROM quiz;
 DELETE FROM question;
+DELETE FROM classroom_student;
 DELETE FROM classroom;
 DELETE FROM topic;
 DELETE FROM teacher;

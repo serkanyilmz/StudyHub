@@ -54,10 +54,10 @@ public class AnswerCommandJpaAdapter implements AnswerCommandPort {
     @Override
     @Transactional
     public void add(Answer answer) {
-        StudentJpaEntity student = studentJpaRepository.findById(answer.getId().toString()).get();
-        QuizJpaEntity quiz = quizJpaRepository.findById(answer.getId().toString()).get();
-        QuestionJpaEntity question = questionJpaRepository.findById(answer.getId().toString()).get();
-        OptionJpaEntity option = optionJpaRepository.findById(answer.getId().toString()).get();
+        StudentJpaEntity student = studentJpaRepository.findById(answer.getStudent().getId().toString()).get();
+        QuizJpaEntity quiz = quizJpaRepository.findById(answer.getQuiz().getId().toString()).get();
+        QuestionJpaEntity question = questionJpaRepository.findById(answer.getQuestion().getId().toString()).get();
+        OptionJpaEntity option = optionJpaRepository.findById(answer.getOption().getId().toString()).get();
 
         AnswerJpaEntity newAnswerJpaEntity = new AnswerJpaEntity(answer,
                 student,
