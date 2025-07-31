@@ -1,5 +1,3 @@
 rootProject.name = 'StudyHub'
 
-include ':apps:auth'
-include ':apps:employee'
-include ':apps:student'
+include ':apps:studyhub'
