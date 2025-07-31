@@ -19,9 +19,10 @@ public class AnswerCommandController {
     }
 
     @PostMapping
-    public MessageResponse add(@RequestBody List<AddAnswerCommand> addAnswerCommands,
-                               @RequestParam UUID studentId) {
-        return answerCommandUseCase.add(addAnswerCommands, studentId);
+    public int submitQuiz(@RequestBody List<AddAnswerCommand> addAnswerCommands,
+                               @RequestParam UUID studentId,
+                               @RequestParam UUID quizId) {
+        return answerCommandUseCase.submitQuiz(addAnswerCommands, studentId, quizId);
     }
 
     @DeleteMapping("/{id}")

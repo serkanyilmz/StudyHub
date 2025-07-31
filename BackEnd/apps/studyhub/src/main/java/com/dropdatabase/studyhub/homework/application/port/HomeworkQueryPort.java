@@ -7,5 +7,5 @@ import java.util.UUID;
 
 public interface HomeworkQueryPort {
     Homework get(UUID id);
-    List<Homework> getAll();
+    List<Homework> getAllByClassroomId(UUID classroomId);
 }

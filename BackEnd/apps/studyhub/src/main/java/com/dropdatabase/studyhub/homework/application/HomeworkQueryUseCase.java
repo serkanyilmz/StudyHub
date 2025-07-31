@@ -1,5 +1,6 @@
 package com.dropdatabase.studyhub.homework.application;
 
+import com.dropdatabase.studyhub.auth.application.AuthQueryUseCase;
 import com.dropdatabase.studyhub.homework.application.port.HomeworkQueryPort;
 import com.dropdatabase.studyhub.homework.domain.Homework;
 import org.springframework.stereotype.Service;
@@ -16,8 +17,8 @@ public class HomeworkQueryUseCase {
         this.homeworkQueryPort = homeworkQueryPort;
     }
 
-    public List<Homework> getAll() {
-        return homeworkQueryPort.getAll();
+    public List<Homework> getAllByClassroomId(UUID classroomId) {
+        return homeworkQueryPort.getAllByClassroomId(classroomId);
     }
 
     public Homework get(UUID id) {return homeworkQueryPort.get(id);
