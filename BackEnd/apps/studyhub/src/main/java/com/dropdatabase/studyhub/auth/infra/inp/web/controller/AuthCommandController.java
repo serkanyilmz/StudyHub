@@ -10,6 +10,7 @@ import com.dropdatabase.studyhub.auth.application.command.TokensCommand;
 import com.dropdatabase.studyhub.auth.domain.model.Role;
 import com.dropdatabase.studyhub.auth.infra.exception.RefreshTokenBlacklistedException;
 import com.dropdatabase.studyhub.auth.infra.exception.InvalidAccessTokenException;
+import com.dropdatabase.studyhub.auth.infra.out.jpa.entity.UserJpaEntity;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 @AllArgsConstructor
 public class AuthCommandController {
     private final AuthCommandUseCase authCommandUseCase;

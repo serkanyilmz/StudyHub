@@ -9,6 +9,13 @@ DELETE FROM topic;
 DELETE FROM teacher;
 DELETE FROM writer;
 
+--Users
+INSERT INTO users (id, username, password, full_name, role, created_at, updated_at, approved) VALUES
+      ('37318be1-2d85-491d-8a19-8618b9256045', 'serkan.yilmaz', 'hashed-password-1', 'Serkan Yilmaz', 'STUDENT', CURRENT_TIMESTAMP, NULL, true),
+      ('11111111-2222-3333-4444-555555555555', 'deniz.celik', 'hashed-password-2', 'Deniz Çelik', 'TEACHER', CURRENT_TIMESTAMP, NULL, false),
+      ('5adee6b9-da8d-4039-8f5c-11c0d3255c09', 'asli.mansur', 'hashed-password-3', 'Asli Mansur', 'WRITER', CURRENT_TIMESTAMP, NULL, false)
+    ON CONFLICT (id) DO NOTHING;
+
 --Teacher
 INSERT INTO teacher (id, first_name, last_name, email, phone_number, registration_date) VALUES
     ('6ac7e45f-6860-454a-a349-a031a7abb979', 'Erkim Berk', 'Unsal', 'elif.demir@studyhub.com', '5301234567', CURRENT_TIMESTAMP),

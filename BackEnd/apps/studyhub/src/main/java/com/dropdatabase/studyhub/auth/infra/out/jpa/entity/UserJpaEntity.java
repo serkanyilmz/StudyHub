@@ -2,6 +2,7 @@ package com.dropdatabase.studyhub.auth.infra.out.jpa.entity;
 
 import com.dropdatabase.studyhub.auth.domain.model.Role;
 import com.dropdatabase.studyhub.auth.domain.model.User;
+import com.dropdatabase.studyhub.writer.infra.out.jpa.entity.WriterJpaEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
