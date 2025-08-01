@@ -126,3 +126,15 @@ CREATE TABLE IF NOT EXISTS classroom_student (
     FOREIGN KEY (classroom_id) REFERENCES classroom(id) ON DELETE CASCADE,
     FOREIGN KEY (student_id) REFERENCES student(id)
     );
+
+CREATE TABLE IF NOT EXISTS answer (
+    id VARCHAR(255) NOT NULL,
+    student_id VARCHAR(255) NOT NULL,
+    quiz_id VARCHAR(255) NOT NULL,
+    question_id VARCHAR(255) NOT NULL,
+    option_id VARCHAR(255) NOT NULL,
+    FOREIGN KEY (student_id) REFERENCES student(id),
+    FOREIGN KEY (quiz_id) REFERENCES quiz(id),
+    FOREIGN KEY (question_id) REFERENCES question(id),
+    FOREIGN KEY (option_id) REFERENCES option(id)
+    );
