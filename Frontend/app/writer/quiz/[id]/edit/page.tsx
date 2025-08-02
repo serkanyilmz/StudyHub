@@ -91,7 +91,7 @@ export default function EditQuizPage() {
         const [quizData, topicsData, questionsData] = await Promise.all([
           api.getQuizById(params.id as string),
           api.getTopics(),
-          api.getAllQuestions(),
+          api.getQuestions(),
         ])
 
         setQuiz(quizData)

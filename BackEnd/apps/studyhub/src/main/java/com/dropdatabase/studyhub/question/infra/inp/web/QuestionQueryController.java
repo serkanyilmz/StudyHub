@@ -2,6 +2,7 @@ package com.dropdatabase.studyhub.question.infra.inp.web;
 
 import com.dropdatabase.studyhub.question.application.QuestionQueryUseCase;
 import com.dropdatabase.studyhub.question.application.query.QuestionViewModel;
+import com.dropdatabase.studyhub.question.domain.Question;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public class QuestionQueryController {
     }
 
     @GetMapping
-    public List<QuestionViewModel> getAll(){
+    public List<Question> getAll(){
         return questionQueryUseCase.getAll();
     }
 }

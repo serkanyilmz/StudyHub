@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class QuestionQueryUseCase {
@@ -18,10 +17,8 @@ public class QuestionQueryUseCase {
         this.questionQueryPort = questionQueryPort;
     }
 
-    public List<QuestionViewModel> getAll() {
-        return questionQueryPort.getAll().stream()
-                .map(Question::toViewModel)
-                .collect(Collectors.toList());
+    public List<Question> getAll() {
+        return questionQueryPort.getAll();
     }
 
     public QuestionViewModel get(UUID id) {return questionQueryPort.get(id).toViewModel();

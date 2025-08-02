@@ -68,7 +68,7 @@ export default function NewQuizPage() {
         setTopics(topicsData)
 
         // Fetch all questions
-        const questionsData = await api.getAllQuestions()
+        const questionsData = await api.getQuestions()
 
         // Filter questions by current writer
         const writerQuestions = questionsData.filter((q: Question) => q.writer && q.writer.id === user?.id)
