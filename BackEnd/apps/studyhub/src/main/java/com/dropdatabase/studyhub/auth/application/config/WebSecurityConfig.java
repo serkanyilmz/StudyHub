@@ -53,10 +53,10 @@ public class WebSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/login", "/api/auth/refresh-access", "/api/auth/register", "/api/auth/validate-access").permitAll()
-                        .requestMatchers("/api/teacher/**").hasRole("TEACHER")
-                        .requestMatchers("/api/writer/**").hasRole("WRITER")
-                        .requestMatchers("/api/student/**").hasRole("STUDENT")
-                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/teacher/**").hasRole("TEACHER")
+                        .requestMatchers("/writer/**").hasRole("WRITER")
+                        .requestMatchers("/student/**").hasRole("STUDENT")
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().permitAll()
                 )
                 .sessionManagement(session -> session
