@@ -1,5 +1,6 @@
 package com.dropdatabase.studyhub.student.application.port;
 
+import com.dropdatabase.studyhub.auth.domain.model.User;
 import com.dropdatabase.studyhub.student.domain.Student;
 
 import java.util.UUID;
@@ -10,4 +11,5 @@ public interface StudentCommandPort {
     void add(Student newStudent);
     void update(Student updatedStudent);
     void delete(UUID id);
+    void saveStudentFromUser(User user);
 }
