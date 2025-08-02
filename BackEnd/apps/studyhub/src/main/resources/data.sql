@@ -437,10 +437,10 @@ INSERT INTO option (id, text, is_correct, question_id) VALUES
     ('6e7052b3-c84b-c2f5-1234-3a180a0a05f5', 'Functions', FALSE, 'c9714d5e-a5b6-8901-234b-ef0123456789'),
     ('7f8163c4-d95c-d306-2345-4b291b1b1606', 'Geometry', FALSE, 'c9714d5e-a5b6-8901-234b-ef0123456789'),
     ('809274d5-ea6d-e417-3456-5c3a2c2c2717', 'Calculus', FALSE, 'c9714d5e-a5b6-8901-234b-ef0123456789'),
-    ('91a385e6-fb7e-f528-4567-6d4b3d3d3828', 'Isolation of the variable', TRUE, 'da825e6f-b6c7-9012-345c-f0123456789a'),
-    ('a2b496f7-0c8f-0639-5678-7e5c4e4e4939', 'Graphing', FALSE, 'da825e6f-b6c7-9012-345c-f0123456789a'),
-    ('b3c5a708-1d90-174a-6789-8f6d5f5f5a4a', 'Substitution', FALSE, 'da825e6f-b6c7-9012-345c-f0123456789a'),
-    ('c4d6b819-2ea1-285b-7890-907e60606b5b', 'Factoring', FALSE, 'da825e6f-b6c7-9012-345c-f0123456789a')
+    ('91a385e6-fb7e-f528-4567-6d4b3d3d3821', 'Isolation of the variable', TRUE, 'da825e6f-b6c7-9012-345c-f0123456789a'),
+    ('a2b496f7-0c8f-0639-5678-7e5c4e4e4931', 'Graphing', FALSE, 'da825e6f-b6c7-9012-345c-f0123456789a'),
+    ('b3c5a708-1d90-174a-6789-8f6d5f5f5a41', 'Substitution', FALSE, 'da825e6f-b6c7-9012-345c-f0123456789a'),
+    ('c4d6b819-2ea1-285b-7890-907e60606b51', 'Factoring', FALSE, 'da825e6f-b6c7-9012-345c-f0123456789a')
     ON CONFLICT (id) DO NOTHING;
 
 INSERT INTO quiz (id, name, topic_id, writer_id) VALUES
