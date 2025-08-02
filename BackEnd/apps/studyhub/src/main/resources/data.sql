@@ -17,7 +17,7 @@ DELETE FROM users;
 --Users
 INSERT INTO users (id, username, password, full_name, role, created_at, updated_at, approved) VALUES
       ('37318be1-2d85-491d-8a19-8618b9256045', 'serkan.yilmaz', '$2a$10$05SqRAfMrjH7wH7PZvAUmel9kWnJZMYURaXJyuax1w0JO8OIclJFO', 'Serkan Yilmaz', 'WRITER', CURRENT_TIMESTAMP, NULL, true),
-      ('6ac7e45f-6860-454a-a349-a031a7abb979', 'deniz.celik', '$2a$10$05SqRAfMrjH7wH7PZvAUmel9kWnJZMYURaXJyuax1w0JO8OIclJFO', 'Deniz Çelik', 'TEACHER', CURRENT_TIMESTAMP, NULL, true),
+      ('6ac7e45f-6860-454a-a349-a031a7abb979', 'erkim.berk', '$2a$10$05SqRAfMrjH7wH7PZvAUmel9kWnJZMYURaXJyuax1w0JO8OIclJFO', 'Erkim Berk Unsal', 'TEACHER', CURRENT_TIMESTAMP, NULL, true),
       ('02ce1001-197a-420a-b88d-7f60c0646020', 'sumeyye.sakar', '$2a$10$05SqRAfMrjH7wH7PZvAUmel9kWnJZMYURaXJyuax1w0JO8OIclJFO', 'Asli Mansur', 'STUDENT', CURRENT_TIMESTAMP, NULL, true)
     ON CONFLICT (id) DO NOTHING;
 
@@ -39,7 +39,7 @@ INSERT INTO classroom (id, code, name, teacher_id) VALUES
 --Writer
 INSERT INTO writer (id, first_name, last_name, email, phone_number, registration_date) VALUES
     ('37318be1-2d85-491d-8a19-8618b9256045', 'Serkan', 'Yilmaz', 'serkan.yilmaz@studyhub.com', '5401112233', CURRENT_TIMESTAMP),
-    ('37318be1-2d85-491d-8a19-8618b9256045', 'Deniz', 'Çelik', 'deniz.celik@studyhub.com', '5429988776', CURRENT_TIMESTAMP),
+    ('37318be1-2d85-491d-8a19-8618b9256046', 'Deniz', 'Çelik', 'deniz.celik@studyhub.com', '5429988776', CURRENT_TIMESTAMP),
     ('5adee6b9-da8d-4039-8f5c-11c0d3255c09', 'Asli', 'Mansur', 'asli.mansur@studyhub.com', '5429985556', CURRENT_TIMESTAMP)
     ON CONFLICT (id) DO NOTHING;
 INSERT INTO topic (id, name, parent_topic_id) VALUES
