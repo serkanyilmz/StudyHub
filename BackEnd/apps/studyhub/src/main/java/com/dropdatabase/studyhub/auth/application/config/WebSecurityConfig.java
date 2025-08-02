@@ -55,7 +55,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/api/auth/login", "/api/auth/refresh-access", "/api/auth/register", "/api/auth/validate-access").permitAll()
                         .requestMatchers("/teacher/**").hasRole("TEACHER")
                         .requestMatchers("/writer/**").hasRole("WRITER")
-                        .requestMatchers("/student/**").hasRole("STUDENT")
+                        .requestMatchers("/student/**").hasAnyRole("STUDENT", "TEACHER")
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().permitAll()
                 )

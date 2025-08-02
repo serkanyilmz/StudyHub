@@ -60,7 +60,6 @@ export default function WriterDashboard() {
   useEffect(() => {
     const fetchData = async () => {
       if (!user?.id) return
-
       try {
         const [questionsData, quizzesData, topicsData] = await Promise.all([
           api.getQuestions().catch(() => []),
@@ -90,11 +89,11 @@ export default function WriterDashboard() {
   }, [user?.id])
 
   const getRecentQuestions = () => {
-    return questions.slice(0, 5)
+    return questions.slice(0, 3)
   }
 
   const getRecentQuizzes = () => {
-    return quizzes.slice(0, 5)
+    return quizzes.slice(0, 3)
   }
 
   if (loading) {

@@ -89,9 +89,9 @@ export default function EditQuizPage() {
 
       try {
         const [quizData, topicsData, questionsData] = await Promise.all([
-          api.getQuizById(params.id as string),
+          api.getQuiz(params.id as string),
           api.getTopics(),
-          api.getAllQuestions(),
+          api.getQuestions(),
         ])
 
         setQuiz(quizData)
@@ -104,7 +104,7 @@ export default function EditQuizPage() {
         setQuestions(writerQuestions)
 
         // Set selected questions from quiz
-        const quizQuestions = quizData.quizQuestions.map((qq: any) => ({
+        const quizQuestions = quizData.questions.map((qq: any) => ({
           questionId: qq.question.id,
           questionNo: qq.questionNo,
         }))

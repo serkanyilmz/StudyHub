@@ -56,7 +56,7 @@ export default function QuestionsPage() {
     if (!user?.id) return
 
     try {
-      const [questionsData, topicsData] = await Promise.all([api.getAllQuestions(), api.getTopics()])
+      const [questionsData, topicsData] = await Promise.all([api.getQuestions(), api.getTopics()])
 
       // Filter questions by current writer
       const writerQuestions = questionsData.filter(
