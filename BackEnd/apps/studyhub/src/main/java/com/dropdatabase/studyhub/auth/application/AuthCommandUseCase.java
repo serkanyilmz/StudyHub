@@ -10,6 +10,7 @@ import com.dropdatabase.studyhub.auth.infra.exception.InvalidRefreshTokenExcepti
 import com.dropdatabase.studyhub.auth.infra.exception.UserNotApprovedException;
 import com.dropdatabase.studyhub.auth.infra.exception.UserNotFoundException;
 import com.dropdatabase.studyhub.auth.application.security.JwtTokenProvider;
+import com.dropdatabase.studyhub.student.application.port.StudentCommandPort;
 import com.dropdatabase.studyhub.teacher.application.port.TeacherCommandPort;
 import com.dropdatabase.studyhub.writer.application.port.WriterCommandPort;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,17 +28,25 @@ public class AuthCommandUseCase {
     private final AuthCommandPort authCommandPort;
     private final TeacherCommandPort teacherCommandPort;
     private final WriterCommandPort writerCommandPort;
+    private final StudentCommandPort studentCommandPort;
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthQueryUseCase authQueryUseCase;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public AuthCommandUseCase(PasswordEncoder passwordEncoder, AuthQueryUseCase authQueryUseCase, AuthCommandPort authCommandPort, JwtTokenProvider jwtTokenProvider, TeacherCommandPort teacherCommandPort, WriterCommandPort writerCommandPort) {
+    public AuthCommandUseCase(PasswordEncoder passwordEncoder,
+                              AuthQueryUseCase authQueryUseCase,
+                              AuthCommandPort authCommandPort,
+                              JwtTokenProvider jwtTokenProvider,
+                              TeacherCommandPort teacherCommandPort,
+                              WriterCommandPort writerCommandPort,
+                              StudentCommandPort studentCommandPort) {
         this.passwordEncoder = passwordEncoder;
         this.authQueryUseCase = authQueryUseCase;
         this.authCommandPort = authCommandPort;
         this.teacherCommandPort = teacherCommandPort;
         this.writerCommandPort = writerCommandPort;
+        this.studentCommandPort = studentCommandPort;
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
@@ -77,7 +86,7 @@ public class AuthCommandUseCase {
         switch (role) {
             case TEACHER -> teacherCommandPort.saveTeacherFromUser(user);
             case WRITER -> writerCommandPort.saveWriterFromUser(user);
-            // TODO: case STUDENT -> studentCommandPort.saveStudentFromUser(user)
+            case STUDENT -> studentCommandPort.saveStudentFromUser(user);
         }
     }
 

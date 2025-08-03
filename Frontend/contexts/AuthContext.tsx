@@ -15,6 +15,7 @@ interface AuthContextType {
   user: User | null
   login: (username: string, password: string) => Promise<void>
   logout: () => void
+  register: (username: string, password: string, fullName: string, role: string) => Promise<boolean>
   loading: boolean
 }
 
@@ -118,7 +119,26 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     router.push("/auth/login")
   }
 
-  return <AuthContext.Provider value={{ user, login, logout, loading }}>{children}</AuthContext.Provider>
+  return <AuthContext.Provider value={{ user, login, logout, register, loading }}>{children}</AuthContext.Provider>
+}
+
+const register = async (
+  username: string,
+  password: string,
+  fullName: string,
+  role: string
+): Promise<boolean> => {
+  try {
+    const response = await fetch("http://localhost:8080/api/auth/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password, fullName, role }),
+    })
+    return response.ok
+  } catch (error) {
+    console.error("Register error:", error)
+    return false
+  }
 }
 
 export function useAuth() {

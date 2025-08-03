@@ -12,6 +12,24 @@ import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Brain } from "lucide-react"
 import Link from "next/link"
 
+const demoUsers = [
+  {
+    label: "Demo Writer",
+    username: "serkan.yilmaz",
+    password: "Developer101!",
+  },
+  {
+    label: "Demo Teacher",
+    username: "erkim.berk",
+    password: "Developer101!",
+  },
+  {
+    label: "Demo Student",
+    username: "sumeyye.sakar",
+    password: "Developer101!",
+  },
+]
+
 export default function LoginPage() {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
@@ -31,6 +49,21 @@ export default function LoginPage() {
       setPassword("")
     } catch (err) {
       setError("Invalid username or password")
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleDemoLogin = async (demoUsername: string, demoPassword: string) => {
+    setUsername(demoUsername)
+    setPassword(demoPassword)
+    setLoading(true)
+    setError("")
+
+    try {
+      await login(demoUsername, demoPassword)
+    } catch (err) {
+      setError("Invalid demo credentials")
     } finally {
       setLoading(false)
     }
@@ -87,6 +120,26 @@ export default function LoginPage() {
           </div>
         </CardContent>
       </Card>
+
+      <div className="absolute bottom-4 left-4 flex flex-col space-y-2">
+        {demoUsers.map((user, index) => (
+          <div key={index} className="p-2 bg-white rounded-md shadow-md border w-52">
+            <div className="text-xs font-medium text-gray-600 mb-1">{user.label}</div>
+            <div className="text-xs text-gray-500 mb-1">
+              <div>👤 {user.username}</div>
+            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              className="w-full mt-1"
+              onClick={() => handleDemoLogin(user.username, user.password)}
+              disabled={loading}
+            >
+              Use
+            </Button>
+          </div>
+        ))}
+      </div>
     </div>
   )
 }

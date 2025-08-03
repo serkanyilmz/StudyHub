@@ -1,11 +1,14 @@
-package com.dropdatabase.studyhub.student.infra.out.jpa;// src/main/java/com.dropdatabase.studyhub.student/infra/out/persistence/StudentJpaAdapter.java
+package com.dropdatabase.studyhub.student.infra.out.jpa;
 
+import com.dropdatabase.studyhub.auth.domain.model.User;
 import com.dropdatabase.studyhub.student.application.port.StudentCommandPort;
 import com.dropdatabase.studyhub.student.domain.Student;
 import com.dropdatabase.studyhub.student.infra.out.jpa.entity.StudentJpaEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -49,6 +52,35 @@ public class StudentCommandJpaAdapter implements StudentCommandPort {
     @Transactional
     public void delete(UUID id) {
         studentJpaRepository.deleteById(id.toString());
+    }
+
+    @Override
+    public void saveStudentFromUser(User user) {
+        String fullName = user.getFullName().trim();
+        String[] nameParts = fullName.split("\\s+");
+
+        String firstName;
+        String lastName;
+
+        if (nameParts.length == 1) {
+            firstName = nameParts[0];
+            lastName = "";
+        } else {
+            lastName = nameParts[nameParts.length - 1];
+            firstName = String.join(" ", Arrays.copyOfRange(nameParts, 0, nameParts.length - 1));
+        }
+
+        Student student = new Student(
+                user.getId(),
+                firstName,
+                lastName,
+                "",
+                "",
+                LocalDateTime.now()
+        );
+
+        StudentJpaEntity entity = new StudentJpaEntity(student);
+        studentJpaRepository.save(entity);
     }
 
 }
