@@ -1,18 +1,29 @@
 "use client"
 
 import type React from "react"
-
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { useAuth } from "@/contexts/AuthContext"
 import { api } from "@/lib/api"
 import Layout from "@/components/Layout"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { ArrowLeft, Plus, Trash2 } from "lucide-react"
@@ -41,7 +52,7 @@ export default function NewQuestionPage() {
     { text: "", isCorrect: false },
     { text: "", isCorrect: false },
     { text: "", isCorrect: false },
-    { text: "", isCorrect: false },
+    { text: "", isCorrect: false }
   ])
   const [selectedTopicId, setSelectedTopicId] = useState("")
   const [topics, setTopics] = useState<Topic[]>([])
@@ -58,7 +69,7 @@ export default function NewQuestionPage() {
         toast({
           title: "Error",
           description: "Failed to load topics",
-          variant: "destructive",
+          variant: "destructive"
         })
       }
     }
@@ -66,18 +77,20 @@ export default function NewQuestionPage() {
     fetchTopics()
   }, [toast])
 
-  const handleOptionChange = (index: number, field: "text" | "isCorrect", value: string | boolean) => {
+  const handleOptionChange = (
+    index: number,
+    field: "text" | "isCorrect",
+    value: string | boolean
+  ) => {
     const newOptions = [...options]
 
     if (field === "isCorrect" && value === true) {
-      // Uncheck all other options when one is checked
       newOptions.forEach((opt, i) => {
         opt.isCorrect = i === index
       })
     } else {
       newOptions[index] = { ...newOptions[index], [field]: value }
     }
-
     setOptions(newOptions)
   }
 
@@ -98,7 +111,6 @@ export default function NewQuestionPage() {
 
     setError("")
 
-    // Validation
     if (!text.trim()) {
       setError("Question text is required")
       return
@@ -133,12 +145,12 @@ export default function NewQuestionPage() {
         text: text.trim(),
         options: validOptions,
         topicId: selectedTopicId,
-        writerId: user.id,
+        writerId: user.id
       })
 
       toast({
         title: "Success",
-        description: "Question created successfully!",
+        description: "Question created successfully!"
       })
 
       router.push("/writer/dashboard")
@@ -157,6 +169,43 @@ export default function NewQuestionPage() {
     return topic.name
   }
 
+  const handleAISuggestion = async () => {
+    if (!selectedTopicId) {
+      setError("Please select a topic before requesting AI suggestion")
+      return
+    }
+
+    setLoading(true)
+    setError("")
+
+    try {
+      const sample = await api.getSampleQuestion(selectedTopicId)
+
+      const options = sample.options.map((opt) => ({
+        text: opt.text,
+        isCorrect: opt.correct
+      }))
+
+      setText(sample.text)
+
+      setOptions(options)
+
+      toast({
+        title: "AI Suggestion Applied",
+        description: "Sample question and options have been filled in."
+      })
+    } catch (err) {
+      console.error("Failed to fetch AI suggestion:", err)
+      toast({
+        title: "Error",
+        description: "Failed to get AI-generated question",
+        variant: "destructive"
+      })
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <Layout>
       <div className="max-w-4xl mx-auto">
@@ -169,6 +218,16 @@ export default function NewQuestionPage() {
           <CardHeader>
             <CardTitle>Create New Question</CardTitle>
             <CardDescription>Add a new question to the question bank</CardDescription>
+            <div className="flex justify-end">
+              <Button
+                type="button"
+                variant="secondary"
+                onClick={handleAISuggestion}
+                disabled={loading}
+              >
+                Get AI Suggestion
+              </Button>
+            </div>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
@@ -189,7 +248,11 @@ export default function NewQuestionPage() {
               {/* Topic Selection */}
               <div className="space-y-2">
                 <Label htmlFor="topic">Topic</Label>
-                <Select value={selectedTopicId} onValueChange={setSelectedTopicId} disabled={loading}>
+                <Select
+                  value={selectedTopicId}
+                  onValueChange={setSelectedTopicId}
+                  disabled={loading}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder="Select a topic" />
                   </SelectTrigger>
@@ -207,7 +270,13 @@ export default function NewQuestionPage() {
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <Label>Answer Options</Label>
-                  <Button type="button" variant="outline" size="sm" onClick={addOption} disabled={loading}>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={addOption}
+                    disabled={loading}
+                  >
                     <Plus className="h-4 w-4 mr-2" />
                     Add Option
                   </Button>
@@ -215,18 +284,25 @@ export default function NewQuestionPage() {
 
                 <div className="space-y-3">
                   {options.map((option, index) => (
-                    <div key={index} className="flex items-center space-x-3 p-3 border rounded-lg">
+                    <div
+                      key={`${index}-${option.text}-${option.isCorrect}`}
+                      className="flex items-center space-x-3 p-3 border rounded-lg"
+                    >
                       <div className="flex items-center space-x-2">
                         <Checkbox
                           checked={option.isCorrect}
-                          onCheckedChange={(checked) => handleOptionChange(index, "isCorrect", checked as boolean)}
+                          onCheckedChange={(checked) =>
+                            handleOptionChange(index, "isCorrect", checked as boolean)
+                          }
                           disabled={loading}
                         />
                         <Label className="text-sm">Correct</Label>
                       </div>
                       <Input
                         value={option.text}
-                        onChange={(e) => handleOptionChange(index, "text", e.target.value)}
+                        onChange={(e) =>
+                          handleOptionChange(index, "text", e.target.value)
+                        }
                         placeholder={`Option ${index + 1}`}
                         disabled={loading}
                         className="flex-1"
