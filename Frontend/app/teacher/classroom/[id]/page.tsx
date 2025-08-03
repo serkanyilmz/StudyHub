@@ -368,7 +368,7 @@ export default function TeacherClassroomPage() {
                         </h3>
                         <p className="text-sm text-gray-600">{student.email}</p>
                       </div>
-                      <Badge variant="outline">Student</Badge>
+                      <Badge variant="outline" className="text-[hsl(var(--studyhub-student-green))] border-[hsl(var(--studyhub-student-green)/0.6)] bg-[hsl(var(--studyhub-student-green)/0.05)] hover:bg-[hsl(var(--studyhub-student-green)/0.2)] transition-colors" >Student</Badge>
                     </div>
                   ))}
                 </div>

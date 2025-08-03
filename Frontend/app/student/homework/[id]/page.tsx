@@ -13,6 +13,7 @@ import { Label } from "@/components/ui/label"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Clock, CheckCircle, Brain, ArrowLeft, Play, BookOpen } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
+import { useGeminiAnimation } from "@/components/GeminiAnimation"
 
 interface Option {
   id: string
@@ -52,6 +53,7 @@ export default function HomeworkPage() {
   const router = useRouter()
   const { user } = useAuth()
   const { toast } = useToast()
+  const { isAnimating,handleComplete, triggerAnimation, GeminiComponent } = useGeminiAnimation()
   const [homework, setHomework] = useState<Homework | null>(null)
   const [currentQuizIndex, setCurrentQuizIndex] = useState(0)
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
@@ -123,6 +125,7 @@ export default function HomeworkPage() {
   }
 
   const handleGetExplanation = async (questionId: string) => {
+    triggerAnimation()
     setLoadingExplanation(true)
     try {
       const explanationText = await api.getAnswerExplanation(questionId)
@@ -137,6 +140,7 @@ export default function HomeworkPage() {
       })
     } finally {
       setLoadingExplanation(false)
+      handleComplete()
     }
   }
 
@@ -219,7 +223,7 @@ export default function HomeworkPage() {
       <Layout>
         <div className="flex items-center justify-center h-64">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600 mx-auto mb-4"></div>
             <p className="text-gray-600">Loading homework...</p>
           </div>
         </div>
@@ -252,14 +256,16 @@ export default function HomeworkPage() {
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 Back to Overview
               </Button>
-              <h1 className="text-2xl font-bold text-gray-900">{currentQuiz?.name}</h1>
-              <Badge variant="outline" className="mt-2">
+              <h1 className="text-2xl font-bold" style={{ color: "hsl(var(--studyhub-dark-grey))" }}>
+                {currentQuiz?.name}
+              </h1>
+              <Badge variant="outline" className="mt-2 student-bg">
                 Question {currentQuestionIndex + 1} of {currentQuiz?.questions.length}
               </Badge>
             </div>
           </div>
 
-          <Card>
+          <Card className="connection-line border-2">
             <CardHeader>
               <CardDescription className="text-base">{currentQuestion.question.text}</CardDescription>
             </CardHeader>
@@ -279,19 +285,22 @@ export default function HomeworkPage() {
               </RadioGroup>
 
               <div className="border-t pt-4">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => handleGetExplanation(currentQuestion.question.id)}
-                  disabled={loadingExplanation}
-                  className="mb-4"
-                >
-                  <Brain className="h-4 w-4 mr-2" />
-                  {loadingExplanation ? "Getting explanation..." : "Get AI Explanation"}
-                </Button>
+                <div className="relative">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleGetExplanation(currentQuestion.question.id)}
+                    disabled={loadingExplanation}
+                    className="mb-4 ai-enhanced"
+                  >
+                    <Brain className="h-4 w-4 mr-2" />
+                    {loadingExplanation ? "Getting explanation..." : "Get AI Explanation"}
+                  </Button>
+                  <GeminiComponent />
+                </div>
 
                 {showExplanation === currentQuestion.question.id && explanation && (
-                  <Alert>
+                  <Alert className="ai-enhanced">
                     <Brain className="h-4 w-4" />
                     <AlertDescription className="mt-2">
                       <strong>AI Explanation:</strong>
@@ -308,11 +317,17 @@ export default function HomeworkPage() {
 
                 <div className="space-x-2">
                   {currentQuestionIndex === (currentQuiz?.questions.length || 0) - 1 ? (
-                    <Button onClick={handleSubmitQuiz} disabled={submittingQuiz}>
+                    <Button
+                      onClick={handleSubmitQuiz}
+                      disabled={submittingQuiz}
+                      className="bg-green-600 hover:bg-green-700"
+                    >
                       {submittingQuiz ? "Submitting..." : "Submit Quiz"}
                     </Button>
                   ) : (
-                    <Button onClick={handleNext}>Next</Button>
+                    <Button onClick={handleNext} className="bg-green-600 hover:bg-green-700">
+                      Next
+                    </Button>
                   )}
                 </div>
               </div>
@@ -333,58 +348,64 @@ export default function HomeworkPage() {
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back
             </Button>
-            <h1 className="text-2xl font-bold text-gray-900">{homework.name}</h1>
+            <h1 className="text-2xl font-bold" style={{ color: "hsl(var(--studyhub-dark-grey))" }}>
+              {homework.name}
+            </h1>
             <div className="flex items-center space-x-4 mt-2">
               <Badge variant="outline">
                 <Clock className="h-3 w-3 mr-1" />
                 Due: {formatDeadline(homework.deadline)}
               </Badge>
-              <Badge variant="secondary">
+              <Badge variant="secondary" className="student-bg">
                 {getCompletedQuizzes()} / {homework.quizzes.length} completed
               </Badge>
-              {getCompletedQuizzes() > 0 && <Badge variant="default">Average: {getAverageScore()}%</Badge>}
+              {getCompletedQuizzes() > 0 && (
+                <Badge variant="default" className="student-bg">
+                  Average: {getAverageScore()}%
+                </Badge>
+              )}
             </div>
           </div>
         </div>
 
         {/* Progress Overview */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Card>
+          <Card className="student-bg border-2">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Total Quizzes</CardTitle>
-              <CheckCircle className="h-4 w-4 text-muted-foreground" />
+              <CheckCircle className="h-4 w-4 student-accent" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{homework.quizzes.length}</div>
+              <div className="text-2xl font-bold student-accent">{homework.quizzes.length}</div>
               <p className="text-xs text-muted-foreground">In this homework</p>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="student-bg border-2">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Completed</CardTitle>
-              <CheckCircle className="h-4 w-4 text-muted-foreground" />
+              <CheckCircle className="h-4 w-4 student-accent" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{getCompletedQuizzes()}</div>
+              <div className="text-2xl font-bold student-accent">{getCompletedQuizzes()}</div>
               <p className="text-xs text-muted-foreground">Quizzes finished</p>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="student-bg border-2">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Average Score</CardTitle>
-              <CheckCircle className="h-4 w-4 text-muted-foreground" />
+              <CheckCircle className="h-4 w-4 student-accent" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{getAverageScore()}%</div>
+              <div className="text-2xl font-bold student-accent">{getAverageScore()}%</div>
               <p className="text-xs text-muted-foreground">Overall performance</p>
             </CardContent>
           </Card>
         </div>
 
         {/* Quiz List */}
-        <Card>
+        <Card className="connection-line border-2">
           <CardHeader>
             <CardTitle>Quizzes</CardTitle>
             <CardDescription>Complete each quiz to finish your homework</CardDescription>
@@ -397,7 +418,10 @@ export default function HomeworkPage() {
                 const score = result?.score || 0
 
                 return (
-                  <div key={quiz.id} className="flex items-center justify-between p-4 border rounded-lg">
+                  <div
+                    key={quiz.id}
+                    className="flex items-center justify-between p-4 border rounded-lg connection-line"
+                  >
                     <div className="flex-1">
                       <h3 className="font-medium">{quiz.name}</h3>
                       <p className="text-sm text-gray-600">
@@ -406,7 +430,7 @@ export default function HomeworkPage() {
                       <div className="flex items-center space-x-2 mt-2">
                         {isCompleted ? (
                           <>
-                            <Badge variant="default">
+                            <Badge variant="default" className="student-bg">
                               <CheckCircle className="h-3 w-3 mr-1" />
                               Completed
                             </Badge>
@@ -432,7 +456,7 @@ export default function HomeworkPage() {
                           </Button>
                         )
                       ) : (
-                        <Button size="sm" onClick={() => startQuiz(index)}>
+                        <Button size="sm" onClick={() => startQuiz(index)} className="bg-green-600 hover:bg-green-700">
                           <Play className="h-4 w-4 mr-2" />
                           Start Quiz
                         </Button>

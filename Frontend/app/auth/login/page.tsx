@@ -9,9 +9,9 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Brain } from "lucide-react"
-import Link from "next/link"
 
+import Link from "next/link"
+import Image from "next/image"
 const demoUsers = [
   {
     label: "Demo Writer",
@@ -74,7 +74,14 @@ export default function LoginPage() {
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <div className="flex items-center justify-center mb-4">
-            <Brain className="h-8 w-8 text-blue-600 mr-2" />
+            <Image
+                src="/studyhub-logo.svg" 
+                alt="My Icon"
+                width={30}
+                height={30}
+                className="object-contain mr-2"
+                
+            />
             <CardTitle className="text-2xl">StudyHub</CardTitle>
           </div>
           <CardDescription>Sign in to your account</CardDescription>

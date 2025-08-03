@@ -102,7 +102,7 @@ export default function TeacherDashboard() {
       <Layout>
         <div className="flex items-center justify-center h-64">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600 mx-auto mb-4"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
             <p className="text-gray-600">Loading your dashboard...</p>
           </div>
         </div>
@@ -115,12 +115,14 @@ export default function TeacherDashboard() {
       <div className="space-y-8">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Teacher Dashboard</h1>
+            <h1 className="text-3xl font-bold" style={{ color: "hsl(var(--studyhub-dark-grey))" }}>
+              Teacher Dashboard
+            </h1>
             <p className="text-gray-600 mt-2">Manage your classes and assignments</p>
           </div>
           <div className="flex space-x-2">
             <Link href="/teacher/classroom/new">
-              <Button>
+              <Button className="bg-blue-600 hover:bg-blue-700">
                 <Plus className="h-4 w-4 mr-2" />
                 New Classroom
               </Button>
@@ -130,46 +132,46 @@ export default function TeacherDashboard() {
 
         {/* Stats Overview */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <Card>
+          <Card className="teacher-bg border-2">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">My Classes</CardTitle>
-              <Users className="h-4 w-4 text-muted-foreground" />
+              <Users className="h-4 w-4 teacher-accent" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{classrooms.length}</div>
+              <div className="text-2xl font-bold teacher-accent">{classrooms.length}</div>
               <p className="text-xs text-muted-foreground">Active classrooms</p>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="teacher-bg border-2">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Total Students</CardTitle>
-              <BookOpen className="h-4 w-4 text-muted-foreground" />
+              <BookOpen className="h-4 w-4 teacher-accent" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">-</div>
+              <div className="text-2xl font-bold teacher-accent">-</div>
               <p className="text-xs text-muted-foreground">Enrolled students</p>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="teacher-bg border-2">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Assignments</CardTitle>
-              <Calendar className="h-4 w-4 text-muted-foreground" />
+              <Calendar className="h-4 w-4 teacher-accent" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{allHomework.length}</div>
+              <div className="text-2xl font-bold teacher-accent">{allHomework.length}</div>
               <p className="text-xs text-muted-foreground">Total homework</p>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="teacher-bg border-2">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">This Week</CardTitle>
-              <Settings className="h-4 w-4 text-muted-foreground" />
+              <Settings className="h-4 w-4 teacher-accent" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">
+              <div className="text-2xl font-bold teacher-accent">
                 {
                   allHomework.filter((hw) => {
                     const deadline = new Date(hw.deadline)
@@ -186,7 +188,7 @@ export default function TeacherDashboard() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* My Classrooms */}
-          <Card>
+          <Card className="connection-line border-2">
             <CardHeader>
               <div className="flex items-center justify-between">
                 <div>
@@ -208,7 +210,7 @@ export default function TeacherDashboard() {
                   <p className="text-gray-600">No classrooms yet</p>
                   <p className="text-sm text-gray-500 mt-2">Create your first classroom to get started</p>
                   <Link href="/teacher/classroom/new">
-                    <Button className="mt-4">
+                    <Button className="mt-4 bg-blue-600 hover:bg-blue-700">
                       <Plus className="h-4 w-4 mr-2" />
                       Create Classroom
                     </Button>
@@ -217,7 +219,10 @@ export default function TeacherDashboard() {
               ) : (
                 <div className="space-y-4">
                   {classrooms.map((classroom) => (
-                    <div key={classroom.id} className="flex items-center justify-between p-4 border rounded-lg">
+                    <div
+                      key={classroom.id}
+                      className="flex items-center justify-between p-4 border rounded-lg connection-line"
+                    >
                       <div>
                         <h3 className="font-medium">{classroom.name}</h3>
                         <p className="text-sm text-gray-600">Code: {classroom.code}</p>
@@ -237,7 +242,7 @@ export default function TeacherDashboard() {
           </Card>
 
           {/* Recent Homework */}
-          <Card>
+          <Card className="connection-line border-2">
             <CardHeader>
               <CardTitle>Recent Assignments</CardTitle>
               <CardDescription>Your latest homework assignments</CardDescription>
@@ -252,7 +257,10 @@ export default function TeacherDashboard() {
               ) : (
                 <div className="space-y-4">
                   {getRecentHomework().map((homework) => (
-                    <div key={homework.id} className="flex items-center justify-between p-4 border rounded-lg">
+                    <div
+                      key={homework.id}
+                      className="flex items-center justify-between p-4 border rounded-lg connection-line"
+                    >
                       <div className="flex-1">
                         <h3 className="font-medium">{homework.name}</h3>
                         <p className="text-sm text-gray-600">{homework.classroom.name}</p>
@@ -277,7 +285,7 @@ export default function TeacherDashboard() {
         </div>
 
         {/* Quick Actions */}
-        <Card>
+        <Card className="connection-line border-2">
           <CardHeader>
             <CardTitle>Quick Actions</CardTitle>
             <CardDescription>Common tasks for teachers</CardDescription>
@@ -285,21 +293,21 @@ export default function TeacherDashboard() {
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <Link href="/teacher/classroom/new">
-                <div className="p-4 border rounded-lg text-center hover:bg-gray-50 cursor-pointer">
-                  <Users className="h-8 w-8 text-green-600 mx-auto mb-2" />
+                <div className="p-4 border rounded-lg text-center hover:bg-gray-50 cursor-pointer connection-line">
+                  <Users className="h-8 w-8 teacher-accent mx-auto mb-2" />
                   <h3 className="font-medium mb-1">Create Classroom</h3>
                   <p className="text-sm text-gray-600">Set up a new class for your students</p>
                 </div>
               </Link>
               <Link href="/teacher/assign-homework">
-                <div className="p-4 border rounded-lg text-center hover:bg-gray-50 cursor-pointer">
-                  <Calendar className="h-8 w-8 text-blue-600 mx-auto mb-2" />
+                <div className="p-4 border rounded-lg text-center hover:bg-gray-50 cursor-pointer connection-line">
+                  <Calendar className="h-8 w-8 teacher-accent mx-auto mb-2" />
                   <h3 className="font-medium mb-1">Assign Homework</h3>
                   <p className="text-sm text-gray-600">Create and assign new homework</p>
                 </div>
               </Link>
               <div
-                className="p-4 border rounded-lg text-center hover:bg-gray-50 cursor-pointer"
+                className="p-4 border rounded-lg text-center hover:bg-gray-50 cursor-pointer connection-line"
                 onClick={() => {
                   // Navigate to reports for first classroom
                   if (classrooms.length > 0) {
@@ -313,7 +321,7 @@ export default function TeacherDashboard() {
                   }
                 }}
               >
-                <BookOpen className="h-8 w-8 text-purple-600 mx-auto mb-2" />
+                <BookOpen className="h-8 w-8 teacher-accent mx-auto mb-2" />
                 <h3 className="font-medium mb-1">View Reports</h3>
                 <p className="text-sm text-gray-600">Check student progress and grades</p>
               </div>
