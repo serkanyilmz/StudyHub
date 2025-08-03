@@ -114,7 +114,7 @@ class ApiClient {
   }
 
   async getAnswerExplanation(questionId: string) {
-    return this.request<string>(`/question/getAnswerExplanation/${questionId}`)
+    return this.request<string>(`/question/ai/getAnswerExplanation/${questionId}`)
   }
 
   // Quizzes
