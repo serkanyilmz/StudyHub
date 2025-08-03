@@ -117,6 +117,14 @@ class ApiClient {
     return this.request<string>(`/question/ai/getAnswerExplanation/${questionId}`)
   }
 
+  async getSampleQuestion(topicId: string) {
+  return this.request<{ text: string; options: {
+    text: string; correct: boolean 
+}[] }>(
+    `/question/ai/sampleQuestion?topicId=${topicId}`
+  )
+}
+
   // Quizzes
   async getQuizzes() {
     return this.request<any[]>("/quiz")
