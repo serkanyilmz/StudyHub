@@ -306,24 +306,24 @@ class ApiClient {
     }
   }
 
-  // Check if student completed a quiz and get score
-  async getStudentQuizResult(studentId: string, quizId: string) {
-    try {
-      const answers = await this.getStudentQuizAnswers(studentId, quizId)
-      if (answers.length === 0) {
-        return { completed: false, score: 0 }
-      }
+  // // Check if student completed a quiz and get score
+  // async getStudentQuizResult(studentId: string, quizId: string) {
+  //   try {
+  //     const answers = await this.getStudentQuizAnswers(studentId, quizId)
+  //     if (answers.length === 0) {
+  //       return { completed: false, score: 0 }
+  //     }
 
-      // Calculate score based on correct answers
-      const correctAnswers = answers.filter((answer: any) => answer.isCorrect === true)
-      const score = answers.length > 0 ? Math.round((correctAnswers.length / answers.length) * 100) : 0
+  //     // Calculate score based on correct answers
+  //     const correctAnswers = answers.filter((answer: any) => answer.isCorrect === true)
+  //     const score = answers.length > 0 ? Math.round((correctAnswers.length / answers.length) * 100) : 0
 
-      return { completed: true, score }
-    } catch (error) {
-      console.error("Error getting quiz result:", error)
-      return { completed: false, score: 0 }
-    }
-  }
+  //     return { completed: true, score }
+  //   } catch (error) {
+  //     console.error("Error getting quiz result:", error)
+  //     return { completed: false, score: 0 }
+  //   }
+  // }
 
   // Get all quiz results for a student
   async getStudentAllQuizResults(studentId: string) {
@@ -353,6 +353,24 @@ class ApiClient {
       console.error("Error getting all quiz results:", error)
       return {}
     }
+  }
+
+async getQuizScore(studentId: string, quizId: string): Promise<number> {
+    return this.request(`/answer/score?studentId=${studentId}&quizId=${quizId}`)
+  }
+
+  async getStudentQuizResult(studentId: string, quizId: string) {
+    try {
+      const score = await this.getQuizScore(studentId, quizId)
+      return { completed: true, score }
+    } catch (error) {
+      return { completed: false, score: 0 }
+    }
+  }
+
+
+  async getStudentAnswers(studentId: string, quizId: string) {
+    return this.request(`/answer/student/${studentId}/quiz/${quizId}`)
   }
 }
 
