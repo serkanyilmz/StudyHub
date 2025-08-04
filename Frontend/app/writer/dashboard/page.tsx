@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge"
 import { PenTool, FileText, Layers, Plus, Brain } from "lucide-react"
 import Link from "next/link"
 import { useToast } from "@/hooks/use-toast"
+import { useGeminiAnimation } from "@/components/GeminiAnimation"
 
 interface Question {
   id: string
@@ -52,6 +53,7 @@ interface Topic {
 export default function WriterDashboard() {
   const { user } = useAuth()
   const { toast } = useToast()
+  const { isAnimating, triggerAnimation, GeminiComponent } = useGeminiAnimation()
   const [questions, setQuestions] = useState<Question[]>([])
   const [quizzes, setQuizzes] = useState<Quiz[]>([])
   const [topics, setTopics] = useState<Topic[]>([])
@@ -101,7 +103,7 @@ export default function WriterDashboard() {
       <Layout>
         <div className="flex items-center justify-center h-64">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600 mx-auto mb-4"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-600 mx-auto mb-4"></div>
             <p className="text-gray-600">Loading your dashboard...</p>
           </div>
         </div>
@@ -114,7 +116,9 @@ export default function WriterDashboard() {
       <div className="space-y-8">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Writer Dashboard</h1>
+            <h1 className="text-3xl font-bold" style={{ color: "hsl(var(--studyhub-dark-grey))" }}>
+              Writer Dashboard
+            </h1>
             <p className="text-gray-600 mt-2">Create and manage educational content</p>
           </div>
           <div className="flex space-x-2">
@@ -135,46 +139,46 @@ export default function WriterDashboard() {
 
         {/* Stats Overview */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <Card>
+          <Card className="writer-bg border-2">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Questions</CardTitle>
-              <FileText className="h-4 w-4 text-muted-foreground" />
+              <FileText className="h-4 w-4 writer-accent" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{questions.length}</div>
+              <div className="text-2xl font-bold writer-accent">{questions.length}</div>
               <p className="text-xs text-muted-foreground">Total created</p>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="writer-bg border-2">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Quizzes</CardTitle>
-              <PenTool className="h-4 w-4 text-muted-foreground" />
+              <PenTool className="h-4 w-4 writer-accent" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{quizzes.length}</div>
+              <div className="text-2xl font-bold writer-accent">{quizzes.length}</div>
               <p className="text-xs text-muted-foreground">Published quizzes</p>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="writer-bg border-2">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Topics</CardTitle>
-              <Layers className="h-4 w-4 text-muted-foreground" />
+              <Layers className="h-4 w-4 writer-accent" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{topics.length}</div>
+              <div className="text-2xl font-bold writer-accent">{topics.length}</div>
               <p className="text-xs text-muted-foreground">Available topics</p>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="ai-enhanced border-2">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">AI Assistance</CardTitle>
-              <Brain className="h-4 w-4 text-muted-foreground" />
+              <Brain className="h-4 w-4 text-blue-600" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">Active</div>
+              <div className="text-2xl font-bold text-blue-600">Active</div>
               <p className="text-xs text-muted-foreground">Content suggestions</p>
             </CardContent>
           </Card>
@@ -182,7 +186,7 @@ export default function WriterDashboard() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Recent Questions */}
-          <Card>
+          <Card className="connection-line border-2">
             <CardHeader>
               <div className="flex items-center justify-between">
                 <div>
@@ -203,7 +207,7 @@ export default function WriterDashboard() {
                   <p className="text-gray-600">No questions yet</p>
                   <p className="text-sm text-gray-500 mt-2">Create your first question to get started</p>
                   <Link href="/writer/question/new">
-                    <Button className="mt-4">
+                    <Button className="mt-4 bg-orange-600 hover:bg-orange-700">
                       <Plus className="h-4 w-4 mr-2" />
                       Create Question
                     </Button>
@@ -212,7 +216,7 @@ export default function WriterDashboard() {
               ) : (
                 <div className="space-y-4">
                   {getRecentQuestions().map((question) => (
-                    <div key={question.id} className="p-4 border rounded-lg">
+                    <div key={question.id} className="p-4 border rounded-lg connection-line">
                       <p className="font-medium text-sm mb-2 line-clamp-2">{question.text}</p>
                       <div className="flex items-center justify-between">
                         <Badge variant="outline">{question.options.length} options</Badge>
@@ -230,7 +234,7 @@ export default function WriterDashboard() {
           </Card>
 
           {/* Recent Quizzes */}
-          <Card>
+          <Card className="connection-line border-2">
             <CardHeader>
               <div className="flex items-center justify-between">
                 <div>
@@ -251,7 +255,7 @@ export default function WriterDashboard() {
                   <p className="text-gray-600">No quizzes yet</p>
                   <p className="text-sm text-gray-500 mt-2">Create your first quiz from questions</p>
                   <Link href="/writer/quiz/new">
-                    <Button className="mt-4">
+                    <Button className="mt-4 bg-orange-600 hover:bg-orange-700">
                       <Plus className="h-4 w-4 mr-2" />
                       Create Quiz
                     </Button>
@@ -260,7 +264,7 @@ export default function WriterDashboard() {
               ) : (
                 <div className="space-y-4">
                   {getRecentQuizzes().map((quiz) => (
-                    <div key={quiz.id} className="p-4 border rounded-lg">
+                    <div key={quiz.id} className="p-4 border rounded-lg connection-line">
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
                           <h3 className="font-medium">{quiz.name}</h3>
@@ -284,43 +288,52 @@ export default function WriterDashboard() {
         </div>
 
         {/* AI Content Assistant */}
-        <Card>
+        <Card className="ai-enhanced border-2">
           <CardHeader>
             <CardTitle className="flex items-center">
-              <Brain className="h-5 w-5 mr-2 text-purple-600" />
+              <Brain className="h-5 w-5 mr-2 text-blue-600" />
               AI Content Assistant
             </CardTitle>
             <CardDescription>Get AI-powered suggestions for creating better educational content</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="p-4 border rounded-lg text-center">
+              <div className="p-4 border rounded-lg text-center connection-line">
                 <h3 className="font-medium mb-2">Question Suggestions</h3>
                 <p className="text-sm text-gray-600 mb-4">Get AI-generated question ideas based on topics</p>
-                <Button variant="outline" size="sm">
-                  Get Suggestions
-                </Button>
+                <div className="relative">
+                  <Button variant="outline" size="sm" onClick={() => handleAIAction("Question Suggestions")}>
+                    Get Suggestions
+                  </Button>
+                  <GeminiComponent />
+                </div>
               </div>
-              <div className="p-4 border rounded-lg text-center">
+              <div className="p-4 border rounded-lg text-center connection-line">
                 <h3 className="font-medium mb-2">Content Quality Check</h3>
                 <p className="text-sm text-gray-600 mb-4">Analyze your questions for clarity and difficulty</p>
-                <Button variant="outline" size="sm">
-                  Check Quality
-                </Button>
+                <div className="relative">
+                  <Button variant="outline" size="sm" onClick={() => handleAIAction("Content Quality Check")}>
+                    Check Quality
+                  </Button>
+                  <GeminiComponent />
+                </div>
               </div>
-              <div className="p-4 border rounded-lg text-center">
+              <div className="p-4 border rounded-lg text-center connection-line">
                 <h3 className="font-medium mb-2">Topic Insights</h3>
                 <p className="text-sm text-gray-600 mb-4">Discover trending topics and learning patterns</p>
-                <Button variant="outline" size="sm">
-                  View Insights
-                </Button>
+                <div className="relative">
+                  <Button variant="outline" size="sm" onClick={() => handleAIAction("Topic Insights")}>
+                    View Insights
+                  </Button>
+                  <GeminiComponent />
+                </div>
               </div>
             </div>
           </CardContent>
         </Card>
 
         {/* Quick Actions */}
-        <Card>
+        <Card className="connection-line border-2">
           <CardHeader>
             <CardTitle>Quick Actions</CardTitle>
             <CardDescription>Common tasks for content writers</CardDescription>
@@ -328,28 +341,28 @@ export default function WriterDashboard() {
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               <Link href="/writer/question/new">
-                <div className="p-4 border rounded-lg text-center hover:bg-gray-50 cursor-pointer">
-                  <FileText className="h-8 w-8 text-blue-600 mx-auto mb-2" />
+                <div className="p-4 border rounded-lg text-center hover:bg-gray-50 cursor-pointer connection-line">
+                  <FileText className="h-8 w-8 writer-accent mx-auto mb-2" />
                   <h3 className="font-medium mb-1">New Question</h3>
                   <p className="text-sm text-gray-600">Create a new question</p>
                 </div>
               </Link>
               <Link href="/writer/quiz/new">
-                <div className="p-4 border rounded-lg text-center hover:bg-gray-50 cursor-pointer">
-                  <PenTool className="h-8 w-8 text-purple-600 mx-auto mb-2" />
+                <div className="p-4 border rounded-lg text-center hover:bg-gray-50 cursor-pointer connection-line">
+                  <PenTool className="h-8 w-8 writer-accent mx-auto mb-2" />
                   <h3 className="font-medium mb-1">New Quiz</h3>
                   <p className="text-sm text-gray-600">Compile questions into a quiz</p>
                 </div>
               </Link>
               <Link href="/writer/topics">
-                <div className="p-4 border rounded-lg text-center hover:bg-gray-50 cursor-pointer">
-                  <Layers className="h-8 w-8 text-green-600 mx-auto mb-2" />
+                <div className="p-4 border rounded-lg text-center hover:bg-gray-50 cursor-pointer connection-line">
+                  <Layers className="h-8 w-8 writer-accent mx-auto mb-2" />
                   <h3 className="font-medium mb-1">Manage Topics</h3>
                   <p className="text-sm text-gray-600">Organize content topics</p>
                 </div>
               </Link>
-              <div className="p-4 border rounded-lg text-center hover:bg-gray-50 cursor-pointer">
-                <Brain className="h-8 w-8 text-orange-600 mx-auto mb-2" />
+              <div className="p-4 border rounded-lg text-center hover:bg-gray-50 cursor-pointer connection-line">
+                <Brain className="h-8 w-8 text-blue-600 mx-auto mb-2" />
                 <h3 className="font-medium mb-1">AI Assistant</h3>
                 <p className="text-sm text-gray-600">Get content suggestions</p>
               </div>

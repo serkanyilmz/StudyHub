@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button"
 import { Brain, LogOut, User } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import Image from "next/image"
+
 
 interface LayoutProps {
   children: React.ReactNode
@@ -19,13 +21,26 @@ export default function Layout({ children }: LayoutProps) {
   const getRoleColor = (role: string) => {
     switch (role) {
       case "STUDENT":
-        return "text-blue-600"
+        return "student-accent"
       case "TEACHER":
-        return "text-green-600"
+        return "teacher-accent"
       case "WRITER":
-        return "text-purple-600"
+        return "writer-accent"
       default:
         return "text-gray-600"
+    }
+  }
+
+  const getRoleTheme = (role: string) => {
+    switch (role) {
+      case "STUDENT":
+        return "theme-student"
+      case "TEACHER":
+        return "theme-teacher"
+      case "WRITER":
+        return "theme-writer"
+      default:
+        return ""
     }
   }
 
@@ -43,13 +58,18 @@ export default function Layout({ children }: LayoutProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white shadow-sm border-b">
+    <div className={`min-h-screen bg-gray-50 ${user ? getRoleTheme(user.role) : ""}`}>
+      <header className="bg-white shadow-sm border-b connection-line">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <Link href={user ? getDashboardLink(user.role) : "/"} className="flex items-center">
-              <Brain className="h-8 w-8 text-blue-600 mr-2" />
-              <span className="text-xl font-bold text-gray-900">StudyHub</span>
+              <Image
+                             src="/studyhub-logo-darkgrey-text.png" 
+                             alt="studyhub logo"
+                             width={120}
+                             height={120}
+                             className="object-contain"  
+                         />
             </Link>
 
             {user && (

@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react"
 import { useParams, useRouter } from "next/navigation"
-import { useAuth } from "@/contexts/AuthContext"
 import { api } from "@/lib/api"
 import Layout from "@/components/Layout"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -36,7 +35,6 @@ interface Homework {
 export default function ClassroomPage() {
   const params = useParams()
   const router = useRouter()
-  const { user } = useAuth()
   const { toast } = useToast()
   const [classroom, setClassroom] = useState<Classroom | null>(null)
   const [homework, setHomework] = useState<Homework[]>([])

@@ -14,6 +14,8 @@ import { Label } from "@/components/ui/label"
 import { BookOpen, Clock, Trophy, TrendingUp, Brain, Plus } from "lucide-react"
 import Link from "next/link"
 import { useToast } from "@/hooks/use-toast"
+import { useGeminiAnimation } from "@/components/GeminiAnimation"
+import Image from "next/image"
 
 interface Classroom {
   id: string
@@ -38,6 +40,7 @@ interface Homework {
 export default function StudentDashboard() {
   const { user } = useAuth()
   const { toast } = useToast()
+
   const [classrooms, setClassrooms] = useState<Classroom[]>([])
   const [homework, setHomework] = useState<Homework[]>([])
   const [loading, setLoading] = useState(true)
@@ -155,12 +158,20 @@ export default function StudentDashboard() {
     return "default"
   }
 
+  const handleAIAction = (action: string) => {
+    
+    toast({
+      title: "AI Assistant",
+      description: `${action} feature coming soon!`,
+    })
+  }
+
   if (loading) {
     return (
       <Layout>
         <div className="flex items-center justify-center h-64">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600 mx-auto mb-4"></div>
             <p className="text-gray-600">Loading your dashboard...</p>
           </div>
         </div>
@@ -172,67 +183,71 @@ export default function StudentDashboard() {
     <Layout>
       <div className="space-y-8">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Welcome back, {user?.username}!</h1>
+          <h1 className="text-3xl font-bold" style={{ color: "hsl(var(--studyhub-dark-grey))" }}>
+            Welcome back, {user?.username}!
+          </h1>
           <p className="text-gray-600 mt-2">Here's what's happening in your studies</p>
         </div>
 
         {/* Stats Overview */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <Card>
+          <Card className="student-bg border-2">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">My Classes</CardTitle>
-              <BookOpen className="h-4 w-4 text-muted-foreground" />
+              <BookOpen className="h-4 w-4 student-accent" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{classrooms.length}</div>
+              <div className="text-2xl font-bold student-accent">{classrooms.length}</div>
               <p className="text-xs text-muted-foreground">Active enrollments</p>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="student-bg border-2">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Pending Homework</CardTitle>
-              <Clock className="h-4 w-4 text-muted-foreground" />
+              <Clock className="h-4 w-4 student-accent" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{getUpcomingHomework().length}</div>
+              <div className="text-2xl font-bold student-accent">{getUpcomingHomework().length}</div>
               <p className="text-xs text-muted-foreground">Due soon</p>
             </CardContent>
           </Card>
 
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">AI Assistance</CardTitle>
-              <Brain className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">Available</div>
-              <p className="text-xs text-muted-foreground">Get explanations</p>
-            </CardContent>
-          </Card>
+          
 
-          <Card>
+          <Card className="student-bg border-2">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Progress</CardTitle>
-              <TrendingUp className="h-4 w-4 text-muted-foreground" />
+              <TrendingUp className="h-4 w-4 student-accent" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">Good</div>
+              <div className="text-2xl font-bold student-accent">Good</div>
               <p className="text-xs text-muted-foreground">Keep it up!</p>
+            </CardContent>
+          </Card>
+          
+          <Card className="ai-enhanced border-2">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">AI Assistance</CardTitle>
+              <Brain className="h-4 w-4 text-blue-600" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-blue-600">Available</div>
+              <p className="text-xs text-muted-foreground">Get explanations</p>
             </CardContent>
           </Card>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* My Classes */}
-          <Card>
+          <Card className="connection-line border-2">
             <CardHeader>
               <div className="flex items-center justify-between">
                 <div>
                   <CardTitle>My Classes</CardTitle>
                   <CardDescription>Your enrolled classrooms</CardDescription>
                 </div>
-                <Button onClick={() => setShowJoinForm(true)} size="sm">
+                <Button onClick={() => setShowJoinForm(true)} size="sm" className="bg-green-600 hover:bg-green-700">
                   <Plus className="h-4 w-4 mr-2" />
                   Join Class
                 </Button>
@@ -241,7 +256,7 @@ export default function StudentDashboard() {
             <CardContent>
               {/* Join Class Form */}
               {showJoinForm && (
-                <div className="mb-6 p-4 border rounded-lg bg-gray-50">
+                <div className="mb-6 p-4 border rounded-lg ai-enhanced">
                   <form onSubmit={handleJoinClass} className="space-y-4">
                     <div>
                       <Label htmlFor="classCode">Class Code</Label>
@@ -255,7 +270,12 @@ export default function StudentDashboard() {
                       />
                     </div>
                     <div className="flex space-x-2">
-                      <Button type="submit" disabled={joining || !classCode.trim()} size="sm">
+                      <Button
+                        type="submit"
+                        disabled={joining || !classCode.trim()}
+                        size="sm"
+                        className="bg-green-600 hover:bg-green-700"
+                      >
                         {joining ? "Joining..." : "Join Class"}
                       </Button>
                       <Button
@@ -284,7 +304,10 @@ export default function StudentDashboard() {
               ) : (
                 <div className="space-y-4">
                   {classrooms.map((classroom) => (
-                    <div key={classroom.id} className="flex items-center justify-between p-4 border rounded-lg">
+                    <div
+                      key={classroom.id}
+                      className="flex items-center justify-between p-4 border rounded-lg connection-line"
+                    >
                       <div>
                         <h3 className="font-medium">{classroom.name}</h3>
                         <p className="text-sm text-gray-600">
@@ -305,7 +328,7 @@ export default function StudentDashboard() {
           </Card>
 
           {/* Upcoming Homework */}
-          <Card>
+          <Card className="connection-line border-2">
             <CardHeader>
               <CardTitle>Upcoming Homework</CardTitle>
               <CardDescription>Your pending assignments</CardDescription>
@@ -320,7 +343,10 @@ export default function StudentDashboard() {
               ) : (
                 <div className="space-y-4">
                   {getUpcomingHomework().map((hw) => (
-                    <div key={hw.id} className="flex items-center justify-between p-4 border rounded-lg">
+                    <div
+                      key={hw.id}
+                      className="flex items-center justify-between p-4 border rounded-lg connection-line"
+                    >
                       <div className="flex-1">
                         <h3 className="font-medium">{hw.name}</h3>
                         <p className="text-sm text-gray-600">
@@ -331,7 +357,9 @@ export default function StudentDashboard() {
                         </Badge>
                       </div>
                       <Link href={`/student/homework/${hw.id}`}>
-                        <Button size="sm">Start</Button>
+                        <Button size="sm" className="bg-green-600 hover:bg-green-700">
+                          Start
+                        </Button>
                       </Link>
                     </div>
                   ))}
@@ -342,38 +370,53 @@ export default function StudentDashboard() {
         </div>
 
         {/* AI Study Assistant */}
-        <Card>
+        <Card className="ai-enhanced border-2">
           <CardHeader>
             <CardTitle className="flex items-center">
-              <Brain className="h-5 w-5 mr-2 text-blue-600" />
+              <Image
+                src="/gemini-logo.svg" 
+                alt="Gemini Icon"
+                width={30}
+                height={30}
+                className="object-contain mr-2"
+              />
               AI Study Assistant
             </CardTitle>
             <CardDescription>Get personalized study recommendations and explanations</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="p-4 border rounded-lg text-center">
+              <div className="p-4 border rounded-lg text-center connection-line">
                 <h3 className="font-medium mb-2">Smart Explanations</h3>
                 <p className="text-sm text-gray-600 mb-4">Get AI-powered explanations for any question you encounter</p>
-                <Button variant="outline" size="sm">
-                  Learn More
-                </Button>
+                <div className="relative">
+                  <Button variant="outline" size="sm" onClick={() => handleAIAction("Smart Explanations")}>
+                    Learn More
+                  </Button>
+                  
+                </div>
               </div>
-              <div className="p-4 border rounded-lg text-center">
+              <div className="p-4 border rounded-lg text-center connection-line">
                 <h3 className="font-medium mb-2">Study Recommendations</h3>
                 <p className="text-sm text-gray-600 mb-4">
                   Receive personalized study suggestions based on your performance
                 </p>
-                <Button variant="outline" size="sm">
-                  Get Suggestions
-                </Button>
+                <div className="relative">
+                  <Button variant="outline" size="sm" onClick={() => handleAIAction("Study Recommendations")}>
+                    Get Suggestions
+                  </Button>
+                  
+                </div>
               </div>
-              <div className="p-4 border rounded-lg text-center">
+              <div className="p-4 border rounded-lg text-center connection-line">
                 <h3 className="font-medium mb-2">Progress Insights</h3>
                 <p className="text-sm text-gray-600 mb-4">Understand your learning patterns with AI analytics</p>
-                <Button variant="outline" size="sm">
-                  View Insights
-                </Button>
+                <div className="relative">
+                  <Button variant="outline" size="sm" onClick={() => handleAIAction("Progress Insights")}>
+                    View Insights
+                  </Button>
+                  
+                </div>
               </div>
             </div>
           </CardContent>

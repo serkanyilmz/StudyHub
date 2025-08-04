@@ -8,4 +8,6 @@ import java.util.UUID;
 public interface AnswerQueryPort {
     Answer get(UUID id);
     List<Answer> getAll();
+
+    List<Answer> findByStudentIdAndQuizId(UUID studentId, UUID quizId);
 }

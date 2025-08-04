@@ -9,8 +9,11 @@ const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
   title: "StudyHub - AI-Powered Learning Platform",
-  description: "An intelligent learning platform for students, teachers, and content writers",
-    generator: 'v0.dev'
+  description: "An intelligent learning platform for students, teachers and content writers",
+  generator: 'DROP DATABASE',
+  icons: {
+    icon: "/favicon.ico"
+  }
 }
 
 export default function RootLayout({

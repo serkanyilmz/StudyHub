@@ -11,8 +11,9 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Brain } from "lucide-react"
+
 import Link from "next/link"
+import Image from "next/image"
 
 export default function RegisterPage() {
   const [username, setUsername] = useState("")
@@ -52,9 +53,14 @@ export default function RegisterPage() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <div className="flex items-center justify-center mb-4">
-            <Brain className="h-8 w-8 text-blue-600 mr-2" />
-            <CardTitle className="text-2xl">StudyHub</CardTitle>
+          <div className="flex items-center justify-center mb-2">
+             <Image
+                src="/studyhub-logo-darkgrey-text.png" 
+                alt="studyhub logo"
+                width={180}
+                height={180}
+                className="object-contain"  
+              />
           </div>
           <CardDescription>Create your account</CardDescription>
         </CardHeader>
