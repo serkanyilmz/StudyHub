@@ -44,6 +44,7 @@ export default function LoginPage() {
 
     try {
       await login(username, password)
+      localStorage.setItem("shouldFetchProgress", "true")
       // Clear form on successful login
       setUsername("")
       setPassword("")
@@ -62,6 +63,7 @@ export default function LoginPage() {
 
     try {
       await login(demoUsername, demoPassword)
+      localStorage.setItem("shouldFetchProgress", "true")
     } catch (err) {
       setError("Invalid demo credentials")
     } finally {

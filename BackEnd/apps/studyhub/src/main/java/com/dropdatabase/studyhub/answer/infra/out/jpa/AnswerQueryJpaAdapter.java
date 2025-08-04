@@ -35,10 +35,19 @@ public class AnswerQueryJpaAdapter implements AnswerQueryPort {
     }
 
     @Override
-    public List<Answer> findByStudentIdAndQuizId(UUID studentId, UUID quizId) {
-        List<AnswerJpaEntity> entities = answerJpaRepository.findByStudent_IdAndQuiz_Id(studentId.toString(), quizId.toString());
+    public List<Answer> getAllByStudentId(UUID studentId) {
+        List<AnswerJpaEntity> entities = answerJpaRepository.findByStudentId(studentId.toString());
+
         return entities.stream()
                 .map(AnswerJpaEntity::toDomainEntity)
                 .collect(Collectors.toList());
     }
+
+
+    @Override
+    public List<Answer> getStudentAnswersForQuiz(UUID studentId, UUID quizId) {
+        List<AnswerJpaEntity> entities = answerJpaRepository.findByStudentIdAndQuizId(studentId.toString(), quizId.toString());
+        
+        return entities.stream().map(AnswerJpaEntity::toDomainEntity).collect(Collectors.toList());
+}
 }

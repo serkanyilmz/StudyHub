@@ -11,14 +11,15 @@ import { Badge } from "@/components/ui/badge"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Clock, CheckCircle, Brain, ArrowLeft, Play, BookOpen } from "lucide-react"
+import { Clock, CheckCircle, Brain, ArrowLeft, Play, BookOpen, RotateCcw } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 import { useGeminiAnimation } from "@/components/GeminiAnimation"
+import Image from "next/image"
 
 interface Option {
+  correct: boolean
   id: string
   text: string
-  isCorrect: boolean
 }
 
 interface Question {
@@ -48,12 +49,17 @@ interface QuizResult {
   score: number
 }
 
+interface StudentAnswer {
+  questionId: string
+  optionId: string
+}
+
 export default function HomeworkPage() {
   const params = useParams()
   const router = useRouter()
   const { user } = useAuth()
   const { toast } = useToast()
-  const { isAnimating,handleComplete, triggerAnimation, GeminiComponent } = useGeminiAnimation()
+
   const [homework, setHomework] = useState<Homework | null>(null)
   const [currentQuizIndex, setCurrentQuizIndex] = useState(0)
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
@@ -64,7 +70,9 @@ export default function HomeworkPage() {
   const [loading, setLoading] = useState(true)
   const [quizResults, setQuizResults] = useState<Record<string, QuizResult>>({})
   const [isQuizMode, setIsQuizMode] = useState(false)
+  const [isReviewMode, setIsReviewMode] = useState(false)
   const [submittingQuiz, setSubmittingQuiz] = useState(false)
+  const [studentAnswers, setStudentAnswers] = useState<Record<string, StudentAnswer[]>>({})
 
   useEffect(() => {
     const fetchHomework = async () => {
@@ -96,7 +104,34 @@ export default function HomeworkPage() {
     }
 
     fetchHomework()
-  }, [params.id, toast, user?.id])
+  }, [params.id, user?.id, toast])
+
+  const fetchQuizResults = async (quizzes: Quiz[], studentId: string) => {
+    const results: Record<string, QuizResult> = {}
+    const answers: Record<string, StudentAnswer[]> = {}
+
+    for (const quiz of quizzes) {
+      try {
+        const result = await api.getStudentQuizResult(studentId, quiz.id)
+        results[quiz.id] = result
+
+        if (result.completed) {
+          try {
+            const studentAnswers = await api.getStudentAnswers(studentId, quiz.id)
+            answers[quiz.id] = studentAnswers
+          } catch (error) {
+            console.error(`Error fetching answers for quiz ${quiz.id}:`, error)
+          }
+        }
+      } catch (error) {
+        console.error(`Error fetching result for quiz ${quiz.id}:`, error)
+        results[quiz.id] = { completed: false, score: 0 }
+      }
+    }
+
+    setQuizResults(results)
+    setStudentAnswers(answers)
+  }
 
   const currentQuiz = homework?.quizzes[currentQuizIndex]
   const currentQuestion = currentQuiz?.questions[currentQuestionIndex]
@@ -125,7 +160,9 @@ export default function HomeworkPage() {
   }
 
   const handleGetExplanation = async (questionId: string) => {
-    triggerAnimation()
+    if (!isReviewMode) return // Only allow explanations in review mode
+
+    
     setLoadingExplanation(true)
     try {
       const explanationText = await api.getAnswerExplanation(questionId)
@@ -140,7 +177,7 @@ export default function HomeworkPage() {
       })
     } finally {
       setLoadingExplanation(false)
-      handleComplete()
+      
     }
   }
 
@@ -164,11 +201,19 @@ export default function HomeworkPage() {
         [currentQuiz.id]: { completed: true, score },
       }))
 
+      // Store student answers for review
+      setStudentAnswers((prev) => ({
+        ...prev,
+        [currentQuiz.id]: quizAnswers,
+      }))
+
       toast({
         title: "Quiz Submitted!",
         description: `Your score: ${score}%`,
       })
 
+      localStorage.setItem("shouldFetchProgress", "true")
+      
       setIsQuizMode(false)
       setAnswers({})
       setCurrentQuestionIndex(0)
@@ -189,6 +234,41 @@ export default function HomeworkPage() {
     setCurrentQuestionIndex(0)
     setAnswers({})
     setIsQuizMode(true)
+    setIsReviewMode(false)
+    setShowExplanation(null)
+  }
+
+  const reviewQuiz = async (quizIndex: number) => {
+    const quiz = homework?.quizzes[quizIndex]
+    if (!quiz || !user?.id) return
+
+    setCurrentQuizIndex(quizIndex)
+    setCurrentQuestionIndex(0)
+
+    try {
+      // Fetch fresh student answers for review
+      const freshAnswers = await api.getStudentAnswers(user.id, quiz.id)
+
+      // Load previous answers for review
+      const previousAnswers: Record<string, string> = {}
+      freshAnswers.forEach((answer: any) => {
+        if (answer.option && answer.question) {
+          previousAnswers[answer.question.id] = answer.option.id
+        }
+      })
+
+      setAnswers(previousAnswers)
+      setIsQuizMode(true)
+      setIsReviewMode(true)
+      setShowExplanation(null)
+    } catch (error) {
+      console.error("Error loading quiz for review:", error)
+      toast({
+        title: "Error",
+        description: "Failed to load quiz for review",
+        variant: "destructive",
+      })
+    }
   }
 
   const formatDeadline = (deadline: string) => {
@@ -213,10 +293,16 @@ export default function HomeworkPage() {
     return Math.round(totalScore / completedResults.length)
   }
 
-  const isHomeworkFullyCompleted = () => {
-    if (!homework) return false
-    return homework.quizzes.every((quiz) => quizResults[quiz.id]?.completed)
+  const getCorrectAnswer = (question: Question) => {
+    return question.options.find((option) => option.isCorrect)
   }
+
+  function formatAIExplanation(text: string) {
+  return text
+    .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+    .replace(/\$(.*?)\$/g, "<span style='font-family:monospace'>$1</span>")
+    .replace(/\n/g, "<br/>")
+}
 
   if (loading) {
     return (
@@ -247,6 +333,10 @@ export default function HomeworkPage() {
 
   // Quiz taking mode
   if (isQuizMode && currentQuestion) {
+    const selectedAnswer = answers[currentQuestion.question.id]
+    const correctAnswer = getCorrectAnswer(currentQuestion.question)
+    const showCorrectAnswer = isReviewMode && selectedAnswer
+
     return (
       <Layout>
         <div className="max-w-4xl mx-auto space-y-6">
@@ -257,7 +347,7 @@ export default function HomeworkPage() {
                 Back to Overview
               </Button>
               <h1 className="text-2xl font-bold" style={{ color: "hsl(var(--studyhub-dark-grey))" }}>
-                {currentQuiz?.name}
+                {currentQuiz?.name} {isReviewMode && "(Review Mode)"}
               </h1>
               <Badge variant="outline" className="mt-2 student-bg">
                 Question {currentQuestionIndex + 1} of {currentQuiz?.questions.length}
@@ -271,44 +361,78 @@ export default function HomeworkPage() {
             </CardHeader>
             <CardContent className="space-y-6">
               <RadioGroup
-                value={answers[currentQuestion.question.id] || ""}
-                onValueChange={(value) => handleAnswerChange(currentQuestion.question.id, value)}
+                value={selectedAnswer || ""}
+                onValueChange={(value) => !isReviewMode && handleAnswerChange(currentQuestion.question.id, value)}
+                disabled={isReviewMode}
               >
-                {currentQuestion.question.options.map((option) => (
-                  <div key={option.id} className="flex items-center space-x-2">
-                    <RadioGroupItem value={option.id} id={option.id} />
-                    <Label htmlFor={option.id} className="flex-1 cursor-pointer">
-                      {option.text}
-                    </Label>
-                  </div>
-                ))}
+                {currentQuestion.question.options.map((option) => {
+                  // Hem isCorrect hem correct alanını kontrol et
+                  const isCorrect =  option.correct
+                  const isSelected = selectedAnswer === option.id
+
+                  let optionClass = ""
+                  if (isReviewMode && selectedAnswer) {
+                    if (isCorrect && isSelected) {
+                      optionClass = "border-green-500 bg-green-50"
+                    } else if (isCorrect) {
+                      optionClass = "border-green-500 bg-green-50"
+                    } else if (isSelected && !isCorrect) {
+                      optionClass = "border-red-500 bg-red-50"
+                    }
+                  }
+
+                  return (
+                    <div key={option.id} className={`flex items-center space-x-2 p-2 rounded ${optionClass}`}>
+                      <RadioGroupItem value={option.id} id={option.id} checked={isSelected} disabled={isReviewMode} />
+                      <Label htmlFor={option.id} className="flex-1 cursor-pointer">
+                        {option.text}
+                        {isReviewMode && isCorrect && (
+                          <span className="ml-2 text-green-600 font-medium">✓ Correct</span>
+                        )}
+                        {isReviewMode && isSelected && (
+                          <span className={`ml-2 font-medium ${isCorrect ? "text-green-600" : "text-red-600"}`}>
+                            {isCorrect ? "✓ Your answer" : "✗ Your answer"}
+                          </span>
+                        )}
+                      </Label>
+                    </div>
+                  )
+                })}
               </RadioGroup>
 
-              <div className="border-t pt-4">
-                <div className="relative">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handleGetExplanation(currentQuestion.question.id)}
-                    disabled={loadingExplanation}
-                    className="mb-4 ai-enhanced"
-                  >
-                    <Brain className="h-4 w-4 mr-2" />
-                    {loadingExplanation ? "Getting explanation..." : "Get AI Explanation"}
-                  </Button>
-                  <GeminiComponent />
-                </div>
+              {/* AI Explanation - Only in Review Mode */}
+             {isReviewMode && (
+                <div className="border-t pt-4">
+                  <div className="relative flex items-center">
+                    <Button
+                variant="outline"
+                size="sm"
+                onClick={() => handleGetExplanation(currentQuestion.question.id)}
+                disabled={loadingExplanation}
+                className="mb-4 ai-enhanced flex items-center"
+              >
+                <span className={loadingExplanation ? "mr-2 animate-pulse" : "mr-2"}>
+                  <Image
+                    src="/gemini-logo.svg"
+                    alt="Gemini Logo"
+                    width={16}
+                    height={16}
+                    className="h-4 w-4"
+                  />
+                </span>
+                {loadingExplanation ? "Getting explanation..." : "Get AI Explanation"}
+              </Button>
+                  </div>
 
-                {showExplanation === currentQuestion.question.id && explanation && (
-                  <Alert className="ai-enhanced">
-                    <Brain className="h-4 w-4" />
-                    <AlertDescription className="mt-2">
-                      <strong>AI Explanation:</strong>
-                      <div className="mt-2 text-sm">{explanation}</div>
-                    </AlertDescription>
-                  </Alert>
-                )}
-              </div>
+                  {showExplanation === currentQuestion.question.id && explanation && (
+                    <Alert className="ai-enhanced mt-4">
+                      <AlertDescription className="mt-2">
+                        <div dangerouslySetInnerHTML={{ __html: formatAIExplanation(explanation) }} />
+                      </AlertDescription>
+                    </Alert>
+                  )}
+                </div>
+              )}
 
               <div className="flex justify-between pt-4">
                 <Button variant="outline" onClick={handlePrevious} disabled={currentQuestionIndex === 0}>
@@ -317,13 +441,19 @@ export default function HomeworkPage() {
 
                 <div className="space-x-2">
                   {currentQuestionIndex === (currentQuiz?.questions.length || 0) - 1 ? (
-                    <Button
-                      onClick={handleSubmitQuiz}
-                      disabled={submittingQuiz}
-                      className="bg-green-600 hover:bg-green-700"
-                    >
-                      {submittingQuiz ? "Submitting..." : "Submit Quiz"}
-                    </Button>
+                    isReviewMode ? (
+                      <Button onClick={() => setIsQuizMode(false)} className="bg-green-600 hover:bg-green-700">
+                        Finish Review
+                      </Button>
+                    ) : (
+                      <Button
+                        onClick={handleSubmitQuiz}
+                        disabled={submittingQuiz}
+                        className="bg-green-600 hover:bg-green-700"
+                      >
+                        {submittingQuiz ? "Submitting..." : "Submit Quiz"}
+                      </Button>
+                    )
                   ) : (
                     <Button onClick={handleNext} className="bg-green-600 hover:bg-green-700">
                       Next
@@ -443,18 +573,12 @@ export default function HomeworkPage() {
                     </div>
                     <div className="flex space-x-2">
                       {isCompleted ? (
-                        // Show Review button if homework is fully completed, otherwise allow retake
-                        isHomeworkFullyCompleted() ? (
-                          <Button variant="outline" size="sm" onClick={() => startQuiz(index)}>
+                        <>
+                          <Button variant="outline" size="sm" onClick={() => reviewQuiz(index)}>
                             <BookOpen className="h-4 w-4 mr-2" />
                             Review
                           </Button>
-                        ) : (
-                          <Button variant="outline" size="sm" disabled>
-                            <CheckCircle className="h-4 w-4 mr-2" />
-                            Completed
-                          </Button>
-                        )
+                        </>
                       ) : (
                         <Button size="sm" onClick={() => startQuiz(index)} className="bg-green-600 hover:bg-green-700">
                           <Play className="h-4 w-4 mr-2" />
