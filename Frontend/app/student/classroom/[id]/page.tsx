@@ -47,7 +47,7 @@ export default function ClassroomPage() {
           api.getClassroom(params.id as string),
           api.getHomeworkByClassroom(params.id as string),
         ])
-
+        
         setClassroom(classroomData)
         setHomework(homeworkData)
       } catch (error) {

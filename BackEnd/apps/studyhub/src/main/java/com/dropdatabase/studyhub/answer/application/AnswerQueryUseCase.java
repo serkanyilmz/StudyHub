@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class AnswerQueryUseCase {
@@ -29,7 +30,7 @@ public class AnswerQueryUseCase {
     }
 
     public int calculateScore(UUID studentId, UUID quizId) {
-        List<Answer> answers = answerQueryPort.findByStudentIdAndQuizId(studentId, quizId);
+        List<Answer> answers = answerQueryPort.getStudentAnswersForQuiz(studentId, quizId);
         int totalQuestions = quizQuestionQueryPort.getQuestionNumber(quizId);
         int correctCount = 0;
 
@@ -40,8 +41,15 @@ public class AnswerQueryUseCase {
         }
 
         if (totalQuestions == 0) return 0;
-        
+
 
         return (int) ((double) correctCount / totalQuestions * 100);
     }
+
+        public List<Answer> getStudentAnswersForQuiz(UUID studentId, UUID quizId) {
+            return answerQueryPort.getStudentAnswersForQuiz(studentId, quizId);
+    }
+
+
+
 }

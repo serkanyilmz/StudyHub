@@ -11,11 +11,12 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { BookOpen, Clock, Trophy, TrendingUp, Brain, Plus } from "lucide-react"
+import { BookOpen, Clock, Trophy, TrendingUp, Brain, Plus, Minus, TrendingDown } from "lucide-react"
 import Link from "next/link"
 import { useToast } from "@/hooks/use-toast"
 import { useGeminiAnimation } from "@/components/GeminiAnimation"
 import Image from "next/image"
+import { set } from "date-fns"
 
 interface Classroom {
   id: string
@@ -47,6 +48,8 @@ export default function StudentDashboard() {
   const [showJoinForm, setShowJoinForm] = useState(false)
   const [classCode, setClassCode] = useState("")
   const [joining, setJoining] = useState(false)
+  const [progressData, setProgressData] = useState<[string, string] | null>(null)
+  const [progressLoading, setProgressLoading] = useState(false)
 
   const fetchData = async () => {
     if (!user?.id) return
@@ -78,6 +81,38 @@ export default function StudentDashboard() {
       setLoading(false)
     }
   }
+
+  const fetchProgress = async () => {
+  if (!user?.id) return
+  setProgressLoading(true)
+  try {
+    const result = await api.getStudentProgress(user.id)
+    // result örneğin: ["Good", "Keep it up!"]
+    setProgressData(result)
+    localStorage.setItem("progressData", JSON.stringify(result))
+  } catch (e) {
+    setProgressData(["Unknown", ""])
+    localStorage.setItem("progressData", JSON.stringify(["Unknown", ""]))
+  } finally {
+    setProgressLoading(false)
+  }
+}
+
+useEffect(() => {
+  
+  const storedProgress = localStorage.getItem("progressData")
+  if (storedProgress) {
+    setProgressData(JSON.parse(storedProgress))
+  } else {
+    setProgressData(null)
+  }
+
+  if (localStorage.getItem("shouldFetchProgress") === "true") {
+    setProgressLoading(true)
+    fetchProgress()
+    localStorage.removeItem("shouldFetchProgress")
+  }
+}, [user?.id])
 
   useEffect(() => {
     fetchData()
@@ -215,21 +250,63 @@ export default function StudentDashboard() {
 
           
 
-          <Card className="student-bg border-2">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Progress</CardTitle>
-              <TrendingUp className="h-4 w-4 student-accent" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold student-accent">Good</div>
-              <p className="text-xs text-muted-foreground">Keep it up!</p>
-            </CardContent>
-          </Card>
+<Card
+  className={
+    progressLoading
+      ? "student-bg border-2"
+      : (progressData?.[0] === "Good"
+        ? "bg-green-50 border-green-200"
+        : progressData?.[0] === "Average"
+        ? "bg-yellow-50 border-yellow-200"
+        : progressData?.[0] === "Bad"
+        ? "bg-red-50 border-red-200"
+        : "student-bg border-2")
+  }
+>
+  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+    <CardTitle className="text-sm font-medium">Progress</CardTitle>
+    {progressLoading ? (
+      null
+    ) : progressData?.[0] === "Good" ? (
+      <TrendingUp className="h-4 w-4 text-green-600" />
+    ) : progressData?.[0] === "Average" ? (
+      <Minus className="h-4 w-4 text-yellow-500" />
+    ) : progressData?.[0] === "Bad" ? (
+      <TrendingDown className="h-4 w-4 text-red-600" />
+    ) : (
+      <Brain className="h-4 w-4 text-gray-400" />
+    )}
+  </CardHeader>
+  <CardContent>
+    {progressLoading ? (
+      <div className="flex items-center justify-center h-12">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600" />
+      </div>
+    ) : (
+      <>
+        <div
+          className={`text-2xl font-bold ${
+            progressData?.[0] === "Good"
+              ? "text-green-600"
+              : progressData?.[0] === "Average"
+              ? "text-yellow-500"
+              : progressData?.[0] === "Bad"
+              ? "text-red-600"
+              : "student-accent"
+          }`}
+        >
+          {progressData?.[0] ? progressData[0] : "-"}
+        </div>
+        <p className="text-xs text-muted-foreground">{progressData?.[1] || ""}</p>
+      </>
+    )}
+  </CardContent>
+</Card>
           
           <Card className="ai-enhanced border-2">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">AI Assistance</CardTitle>
-              <Brain className="h-4 w-4 text-blue-600" />
+               <Image src="/gemini-logo.svg" alt="Gemini" width={20} height={20} />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-blue-600">Available</div>

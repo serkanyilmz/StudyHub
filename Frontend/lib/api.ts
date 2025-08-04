@@ -333,7 +333,7 @@ class ApiClient {
   //   }
   // }
 
-  // Get all quiz results for a student
+  // Students
   async getStudentAllQuizResults(studentId: string) {
     try {
       const allAnswers = await this.getAnswers()
@@ -362,23 +362,30 @@ class ApiClient {
       return {}
     }
   }
-
-async getQuizScore(studentId: string, quizId: string): Promise<number> {
+  
+  async getQuizScore(studentId: string, quizId: string): Promise<number> {
     return this.request(`/answer/score?studentId=${studentId}&quizId=${quizId}`)
   }
 
-  async getStudentQuizResult(studentId: string, quizId: string) {
-    try {
-      const score = await this.getQuizScore(studentId, quizId)
-      return { completed: true, score }
-    } catch (error) {
+ async getStudentQuizResult(studentId: string, quizId: string) {
+  try {
+    const answers = await this.getStudentAnswers(studentId, quizId)
+    if (!answers || answers.length === 0) {
       return { completed: false, score: 0 }
     }
+    const score = await this.getQuizScore(studentId, quizId)
+    return { completed: true, score }
+  } catch (error) {
+    return { completed: false, score: 0 }
   }
-
+}
 
   async getStudentAnswers(studentId: string, quizId: string) {
     return this.request(`/answer/student/${studentId}/quiz/${quizId}`)
+  }
+
+  async getStudentProgress(studentId: string) {
+    return this.request(`/answer/getStudentProgress/${studentId}`)
   }
 }
 
