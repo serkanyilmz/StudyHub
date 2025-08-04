@@ -272,7 +272,7 @@ export default function TeacherDashboard() {
                         </div>
                       </div>
                       <Link href={`/teacher/homework/${homework.id}`}>
-                        <Button variant="outline" size="sm">
+                        <Button variant="outline" size="sm" className="ml-4">
                           View
                         </Button>
                       </Link>
