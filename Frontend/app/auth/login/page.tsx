@@ -73,16 +73,14 @@ export default function LoginPage() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <div className="flex items-center justify-center mb-4">
+          <div className="flex items-center justify-center mb-2">
             <Image
-                src="/studyhub-logo.svg" 
+                src="/studyhub-logo-darkgrey-text.png" 
                 alt="My Icon"
-                width={30}
-                height={30}
-                className="object-contain mr-2"
-                
+                width={180}
+                height={180}
+                className="object-contain"  
             />
-            <CardTitle className="text-2xl">StudyHub</CardTitle>
           </div>
           <CardDescription>Sign in to your account</CardDescription>
         </CardHeader>
@@ -129,24 +127,44 @@ export default function LoginPage() {
       </Card>
 
       <div className="absolute bottom-4 left-4 flex flex-col space-y-2">
-        {demoUsers.map((user, index) => (
-          <div key={index} className="p-2 bg-white rounded-md shadow-md border w-52">
-            <div className="text-xs font-medium text-gray-600 mb-1">{user.label}</div>
-            <div className="text-xs text-gray-500 mb-1">
-              <div>👤 {user.username}</div>
-            </div>
-            <Button
-              variant="outline"
-              size="sm"
-              className="w-full mt-1"
-              onClick={() => handleDemoLogin(user.username, user.password)}
-              disabled={loading}
-            >
-              Use
-            </Button>
+        {demoUsers.map((user, index) => {
+          // Assign color based on label
+          let color = "";
+          let btnColor = "";
+          if (user.label.includes("Student")) {
+        color = "#28a745";
+        btnColor = "bg-[#28a745] hover:bg-[#218838] text-white";
+          } else if (user.label.includes("Teacher")) {
+        color = "#4b70e1";
+        btnColor = "bg-[#4b70e1] hover:bg-[#3a5bb5] text-white";
+          } else if (user.label.includes("Writer")) {
+        color = "#ec8900";
+        btnColor = "bg-[#ec8900] hover:bg-[#c46f00] text-white";
+          }
+          return (
+        <div key={index} className="p-2 bg-white rounded-md shadow-md border w-52">
+          <div
+            className="text-xs font-medium mb-1"
+            style={{ color }}
+          >
+            {user.label}
           </div>
-        ))}
+          <div className="text-xs text-gray-500 mb-1">
+            <div>👤 {user.username}</div>
+          </div>
+          <Button
+            type="button"
+            size="sm"
+            className={`w-full mt-1 ${btnColor}`}
+            onClick={() => handleDemoLogin(user.username, user.password)}
+            disabled={loading}
+          >
+            Use
+          </Button>
+        </div>
+          );
+        })}
       </div>
-    </div>
+    </div>    
   )
 }

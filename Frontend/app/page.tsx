@@ -19,15 +19,14 @@ export default function HomePage() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       <div className="container mx-auto px-4 py-16">
         <div className="text-center mb-16">
-          <div className="flex items-center justify-center mb-6">
+          <div className="flex items-center justify-center mb-4">
              <Image
-              src="/studyhub-logo.png" 
-              alt="My Icon"
-              width={50}
-              height={50}
-              className="object-contain mr-3 "
+              src="/studyhub-logo-darkgrey-text.png" 
+              alt="studyhub logo"
+              width={300}
+              height={200}
+              className="object-contain "
             />
-            <h1 className="text-4xl font-bold text-gray-900">StudyHub</h1>
           </div>
           <p className="text-xl text-gray-600 mb-8">AI-Powered Learning Platform for Students, Teachers and Writers</p>
           <div className="flex gap-4 justify-center">

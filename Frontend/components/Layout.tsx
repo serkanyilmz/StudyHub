@@ -63,21 +63,13 @@ export default function Layout({ children }: LayoutProps) {
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <Link href={user ? getDashboardLink(user.role) : "/"} className="flex items-center">
-              <div className="relative">
-                <div className="w-8 h-8  rounded-sm flex items-center justify-center mr-2">
-                  <Image
-                    src="/studyhub-logo.svg" 
-                    alt="My Icon"
-                    width={30}
-                    height={30}
-                    className="object-contain"
-                  />
-                </div>
-                
-              </div>
-              <span className="text-xl font-bold" style={{ color: "hsl(var(--studyhub-dark-grey))" }}>
-                StudyHub
-              </span>
+              <Image
+                             src="/studyhub-logo-darkgrey-text.png" 
+                             alt="studyhub logo"
+                             width={120}
+                             height={120}
+                             className="object-contain"  
+                         />
             </Link>
 
             {user && (

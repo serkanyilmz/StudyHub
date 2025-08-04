@@ -53,16 +53,14 @@ export default function RegisterPage() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <div className="flex items-center justify-center mb-4">
-            <Image
-              src="/studyhub-logo.svg" 
-              alt="My Icon"
-              width={30}
-              height={30}
-              className="object-contain mr-2"
-                
-            />
-            <CardTitle className="text-2xl">StudyHub</CardTitle>
+          <div className="flex items-center justify-center mb-2">
+             <Image
+                src="/studyhub-logo-darkgrey-text.png" 
+                alt="studyhub logo"
+                width={180}
+                height={180}
+                className="object-contain"  
+              />
           </div>
           <CardDescription>Create your account</CardDescription>
         </CardHeader>
