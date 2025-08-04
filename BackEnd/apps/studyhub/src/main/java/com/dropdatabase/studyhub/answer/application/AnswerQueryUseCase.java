@@ -40,9 +40,7 @@ public class AnswerQueryUseCase {
         }
 
         if (totalQuestions == 0) return 0;
-        System.out.println("correct"+correctCount);
-        System.out.println("total"+ totalQuestions);
-        System.out.println((int) ((double) correctCount / totalQuestions * 100));
+        
 
         return (int) ((double) correctCount / totalQuestions * 100);
     }
