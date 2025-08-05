@@ -21,14 +21,41 @@
 
 # StudyHub
 
-StudyHub is a platform designed to help students organize, track, and enhance their study sessions.
+StudyHub is a well-constructed AI-powered educatıonal platform for writers, teachers and students. The platform offers intelligent tools to automate and enrich content creation, classroom management, and student assessment.
 
 ## Features
 
-- Organize study materials
-- Track study progress
-- Set goals and reminders
-- Analytics dashboard
+### ✨ Artificial Intelligence Integration:
+
+- AI-powered question suggestions for topics.
+
+- AI-generated performance summaries for classes and individual students.
+
+- Question explanations after quizzes.
+
+### 📚 Rich Content Management:
+
+- Topic and sub-topic management.
+
+- A comprehensive interface for creating detailed questions and quizzes.
+
+
+### 👨‍🏫 Effective Classroom Management:
+
+- Easily create and manage virtual classrooms.
+
+- Assign homeworks wıth quizzes to classes with specific due dates.
+
+- Track student performance in real-time.
+
+### 👨🏻‍💻 Rich and Sustainable Development:
+
+- JWT Token Security
+
+- Responsive & Cross-Platform FrontEnd Design
+
+- Maintable and Flexible BackEnd Design with Hexagonal Archictecture and Domain Driven Design
+
 
 ## Getting Started
 
@@ -37,21 +64,46 @@ StudyHub is a platform designed to help students organize, track, and enhance th
     git clone https://github.com/serkanyilmz/StudyHub.git
     ```
 2. Starting BackEnd application:
+
+    Get your 
+    <a href="https://aistudio.google.com/apikey">API Key</a>
+    for use of Gemini API.
+    Create environmental variable for configuration:
+    ```
+    GOOGLE_API_KEY='your-api-key'
+    ```
+    Start Spring Boot:
     ```bash
     cd .\Backend\
-    npm install
+    .\gradlew.bat bootRun
     ```
 3. Starting FrontEnd application:
     ```bash
     cd .\Frontend\
     npm install
+
     npm run dev
     ```
 
-## Contributing
+## Theme
 
-Contributions are welcome! Please open an issue or submit a pull request.
+The StudyHub logo and theme colors symbolizes a dynamic, AI-powered educational ecosystem that unites three key roles: the Writer, Teacher, and Student. Represented by three colored dots, the energetic orange signifies the creative Writer, the wise blue represents the guiding Teacher, and the vibrant green embodies the growing Student. Dark gray lines depict the seamless flow of information—first from the Writer to the Teacher, and then from the Teacher to the Student. This entire interaction is framed by a light bluish-gray square, representing the intelligent and supportive AI foundation that personalizes and optimizes the entire learning process. 
 
-## License
+<div align="center">
+  <img src="Frontend\public\studyhub-banner.png" alt="StudyHub Theme Banner"  width="640" height="360">
+</div>
+<br/>
 
-This project is licensed under the MIT License.
+Ultimately, the logo portrays StudyHub not just as a platform, but as a balanced and interconnected community where knowledge, collaboration, and artificial intelligence intersect.
+
+## Next Features
+### Admin
+- Admin page for statistics and approvement for registers of writers and teachers.
+### Writer
+- Bulk question and quiz upload from PDFs.
+- Media attachments to questions
+### Teacher
+- AI-assisted grading insights
+- Detailed AI analysises for students and classrooms
+### Student
+- Personalized study recommendations
