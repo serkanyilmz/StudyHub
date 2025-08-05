@@ -8,6 +8,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 @Entity
 @Table(name = "question")
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class QuestionJpaEntity {
@@ -69,5 +71,23 @@ public class QuestionJpaEntity {
                 this.topicJpaEntity.toDomainEntity(),
                 this.writerJpaEntity.toDomainEntity()
         );
+    }
+
+    public void updateOptions(List<Option> newOptions) {
+        // Clear existing options
+        if (this.options != null) {
+            this.options.clear();
+        } else {
+            this.options = new ArrayList<>();
+        }
+        
+        // Add new options
+        if (newOptions != null) {
+            this.options.addAll(
+                newOptions.stream()
+                    .map(option -> new OptionJpaEntity(option, this))
+                    .collect(Collectors.toList())
+            );
+        }
     }
 }

@@ -90,7 +90,7 @@ export default function QuestionsPage() {
       console.error("Error deleting question:", error)
       toast({
         title: "Error",
-        description: "Failed to delete question",
+        description: "Failed to delete question. It may be used in quizzes and cannot be deleted.",
         variant: "destructive",
       })
     }
