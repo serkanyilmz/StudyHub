@@ -2,6 +2,7 @@ package com.dropdatabase.studyhub.teacher.infra.out.jpa.entity;
 
 import com.dropdatabase.studyhub.teacher.domain.Teacher;
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -10,6 +11,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "teacher")
 @NoArgsConstructor
+@Getter
 public class TeacherJpaEntity {
     @Id
     private String id;

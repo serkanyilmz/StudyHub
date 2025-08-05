@@ -26,4 +26,9 @@ public class TeacherQueryController {
     public List<Teacher> getAll(){
         return teacherQueryUseCase.getAll();
     }
+
+    @GetMapping("/{id}/unique-students-count")
+    public int getUniqueStudentsCount(@PathVariable UUID id){
+        return teacherQueryUseCase.getUniqueStudentsCount(id);
+    }
 }

@@ -278,6 +278,10 @@ class ApiClient {
     return this.request<any>(`/teacher/${id}`)
   }
 
+  async getTeacherUniqueStudentsCount(teacherId: string) {
+    return this.request<number>(`/teacher/${teacherId}/unique-students-count`)
+  }
+
   // Writers
   async getWriters() {
     return this.request<any[]>("/writer")
