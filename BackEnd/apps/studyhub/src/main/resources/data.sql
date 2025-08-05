@@ -17,23 +17,29 @@ DELETE FROM users;
 --Users
 INSERT INTO users (id, username, password, full_name, role, created_at, updated_at, approved) VALUES
       ('37318be1-2d85-491d-8a19-8618b9256045', 'serkan.yilmaz', '$2a$10$05SqRAfMrjH7wH7PZvAUmel9kWnJZMYURaXJyuax1w0JO8OIclJFO', 'Serkan Yilmaz', 'WRITER', CURRENT_TIMESTAMP, NULL, true),
+      ('37318be1-2d85-491d-8a19-8618b9256046', 'deniz.celik', '$2a$10$05SqRAfMrjH7wH7PZvAUmel9kWnJZMYURaXJyuax1w0JO8OIclJFO', 'Deniz Çelik', 'WRITER', CURRENT_TIMESTAMP, NULL, true),
+      ('5adee6b9-da8d-4039-8f5c-11c0d3255c09', 'asli.mansur', '$2a$10$05SqRAfMrjH7wH7PZvAUmel9kWnJZMYURaXJyuax1w0JO8OIclJFO', 'Aslı Mansur', 'WRITER', CURRENT_TIMESTAMP, NULL, true),
       ('6ac7e45f-6860-454a-a349-a031a7abb979', 'erkim.berk', '$2a$10$05SqRAfMrjH7wH7PZvAUmel9kWnJZMYURaXJyuax1w0JO8OIclJFO', 'Erkim Berk Unsal', 'TEACHER', CURRENT_TIMESTAMP, NULL, true),
-      ('02ce1001-197a-420a-b88d-7f60c0646020', 'sumeyye.sakar', '$2a$10$05SqRAfMrjH7wH7PZvAUmel9kWnJZMYURaXJyuax1w0JO8OIclJFO', 'Asli Mansur', 'STUDENT', CURRENT_TIMESTAMP, NULL, true)
+      ('f3087d3e-d436-489e-ba96-fc8b36e71582', 'burak.can', '$2a$10$05SqRAfMrjH7wH7PZvAUmel9kWnJZMYURaXJyuax1w0JO8OIclJFO', 'Burak Can', 'STUDENT', CURRENT_TIMESTAMP, NULL, true),
+      ('253493d6-0cf0-4b3b-a2db-e189abee4e6d', 'zeynep.kaya', '$2a$10$05SqRAfMrjH7wH7PZvAUmel9kWnJZMYURaXJyuax1w0JO8OIclJFO', 'Zeynep Kaya', 'STUDENT', CURRENT_TIMESTAMP, NULL, true),
+      ('02ce1001-197a-420a-b88d-7f60c0646020', 'sumeyye.sakar', '$2a$10$05SqRAfMrjH7wH7PZvAUmel9kWnJZMYURaXJyuax1w0JO8OIclJFO', 'Sümeyye Şakar', 'STUDENT', CURRENT_TIMESTAMP, NULL, true),
+      ('c5d6e7f8-a9b0-1c2d-3e4f-567890abcdef', 'erdinc.uysal', '$2a$10$05SqRAfMrjH7wH7PZvAUmel9kWnJZMYURaXJyuax1w0JO8OIclJFO', 'Erdinç Uysal', 'TEACHER', CURRENT_TIMESTAMP, NULL, true),
+      ('d6e7f8a9-b0c1-2d3e-4f5a-6789abcdef01', 'sumbul.sukur', '$2a$10$05SqRAfMrjH7wH7PZvAUmel9kWnJZMYURaXJyuax1w0JO8OIclJFO', 'Sümbül Şükür', 'TEACHER', CURRENT_TIMESTAMP, NULL, true)
     ON CONFLICT (id) DO NOTHING;
 
 --Teacher
 INSERT INTO teacher (id, first_name, last_name, email, phone_number, registration_date) VALUES
-    ('6ac7e45f-6860-454a-a349-a031a7abb979', 'Erkim Berk', 'Unsal', 'elif.demir@studyhub.com', '5301234567', CURRENT_TIMESTAMP),
-    ('f3087d3e-d436-489e-ba96-fc8b36e71582', 'Burak', 'Can', 'burak.can@studyhub.com', '5329876543', CURRENT_TIMESTAMP),
-    ('253493d6-0cf0-4b3b-a2db-e189abee4e6d', 'Zeynep', 'Kaya', 'zeynep.kaya@studyhub.com', '5351122334', CURRENT_TIMESTAMP)
+    ('6ac7e45f-6860-454a-a349-a031a7abb979', 'Erkim Berk', 'Unsal', 'erkim.berk@studyhub.com', '5301234567', CURRENT_TIMESTAMP),
+    ('c5d6e7f8-a9b0-1c2d-3e4f-567890abcdef', 'Erdinç', 'Uysal', 'erdinc.uysal@studyhub.com', '5329876543', CURRENT_TIMESTAMP),
+    ('d6e7f8a9-b0c1-2d3e-4f5a-6789abcdef01', 'Sümbül', 'Şükür', 'sumbul.sukur@studyhub.com', '5351122334', CURRENT_TIMESTAMP)
     ON CONFLICT (id) DO NOTHING;
 
 --Classroom
 INSERT INTO classroom (id, code, name, teacher_id) VALUES
     ('6afc06b9-8b54-4ae8-ad61-21afb5541b6c', 'ALGEB101', 'Introduction to Algebra', '6ac7e45f-6860-454a-a349-a031a7abb979'),
     ('4af50907-aad0-443d-926a-335acc58ef93', 'INTEG101', 'Introduction to Integral', '6ac7e45f-6860-454a-a349-a031a7abb979'),
-    ('b6d74e9e-1f21-4f73-a500-da0cd1d9b242', 'LOG101', 'Introduction to Logarithms', '6ac7e45f-6860-454a-a349-a031a7abb979'),
-    ('753de14c-3fad-4f6c-96d0-2b8512ce2be6', 'SCI101', 'General Science', 'f3087d3e-d436-489e-ba96-fc8b36e71582')
+    ('b6d74e9e-1f21-4f73-a500-da0cd1d9b242', 'LOG101', 'Introduction to Logarithms', 'c5d6e7f8-a9b0-1c2d-3e4f-567890abcdef'),
+    ('753de14c-3fad-4f6c-96d0-2b8512ce2be6', 'SCI101', 'General Science', 'd6e7f8a9-b0c1-2d3e-4f5a-6789abcdef01')
     ON CONFLICT (id) DO NOTHING;
 
 --Writer
@@ -228,7 +234,8 @@ INSERT INTO question (id, text, topic_id, writer_id) VALUES
     ('a75f2b3c-e3f4-6789-0129-cdef01234567', 'What defines Variables and Constants?', '5e6f7a8b-9c0d-1e2f-3a4b-5c6d7e8f9a0b', '37318be1-2d85-491d-8a19-8618b9256045'),
     ('b8603c4d-f4a5-7890-123a-def012345678', 'How are Algebraic Expressions simplified?', '8b9c0d1e-2f3a-4b5c-6d7e-8f9a0b1c2d3e', '37318be1-2d85-491d-8a19-8618b9256045'),
     ('c9714d5e-a5b6-8901-234b-ef0123456789', 'What is a core concept in Introduction to Algebra?', '0e9f8e7d-6c5b-4a32-10fe-dcba98765432', '37318be1-2d85-491d-8a19-8618b9256045'),
-    ('da825e6f-b6c7-9012-345c-f0123456789a', 'How do you solve Linear Equations in One Variable?', '9c0d1e2f-3a4b-5c6d-7e8f-9a0b1c2d3e4f', '37318be1-2d85-491d-8a19-8618b9256045')
+    ('da825e6f-b6c7-9012-345c-f0123456789a', 'How do you solve Linear Equations in One Variable?', '9c0d1e2f-3a4b-5c6d-7e8f-9a0b1c2d3e4f', '37318be1-2d85-491d-8a19-8618b9256045'),
+    ('eb936f7a-c7d8-0123-456d-123456789abc', 'Which of the following expressions is a polynomial?', 'f5a6b7c8-d9e0-1f2a-3b4c-5d6e7f8a9b0c', '37318be1-2d85-491d-8a19-8618b9256045')
     ON CONFLICT (id) DO NOTHING;
 
 -- Generated Options
@@ -440,36 +447,47 @@ INSERT INTO option (id, text, is_correct, question_id) VALUES
     ('91a385e6-fb7e-f528-4567-6d4b3d3d3821', 'Isolation of the variable', TRUE, 'da825e6f-b6c7-9012-345c-f0123456789a'),
     ('a2b496f7-0c8f-0639-5678-7e5c4e4e4931', 'Graphing', FALSE, 'da825e6f-b6c7-9012-345c-f0123456789a'),
     ('b3c5a708-1d90-174a-6789-8f6d5f5f5a41', 'Substitution', FALSE, 'da825e6f-b6c7-9012-345c-f0123456789a'),
-    ('c4d6b819-2ea1-285b-7890-907e60606b51', 'Factoring', FALSE, 'da825e6f-b6c7-9012-345c-f0123456789a')
+    ('c4d6b819-2ea1-285b-7890-907e60606b51', 'Factoring', FALSE, 'da825e6f-b6c7-9012-345c-f0123456789a'),
+    ('d5e7c92a-3fb2-396c-8901-a18f71717c62', '3x² + 2x - 1', TRUE, 'eb936f7a-c7d8-0123-456d-123456789abc'),
+    ('e6f8da3b-4ac3-4a7d-9012-b29082828d73', '√x + 5', FALSE, 'eb936f7a-c7d8-0123-456d-123456789abc'),
+    ('f7a9eb4c-5bd4-5b8e-0123-c3a193939e84', '1/x + 2', FALSE, 'eb936f7a-c7d8-0123-456d-123456789abc'),
+    ('a8bafc5d-6ce5-6c9f-1234-d4b2a4a4af95', 'x² + sin(x)', FALSE, 'eb936f7a-c7d8-0123-456d-123456789abc'),
+    ('b9cb0d6e-7df6-7da0-2345-e5c3b5b5b0a6', '|x| + 3', FALSE, 'eb936f7a-c7d8-0123-456d-123456789abc')
     ON CONFLICT (id) DO NOTHING;
 
 INSERT INTO quiz (id, name, topic_id, writer_id) VALUES
     ('0c1861a2-2b60-4ce2-bc80-2214ac783a07', 'Test1', '6406b56f-2480-47a4-9604-37d967b5556e', '37318be1-2d85-491d-8a19-8618b9256045'),
-    ('8bfb4bea-e842-4ce0-82bf-58b1099c0b02', 'Functions', '6406b56f-2480-47a4-9604-37d967b5556e', '37318be1-2d85-491d-8a19-8618b9256045')
+    ('8bfb4bea-e842-4ce0-82bf-58b1099c0b02', 'Functions', '6406b56f-2480-47a4-9604-37d967b5556e', '37318be1-2d85-491d-8a19-8618b9256045'),
+    ('8bfb4bea-e842-4ce0-82bf-58b1099c0b03', 'Polynomial Quiz', 'f5a6b7c8-d9e0-1f2a-3b4c-5d6e7f8a9b0c', '37318be1-2d85-491d-8a19-8618b9256045')
     ON CONFLICT (id) DO NOTHING;
 
 INSERT INTO quiz_question (quiz_id, question_id, question_no) VALUES
     ('0c1861a2-2b60-4ce2-bc80-2214ac783a07', '1ec6d0e1-f2a3-5b6c-7d8e-9f0123456789', 1),
     ('0c1861a2-2b60-4ce2-bc80-2214ac783a07', '853d7e8f-a9b0-2345-6789-abcde0f12345', 2),
     ('0c1861a2-2b60-4ce2-bc80-2214ac783a07', '2fd7b8c9-e9f0-2345-6781-456789abcdef', 3),
-    ('8bfb4bea-e842-4ce0-82bf-58b1099c0b02', 'b860a1b2-d2e3-5678-9abc-def012345678', 1),
-    ('8bfb4bea-e842-4ce0-82bf-58b1099c0b02', 'da825e6f-b6c7-9012-345c-f0123456789a', 2),
-    ('8bfb4bea-e842-4ce0-82bf-58b1099c0b02', '2fd7b8c9-e9f0-2345-6781-456789abcdef', 3)
+    ('8bfb4bea-e842-4ce0-82bf-58b1099c0b02', '0db5c9d0-e1f2-4a5b-6c7d-8e9f01234567', 1),
+    ('8bfb4bea-e842-4ce0-82bf-58b1099c0b02', 'da82c3d4-f4a5-7890-1cde-f0123456789a', 2),
+    ('8bfb4bea-e842-4ce0-82bf-58b1099c0b02', '30e8c9d0-f0a1-3456-7892-56789abcdef0', 3),
+    ('8bfb4bea-e842-4ce0-82bf-58b1099c0b03', 'da82c3d4-f4a5-7890-1cde-f0123456789a', 1),
+    ('8bfb4bea-e842-4ce0-82bf-58b1099c0b03', '30e8c9d0-f0a1-3456-7892-56789abcdef0', 2),
+    ('8bfb4bea-e842-4ce0-82bf-58b1099c0b03', 'eb936f7a-c7d8-0123-456d-123456789abc', 3)
 ON CONFLICT (quiz_id, question_id) DO NOTHING;
 
 INSERT INTO homework (id, name, classroom_id, deadline) VALUES
     ('c435b74f-98dc-4ce3-a043-a7b46ec6411a', 'HW1', '6afc06b9-8b54-4ae8-ad61-21afb5541b6c', '2025-08-15T20:59:59Z'),
-    ('96bdad4a-79d1-496b-b159-9d235906740c', 'HW2', '6afc06b9-8b54-4ae8-ad61-21afb5541b6c', '2025-08-15T23:59:59+03:00[Europe/Istanbul]')
+    ('96bdad4a-79d1-496b-b159-9d235906740c', 'HW2', '6afc06b9-8b54-4ae8-ad61-21afb5541b6c', '2025-08-15T23:59:59+03:00[Europe/Istanbul]'),
+    ('a5b6c7d8-e9f0-1234-5678-9abcdef01234', 'Algebra Quiz', '6afc06b9-8b54-4ae8-ad61-21afb5541b6c', '2025-07-30T23:59:59Z')
 ON CONFLICT (id) DO NOTHING;
 
 INSERT INTO homework_quiz (homework_id, quiz_id) VALUES
     ('c435b74f-98dc-4ce3-a043-a7b46ec6411a', '0c1861a2-2b60-4ce2-bc80-2214ac783a07'),
     ('c435b74f-98dc-4ce3-a043-a7b46ec6411a', '8bfb4bea-e842-4ce0-82bf-58b1099c0b02'),
-    ('96bdad4a-79d1-496b-b159-9d235906740c', '8bfb4bea-e842-4ce0-82bf-58b1099c0b02')
+    ('96bdad4a-79d1-496b-b159-9d235906740c', '8bfb4bea-e842-4ce0-82bf-58b1099c0b03'),
+    ('a5b6c7d8-e9f0-1234-5678-9abcdef01234', '0c1861a2-2b60-4ce2-bc80-2214ac783a07')
 ;
 
 INSERT INTO student (id, first_name, last_name, email, phone_number, registration_date) VALUES
-    ('02ce1001-197a-420a-b88d-7f60c0646020', 'Sumeyye', 'Sakar', 'elif.demir@studyhub.com', '5301234567', CURRENT_TIMESTAMP),
+    ('02ce1001-197a-420a-b88d-7f60c0646020', 'Sümeyye', 'Şakar', 'sumeyye.sakar@studyhub.com', '5301234567', CURRENT_TIMESTAMP),
     ('f3087d3e-d436-489e-ba96-fc8b36e71582', 'Burak', 'Can', 'burak.can@studyhub.com', '5329876543', CURRENT_TIMESTAMP),
     ('253493d6-0cf0-4b3b-a2db-e189abee4e6d', 'Zeynep', 'Kaya', 'zeynep.kaya@studyhub.com', '5351122334', CURRENT_TIMESTAMP)
     ON CONFLICT (id) DO NOTHING;
