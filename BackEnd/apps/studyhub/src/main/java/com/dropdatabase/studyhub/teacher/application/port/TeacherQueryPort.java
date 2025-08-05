@@ -1,5 +1,6 @@
 package com.dropdatabase.studyhub.teacher.application.port;
 
+import com.dropdatabase.studyhub.teacher.application.command.AddTeacherCommand;
 import com.dropdatabase.studyhub.teacher.domain.Teacher;
 
 import java.util.List;
@@ -9,4 +10,5 @@ public interface TeacherQueryPort {
     Teacher get(UUID id);
     List<Teacher> getAll();
     int getUniqueStudentsCount(UUID teacherId);
+    AddTeacherCommand.ClassroomStatsCommand getClassroomStats(UUID teacherId, UUID classroomId);
 }

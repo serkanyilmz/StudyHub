@@ -1,5 +1,6 @@
 package com.dropdatabase.studyhub.teacher.application;
 
+import com.dropdatabase.studyhub.teacher.application.command.AddTeacherCommand;
 import com.dropdatabase.studyhub.teacher.application.port.TeacherQueryPort;
 import com.dropdatabase.studyhub.teacher.domain.Teacher;
 import org.springframework.stereotype.Service;
@@ -25,5 +26,9 @@ public class TeacherQueryUseCase {
 
     public int getUniqueStudentsCount(UUID teacherId) {
         return teacherQueryPort.getUniqueStudentsCount(teacherId);
+    }
+
+    public AddTeacherCommand.ClassroomStatsCommand getClassroomStats(UUID teacherId, UUID classroomId) {
+        return teacherQueryPort.getClassroomStats(teacherId, classroomId);
     }
 }

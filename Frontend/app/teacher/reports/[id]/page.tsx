@@ -53,6 +53,14 @@ interface StudentProgress {
   }>
 }
 
+interface ClassroomStats {
+  averageScore: number
+  completionRate: number
+  totalStudents: number
+  totalQuizzes: number
+  completedQuizzes: number
+}
+
 export default function ReportsPage() {
   const params = useParams()
   const router = useRouter()
@@ -62,6 +70,7 @@ export default function ReportsPage() {
   const [homework, setHomework] = useState<Homework[]>([])
   const [students, setStudents] = useState<Student[]>([])
   const [studentProgress, setStudentProgress] = useState<StudentProgress[]>([])
+  const [classroomStats, setClassroomStats] = useState<ClassroomStats | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -77,61 +86,113 @@ export default function ReportsPage() {
         setHomework(homeworkData)
         setStudents(studentsData)
 
-        // Calculate student progress
+        // Fetch classroom stats from backend
+        if (user?.id) {
+          try {
+            const stats = await api.getTeacherClassroomStats(user.id, params.id as string)
+            setClassroomStats(stats)
+          } catch (error) {
+            console.error("Error fetching classroom stats:", error)
+          }
+        }
+
+        // Calculate student progress for students in this classroom
+        let classroomStudents = studentsData
+        
+        // If classroom has students property, filter by it
+        if (classroomData.students && Array.isArray(classroomData.students)) {
+          classroomStudents = studentsData.filter(student => 
+            classroomData.students.some((cs: any) => cs.id === student.id)
+          )
+        }
+        
+        // If no students found with classroom filter, use all students for now
+        if (classroomStudents.length === 0) {
+          classroomStudents = studentsData
+        }
+        
         const progressData: StudentProgress[] = []
 
-        for (const student of studentsData) {
-          const studentResults = await api.getStudentAllQuizResults(student.id)
+        for (const student of classroomStudents) {
+          try {
+            const studentResults = await api.getStudentAllQuizResults(student.id)
 
-          let totalQuizzes = 0
-          let completedQuizzes = 0
-          let totalScore = 0
-          let completedHomework = 0
+            let totalQuizzes = 0
+            let completedQuizzes = 0
+            let allScores: number[] = []
+            let completedHomework = 0
 
-          const homeworkResults = []
+            const homeworkResults = []
 
-          for (const hw of homeworkData) {
-            let hwCompleted = true
-            let hwScore = 0
-            let hwQuizCount = 0
+            for (const hw of homeworkData) {
+              let hwCompleted = true
+              let hwScores: number[] = []
+              let hwQuizCount = 0
 
-            for (const quiz of hw.quizzes) {
-              totalQuizzes++
-              hwQuizCount++
+              for (const quiz of hw.quizzes) {
+                totalQuizzes++
+                hwQuizCount++
 
-              const result = studentResults[quiz.id]
-              if (result?.completed) {
-                completedQuizzes++
-                hwScore += result.score
+                const result = studentResults[quiz.id]
+                if (result?.completed) {
+                  completedQuizzes++
+                  hwScores.push(result.score)
+                  allScores.push(result.score)
+                }
+              }
+
+              // Calculate homework score if at least one quiz is completed
+              let hwScore = 0
+              if (hwScores.length > 0) {
+                // If all quizzes in homework are completed, mark as completed
+                hwCompleted = hwScores.length === hw.quizzes.length
+                hwScore = Math.round(hwScores.reduce((sum, score) => sum + score, 0) / hwScores.length)
+                if (hwCompleted) {
+                  completedHomework++
+                }
               } else {
                 hwCompleted = false
               }
+
+              homeworkResults.push({
+                homeworkId: hw.id,
+                homeworkName: hw.name,
+                completed: hwCompleted,
+                score: hwScore,
+              })
             }
 
-            if (hwCompleted && hwQuizCount > 0) {
-              completedHomework++
-              hwScore = Math.round(hwScore / hwQuizCount)
-              totalScore += hwScore
-            }
+            // Calculate overall average from homework scores that have at least one quiz completed
+            const homeworkScoresWithData = homeworkResults
+              .filter(hw => hw.score > 0) // Include homework with any completed quizzes
+              .map(hw => hw.score)
+            
+            const averageScore = homeworkScoresWithData.length > 0 
+              ? Math.round(homeworkScoresWithData.reduce((sum, score) => sum + score, 0) / homeworkScoresWithData.length)
+              : (allScores.length > 0 ? Math.round(allScores.reduce((sum, score) => sum + score, 0) / allScores.length) : 0)
 
-            homeworkResults.push({
-              homeworkId: hw.id,
-              homeworkName: hw.name,
-              completed: hwCompleted,
-              score: hwCompleted ? hwScore : 0,
+            progressData.push({
+              student,
+              completedQuizzes,
+              totalQuizzes,
+              averageScore,
+              homeworkResults,
+            })
+          } catch (error) {
+            console.error(`Error calculating progress for student ${student.id}:`, error)
+            // Add student with default values if calculation fails
+            progressData.push({
+              student,
+              completedQuizzes: 0,
+              totalQuizzes: 0,
+              averageScore: 0,
+              homeworkResults: [],
             })
           }
-
-          progressData.push({
-            student,
-            completedQuizzes,
-            totalQuizzes,
-            averageScore: completedHomework > 0 ? Math.round(totalScore / completedHomework) : 0,
-            homeworkResults,
-          })
         }
 
         setStudentProgress(progressData)
+        
       } catch (error) {
         console.error("Error fetching reports data:", error)
         toast({
@@ -148,15 +209,24 @@ export default function ReportsPage() {
   }, [params.id, toast])
 
   const getClassStats = () => {
+    // Don't use backend stats, use frontend calculation for consistency
+    // Backend calculation seems to be incorrect
+    
+    // Calculate class average from individual student averages for consistency
     if (studentProgress.length === 0) return { avgScore: 0, completionRate: 0 }
 
-    const totalScore = studentProgress.reduce((sum, sp) => sum + sp.averageScore, 0)
-    const avgScore = Math.round(totalScore / studentProgress.length)
+    // Calculate class average as the average of individual student averages
+    const studentAverages = studentProgress
+      .map(sp => sp.averageScore)
+      .filter(score => score > 0) // Only include students with scores
+    
+    const avgScore = studentAverages.length > 0 
+      ? Math.round(studentAverages.reduce((sum, score) => sum + score, 0) / studentAverages.length)
+      : 0
 
-    const totalPossibleQuizzes = studentProgress.reduce((sum, sp) => sum + sp.totalQuizzes, 0)
-    const totalCompletedQuizzes = studentProgress.reduce((sum, sp) => sum + sp.completedQuizzes, 0)
-    const completionRate =
-      totalPossibleQuizzes > 0 ? Math.round((totalCompletedQuizzes / totalPossibleQuizzes) * 100) : 0
+    const totalPossible = studentProgress.reduce((sum, sp) => sum + sp.totalQuizzes, 0)
+    const totalCompleted = studentProgress.reduce((sum, sp) => sum + sp.completedQuizzes, 0)
+    const completionRate = totalPossible > 0 ? Math.round((totalCompleted / totalPossible) * 100) : 0
 
     return { avgScore, completionRate }
   }
@@ -214,7 +284,7 @@ export default function ReportsPage() {
               <Users className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{studentProgress.length}</div>
+              <div className="text-2xl font-bold">{classroomStats?.totalStudents || studentProgress.length}</div>
               <p className="text-xs text-muted-foreground">Enrolled students</p>
             </CardContent>
           </Card>

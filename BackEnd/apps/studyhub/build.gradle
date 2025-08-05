@@ -5,7 +5,7 @@ plugins {
 }
 
 springBoot {
-	mainClass = 'com.dropdatabase.studyhub.StudyHubApplication.java'
+	mainClass = 'com.dropdatabase.studyhub.StudyHubApplication'
 }
 
 dependencies {

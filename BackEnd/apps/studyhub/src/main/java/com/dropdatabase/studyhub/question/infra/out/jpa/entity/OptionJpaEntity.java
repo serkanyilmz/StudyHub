@@ -1,6 +1,7 @@
 package com.dropdatabase.studyhub.question.infra.out.jpa.entity;
 import com.dropdatabase.studyhub.question.domain.Option;
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.UUID;
@@ -8,6 +9,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "option")
 @NoArgsConstructor
+@Getter
 public class OptionJpaEntity {
 
     @Id
@@ -38,4 +40,6 @@ public class OptionJpaEntity {
                 this.isCorrect
         );
     }
+
+    
 }

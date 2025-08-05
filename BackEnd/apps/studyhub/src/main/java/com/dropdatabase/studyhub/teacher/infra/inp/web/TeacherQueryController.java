@@ -1,6 +1,7 @@
 package com.dropdatabase.studyhub.teacher.infra.inp.web;
 
 import com.dropdatabase.studyhub.teacher.application.TeacherQueryUseCase;
+import com.dropdatabase.studyhub.teacher.application.command.AddTeacherCommand;
 import com.dropdatabase.studyhub.teacher.domain.Teacher;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,5 +31,10 @@ public class TeacherQueryController {
     @GetMapping("/{id}/unique-students-count")
     public int getUniqueStudentsCount(@PathVariable UUID id){
         return teacherQueryUseCase.getUniqueStudentsCount(id);
+    }
+
+    @GetMapping("/{id}/classroom/{classroomId}/stats")
+    public AddTeacherCommand.ClassroomStatsCommand getClassroomStats(@PathVariable UUID id, @PathVariable UUID classroomId){
+        return teacherQueryUseCase.getClassroomStats(id, classroomId);
     }
 }

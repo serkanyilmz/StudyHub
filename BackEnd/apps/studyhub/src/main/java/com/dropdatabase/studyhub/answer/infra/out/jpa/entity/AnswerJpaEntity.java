@@ -6,6 +6,7 @@ import com.dropdatabase.studyhub.question.infra.out.jpa.entity.QuestionJpaEntity
 import com.dropdatabase.studyhub.quiz.infra.out.jpa.entity.QuizJpaEntity;
 import com.dropdatabase.studyhub.student.infra.out.jpa.entity.StudentJpaEntity;
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -14,6 +15,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "answer")
 @NoArgsConstructor
+@Getter
 public class AnswerJpaEntity {
     @Id
     private String id;
