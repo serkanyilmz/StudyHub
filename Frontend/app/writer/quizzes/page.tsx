@@ -96,9 +96,54 @@ export default function QuizzesPage() {
     }
   }
 
+  // Get parent topics (root topics)
+  const getParentTopics = () => {
+    return topics.filter((topic) => !topic.parentTopic)
+  }
+
+  // Get child topics for a parent
+  const getChildTopics = (parentId: string) => {
+    return topics.filter((topic) => topic.parentTopic?.id === parentId)
+  }
+
+  // Recursive function to render all topics for selection
+  const renderTopicOptionsRecursively = (topic: Topic, level: number = 0): any[] => {
+    const result: any[] = []
+    const indent = "  ".repeat(level) + (level > 0 ? "└─ " : "")
+    
+    // Add current topic to options
+    result.push({
+      value: topic.id,
+      label: `${indent}${topic.name}`,
+      level: level
+    })
+    
+    // Add all child topics recursively
+    const childTopics = getChildTopics(topic.id)
+    childTopics.forEach(childTopic => {
+      result.push(...renderTopicOptionsRecursively(childTopic, level + 1))
+    })
+    
+    return result
+  }
+
   const filteredQuizzes = quizzes.filter((quiz) => {
     const matchesSearch = quiz.name.toLowerCase().includes(searchTerm.toLowerCase())
-    const matchesTopic = selectedTopicId === "all" || quiz.topic.id === selectedTopicId
+    
+    let matchesTopic = false
+    if (selectedTopicId === "all") {
+      matchesTopic = true
+    } else {
+      // Check if quiz topic matches selected topic or any of its children
+      const isTopicMatch = (topicId: string): boolean => {
+        if (quiz.topic?.id === topicId) return true
+        // Check child topics recursively
+        const children = getChildTopics(topicId)
+        return children.some(child => isTopicMatch(child.id))
+      }
+      matchesTopic = isTopicMatch(selectedTopicId)
+    }
+    
     return matchesSearch && matchesTopic
   })
 
@@ -159,11 +204,20 @@ export default function QuizzesPage() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All topics</SelectItem>
-                  {topics.map((topic) => (
-                    <SelectItem key={topic.id} value={topic.id}>
-                      {getTopicDisplayName(topic)}
-                    </SelectItem>
-                  ))}
+                  {getParentTopics().map(topic => 
+                    renderTopicOptionsRecursively(topic, 0).map(option => (
+                      <SelectItem key={option.value} value={option.value}>
+                        <div className="flex items-center space-x-2">
+                          {option.level === 0 ? (
+                            <div className="w-3 h-3 rounded-full bg-purple-400"></div>
+                          ) : (
+                            <div className="w-3 h-3 rounded-full bg-blue-400"></div>
+                          )}
+                          <span style={{ marginLeft: `${option.level * 0.5}rem` }}>{option.label}</span>
+                        </div>
+                      </SelectItem>
+                    ))
+                  )}
                 </SelectContent>
               </Select>
             </div>
