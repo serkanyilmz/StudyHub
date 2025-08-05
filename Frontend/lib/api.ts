@@ -1,5 +1,5 @@
 class ApiClient {
-  private baseURL = "http://localhost:8080"
+  private baseURL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8080"
 
   private async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
     const accessToken = localStorage.getItem("accessToken")
