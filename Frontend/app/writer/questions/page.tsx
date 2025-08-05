@@ -17,9 +17,9 @@ interface Question {
   id: string
   text: string
   options: Array<{
-    id: string
-    text: string
-    isCorrect: boolean
+  id: string
+  text: string
+  correct: boolean
   }>
   topic: {
     id: string
@@ -90,15 +90,60 @@ export default function QuestionsPage() {
       console.error("Error deleting question:", error)
       toast({
         title: "Error",
-        description: "Failed to delete question",
+        description: "Failed to delete question. It may be used in quizzes and cannot be deleted.",
         variant: "destructive",
       })
     }
   }
 
+  // Get parent topics (root topics)
+  const getParentTopics = () => {
+    return topics.filter((topic) => !topic.parentTopic)
+  }
+
+  // Get child topics for a parent
+  const getChildTopics = (parentId: string) => {
+    return topics.filter((topic) => topic.parentTopic?.id === parentId)
+  }
+
+  // Recursive function to render all topics for selection
+  const renderTopicOptionsRecursively = (topic: Topic, level: number = 0): any[] => {
+    const result: any[] = []
+    const indent = "  ".repeat(level) + (level > 0 ? "└─ " : "")
+    
+    // Add current topic to options
+    result.push({
+      value: topic.id,
+      label: `${indent}${topic.name}`,
+      level: level
+    })
+    
+    // Add all child topics recursively
+    const childTopics = getChildTopics(topic.id)
+    childTopics.forEach(childTopic => {
+      result.push(...renderTopicOptionsRecursively(childTopic, level + 1))
+    })
+    
+    return result
+  }
+
   const filteredQuestions = questions.filter((question) => {
     const matchesSearch = question.text.toLowerCase().includes(searchTerm.toLowerCase())
-    const matchesTopic = selectedTopicId === "all" || question.topic.id === selectedTopicId
+    
+    let matchesTopic = false
+    if (selectedTopicId === "all") {
+      matchesTopic = true
+    } else {
+      // Check if question topic matches selected topic or any of its children
+      const isTopicMatch = (topicId: string): boolean => {
+        if (question.topic?.id === topicId) return true
+        // Check child topics recursively
+        const children = getChildTopics(topicId)
+        return children.some(child => isTopicMatch(child.id))
+      }
+      matchesTopic = isTopicMatch(selectedTopicId)
+    }
+    
     return matchesSearch && matchesTopic
   })
 
@@ -159,11 +204,20 @@ export default function QuestionsPage() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All topics</SelectItem>
-                  {topics.map((topic) => (
-                    <SelectItem key={topic.id} value={topic.id}>
-                      {getTopicDisplayName(topic)}
-                    </SelectItem>
-                  ))}
+                  {getParentTopics().map(topic => 
+                    renderTopicOptionsRecursively(topic, 0).map(option => (
+                      <SelectItem key={option.value} value={option.value}>
+                        <div className="flex items-center space-x-2">
+                          {option.level === 0 ? (
+                            <div className="w-3 h-3 rounded-full bg-purple-400"></div>
+                          ) : (
+                            <div className="w-3 h-3 rounded-full bg-blue-400"></div>
+                          )}
+                          <span style={{ marginLeft: `${option.level * 0.5}rem` }}>{option.label}</span>
+                        </div>
+                      </SelectItem>
+                    ))
+                  )}
                 </SelectContent>
               </Select>
             </div>
@@ -211,16 +265,16 @@ export default function QuestionsPage() {
                           <Badge variant="outline">{question.topic.name}</Badge>
                           <Badge variant="secondary">{question.options.length} options</Badge>
                           <Badge variant="default">
-                            {question.options.filter((opt) => opt.isCorrect).length} correct
+                            {question.options.filter((opt) => opt.correct).length} correct
                           </Badge>
                         </div>
                         <div className="space-y-1">
                           {question.options.map((option, index) => (
                             <div key={option.id} className="text-sm flex items-center space-x-2">
                               <span
-                                className={`w-2 h-2 rounded-full ${option.isCorrect ? "bg-green-500" : "bg-gray-300"}`}
+                                className={`w-2 h-2 rounded-full ${option.correct ? "bg-green-500" : "bg-gray-300"}`}
                               />
-                              <span className={option.isCorrect ? "text-green-700 font-medium" : "text-gray-600"}>
+                              <span className={option.correct ? "text-green-700 font-medium" : "text-gray-600"}>
                                 {option.text}
                               </span>
                             </div>

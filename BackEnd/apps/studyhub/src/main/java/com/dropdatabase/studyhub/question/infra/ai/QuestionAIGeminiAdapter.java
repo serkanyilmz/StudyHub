@@ -1,11 +1,8 @@
-package com.dropdatabase.studyhub.question.infra.ai;// src/main/java/com.dropdatabase.studyhub.employee.option/infra/out/persistence/OptionJpaAdapter.java
+package com.dropdatabase.studyhub.question.infra.ai;
 
-import com.dropdatabase.studyhub.question.application.port.OptionCommandPort;
 import com.dropdatabase.studyhub.question.application.port.QuestionAIPort;
 import com.dropdatabase.studyhub.question.domain.Option;
 import com.dropdatabase.studyhub.question.domain.Question;
-import com.dropdatabase.studyhub.question.infra.out.jpa.OptionJpaRepository;
-import com.dropdatabase.studyhub.question.infra.out.jpa.entity.OptionJpaEntity;
 import com.dropdatabase.studyhub.topic.domain.Topic;
 import com.google.genai.types.GenerateContentResponse;
 import org.springframework.stereotype.Component;
@@ -80,6 +77,12 @@ public class QuestionAIGeminiAdapter implements QuestionAIPort {
         if (topic.getParentTopic() != null) {
             promptBuilder.append("Related to the broader topic of: ").append(topic.getParentTopic().getName()).append("\n\n");
         }
+        promptBuilder.append("IMPORTANT FORMATTING RULES:\n");
+        promptBuilder.append("- Do NOT use LaTeX notation (no $ symbols)\n");
+        promptBuilder.append("- Use plain text for mathematical expressions\n");
+        promptBuilder.append("- For example, write '7m - 12 = 3m + 8' instead of '$7m - 12 = 3m + 8$'\n");
+        promptBuilder.append("- Write fractions as '1/2' instead of LaTeX notation\n");
+        promptBuilder.append("- Use 'x^2' for exponents instead of LaTeX\n\n");
         promptBuilder.append("The question should have 4 options, with only one correct answer. Please format the output as follows:\n");
         promptBuilder.append("Question: [Your question text here]\n");
         promptBuilder.append("A) [Option A text]\n");
@@ -87,7 +90,7 @@ public class QuestionAIGeminiAdapter implements QuestionAIPort {
         promptBuilder.append("C) [Option C text]\n");
         promptBuilder.append("D) [Option D text]\n");
         promptBuilder.append("Correct Answer: [Letter of the correct option, e.g., A, B, C, or D]\n");
-        promptBuilder.append("Ensure the question and options are clear and concise.");
+        promptBuilder.append("Ensure the question and options are clear and concise, using only plain text formatting.");
 
         return promptBuilder.toString();
     }
@@ -99,6 +102,13 @@ public class QuestionAIGeminiAdapter implements QuestionAIPort {
         String optionCText = extractPattern(generatedContent, "C\\) (.*)");
         String optionDText = extractPattern(generatedContent, "D\\) (.*)");
         String correctAnswerLetter = extractPattern(generatedContent, "Correct Answer: ([A-D])");
+
+        // Clean up math notation in question and options
+        if (questionText != null) questionText = cleanMathNotation(questionText);
+        if (optionAText != null) optionAText = cleanMathNotation(optionAText);
+        if (optionBText != null) optionBText = cleanMathNotation(optionBText);
+        if (optionCText != null) optionCText = cleanMathNotation(optionCText);
+        if (optionDText != null) optionDText = cleanMathNotation(optionDText);
 
         if (questionText == null || optionAText == null || optionBText == null || optionCText == null || optionDText == null || correctAnswerLetter == null) {
             // Log an error or return a default/empty question if parsing fails
@@ -124,5 +134,18 @@ public class QuestionAIGeminiAdapter implements QuestionAIPort {
             return matcher.group(1).trim();
         }
         return null;
+    }
+
+    private String cleanMathNotation(String text) {
+        if (text == null) return null;
+        
+        // Remove LaTeX math delimiters and replace with cleaner formatting
+        String cleaned = text
+                .replaceAll("\\$([^$]+)\\$", "$1") // Remove $ delimiters
+                .replaceAll("\\\\", "") // Remove backslashes
+                .replaceAll("\\{([^}]+)\\}", "$1") // Remove curly braces
+                .trim();
+        
+        return cleaned;
     }
 }

@@ -2,7 +2,7 @@
 
 import type React from "react"
 import { useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, useParams } from "next/navigation"
 import Image from "next/image"
 import { useAuth } from "@/contexts/AuthContext"
 import { api } from "@/lib/api"
@@ -40,44 +40,110 @@ interface Topic {
 }
 
 interface Option {
+  id: string
   text: string
   isCorrect: boolean
 }
 
-export default function NewQuestionPage() {
+interface Question {
+  id: string
+  text: string
+  options: Option[]
+  topicId?: string
+  topicName?: string
+  writerId?: string
+  writerName?: string
+  // Legacy support
+  topic?: {
+    id: string
+    name: string
+  }
+  writer?: {
+    id: string
+  }
+}
+
+interface OptionUpdate {
+  text: string
+  isCorrect: boolean
+}
+
+export default function EditQuestionPage() {
   const { user } = useAuth()
   const router = useRouter()
+  const params = useParams()
   const { toast } = useToast()
+  const [question, setQuestion] = useState<Question | null>(null)
   const [text, setText] = useState("")
-  const [options, setOptions] = useState<Option[]>([
-    { text: "", isCorrect: false },
-    { text: "", isCorrect: false },
-    { text: "", isCorrect: false },
-    { text: "", isCorrect: false }
-  ])
+  const [options, setOptions] = useState<OptionUpdate[]>([])
   const [selectedTopicId, setSelectedTopicId] = useState("")
   const [topics, setTopics] = useState<Topic[]>([])
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
+  const [updating, setUpdating] = useState(false)
   const [loadingAISuggestion, setLoadingAISuggestion] = useState(false)
   const [error, setError] = useState("")
 
   useEffect(() => {
-    const fetchTopics = async () => {
+    const fetchData = async () => {
+      if (!params.id || !user?.id) return
+
+      console.log("Fetching question with ID:", params.id)
+      console.log("User ID:", user.id)
+
       try {
-        const topicsData = await api.getTopics()
+        console.log("About to call API for question:", params.id)
+        const [questionData, topicsData] = await Promise.all([
+          api.getQuestion(params.id as string),
+          api.getTopics(),
+        ])
+        console.log("Successfully fetched question:", questionData)
+        console.log("Question writer:", questionData.writer)
+        console.log("Question writer id:", questionData?.writer?.id)
+
+        // Check if user owns this question (try both new and legacy format)
+        const questionWriterId = questionData?.writerId || questionData?.writer?.id
+        if (questionWriterId && questionWriterId !== user.id) {
+          toast({
+            title: "Access Denied",
+            description: "You can only edit your own questions",
+            variant: "destructive",
+          })
+          router.push("/writer/questions")
+          return
+        }
+
+        setQuestion(questionData)
+        setText(questionData.text)
+        
+        // Set topic if available (try both new and legacy format)
+        const topicId = questionData.topicId || questionData.topic?.id
+        if (topicId) {
+          setSelectedTopicId(topicId)
+        }
+        
         setTopics(topicsData)
+
+        // Convert options to update format
+        const optionsUpdate = questionData.options.map((opt: Option) => ({
+          text: opt.text,
+          isCorrect: opt.isCorrect,
+        }))
+        setOptions(optionsUpdate)
       } catch (error) {
-        console.error("Error fetching topics:", error)
+        console.error("Error fetching question data:", error)
         toast({
           title: "Error",
-          description: "Failed to load topics",
-          variant: "destructive"
+          description: "Failed to load question data. The question may not exist or you don't have permission to access it.",
+          variant: "destructive",
         })
+        router.push("/writer/questions")
+      } finally {
+        setLoading(false)
       }
     }
 
-    fetchTopics()
-  }, [toast])
+    fetchData()
+  }, [params.id, user?.id, toast, router])
 
   const handleOptionChange = (
     index: number,
@@ -109,7 +175,7 @@ export default function NewQuestionPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!user?.id) return
+    if (!user?.id || !question) return
 
     setError("")
 
@@ -140,10 +206,10 @@ export default function NewQuestionPage() {
       return
     }
 
-    setLoading(true)
+    setUpdating(true)
 
     try {
-      await api.createQuestion({
+      await api.updateQuestion(question.id, {
         text: text.trim(),
         options: validOptions,
         topicId: selectedTopicId,
@@ -152,23 +218,16 @@ export default function NewQuestionPage() {
 
       toast({
         title: "Success",
-        description: "Question created successfully!"
+        description: "Question updated successfully!"
       })
 
-      router.push("/writer/dashboard")
+      router.push("/writer/questions")
     } catch (error) {
-      console.error("Error creating question:", error)
-      setError("Failed to create question. Please try again.")
+      console.error("Error updating question:", error)
+      setError("Failed to update question. Please try again.")
     } finally {
-      setLoading(false)
+      setUpdating(false)
     }
-  }
-
-  const getTopicDisplayName = (topic: Topic) => {
-    if (topic.parentTopic) {
-      return `${topic.parentTopic.name} > ${topic.name}`
-    }
-    return topic.name
   }
 
   // Get parent topics (root topics)
@@ -209,6 +268,13 @@ export default function NewQuestionPage() {
     return result
   }
 
+  const getTopicDisplayName = (topic: Topic) => {
+    if (topic.parentTopic) {
+      return `${topic.parentTopic.name} > ${topic.name}`
+    }
+    return topic.name
+  }
+
   const handleAISuggestion = async () => {
     if (!selectedTopicId) {
       toast({
@@ -224,14 +290,13 @@ export default function NewQuestionPage() {
     try {
       const sample = await api.getSampleQuestion(selectedTopicId)
 
-      const options = sample.options.map((opt) => ({
+      const optionsUpdate = sample.options.map((opt: any) => ({
         text: opt.text,
         isCorrect: opt.correct
       }))
 
       setText(sample.text)
-
-      setOptions(options)
+      setOptions(optionsUpdate)
 
       toast({
         title: "AI Suggestion Applied",
@@ -249,6 +314,34 @@ export default function NewQuestionPage() {
     }
   }
 
+  if (loading) {
+    return (
+      <Layout>
+        <div className="flex items-center justify-center h-64">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-600 mx-auto mb-4"></div>
+            <p className="text-gray-600">Loading question...</p>
+          </div>
+        </div>
+      </Layout>
+    )
+  }
+
+  if (!question) {
+    return (
+      <Layout>
+        <div className="text-center py-16">
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">Question Not Found</h1>
+          <p className="text-gray-600 mb-8">The question you're looking for doesn't exist or you don't have permission to edit it.</p>
+          <Button onClick={() => router.push("/writer/questions")}>
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back to Questions
+          </Button>
+        </div>
+      </Layout>
+    )
+  }
+
   return (
     <Layout>
       <div className="max-w-4xl mx-auto">
@@ -259,8 +352,8 @@ export default function NewQuestionPage() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Create New Question</CardTitle>
-            <CardDescription>Add a new question to the question bank</CardDescription>
+            <CardTitle>Edit Question</CardTitle>
+            <CardDescription>Update your question details and options</CardDescription>
             <div className="flex justify-end">
               <Button
                 type="button"
@@ -294,7 +387,7 @@ export default function NewQuestionPage() {
                   placeholder="Enter your question here..."
                   rows={3}
                   required
-                  disabled={loading}
+                  disabled={updating}
                 />
               </div>
 
@@ -304,7 +397,7 @@ export default function NewQuestionPage() {
                 <Select
                   value={selectedTopicId}
                   onValueChange={setSelectedTopicId}
-                  disabled={loading}
+                  disabled={updating}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select a topic" />
@@ -324,7 +417,7 @@ export default function NewQuestionPage() {
                     variant="outline"
                     size="sm"
                     onClick={addOption}
-                    disabled={loading}
+                    disabled={updating}
                   >
                     <Plus className="h-4 w-4 mr-2" />
                     Add Option
@@ -343,7 +436,7 @@ export default function NewQuestionPage() {
                           onCheckedChange={(checked) =>
                             handleOptionChange(index, "isCorrect", checked as boolean)
                           }
-                          disabled={loading}
+                          disabled={updating}
                         />
                         <Label className="text-sm">Correct</Label>
                       </div>
@@ -353,7 +446,7 @@ export default function NewQuestionPage() {
                           handleOptionChange(index, "text", e.target.value)
                         }
                         placeholder={`Option ${index + 1}`}
-                        disabled={loading}
+                        disabled={updating}
                         className="flex-1"
                       />
                       {options.length > 2 && (
@@ -362,7 +455,7 @@ export default function NewQuestionPage() {
                           variant="outline"
                           size="sm"
                           onClick={() => removeOption(index)}
-                          disabled={loading}
+                          disabled={updating}
                         >
                           <Trash2 className="h-4 w-4" />
                         </Button>
@@ -383,13 +476,13 @@ export default function NewQuestionPage() {
                   type="button"
                   variant="outline"
                   onClick={() => router.back()}
-                  disabled={loading}
+                  disabled={updating}
                   className="flex-1"
                 >
                   Cancel
                 </Button>
-                <Button type="submit" disabled={loading} className="flex-1">
-                  {loading ? "Creating..." : "Create Question"}
+                <Button type="submit" disabled={updating} className="flex-1">
+                  {updating ? "Updating..." : "Update Question"}
                 </Button>
               </div>
             </form>

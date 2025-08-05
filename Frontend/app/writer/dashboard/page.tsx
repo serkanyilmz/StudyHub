@@ -7,6 +7,13 @@ import Layout from "@/components/Layout"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from "@/components/ui/select"
 import { PenTool, FileText, Layers, Plus, Brain } from "lucide-react"
 import Link from "next/link"
 import { useToast } from "@/hooks/use-toast"
@@ -24,6 +31,12 @@ interface Question {
   writer: {
     id: string
   }
+  topic?: {
+    id: string
+    name: string
+  }
+  topicId?: string
+  topicName?: string
 }
 
 interface Quiz {
@@ -54,7 +67,7 @@ interface Topic {
 export default function WriterDashboard() {
   const { user } = useAuth()
   const { toast } = useToast()
-  const { isAnimating, triggerAnimation, GeminiComponent } = useGeminiAnimation()
+
   const [questions, setQuestions] = useState<Question[]>([])
   const [quizzes, setQuizzes] = useState<Quiz[]>([])
   const [topics, setTopics] = useState<Topic[]>([])
@@ -217,7 +230,7 @@ export default function WriterDashboard() {
                   <p className="text-gray-600">No questions yet</p>
                   <p className="text-sm text-gray-500 mt-2">Create your first question to get started</p>
                   <Link href="/writer/question/new">
-                    <Button className="mt-4 bg-orange-600 hover:bg-orange-700">
+                    <Button className="mt-4">
                       <Plus className="h-4 w-4 mr-2" />
                       Create Question
                     </Button>
@@ -265,7 +278,7 @@ export default function WriterDashboard() {
                   <p className="text-gray-600">No quizzes yet</p>
                   <p className="text-sm text-gray-500 mt-2">Create your first quiz from questions</p>
                   <Link href="/writer/quiz/new">
-                    <Button className="mt-4 bg-orange-600 hover:bg-orange-700">
+                    <Button className="mt-4">
                       <Plus className="h-4 w-4 mr-2" />
                       Create Quiz
                     </Button>

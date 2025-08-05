@@ -50,7 +50,11 @@ public class Question {
                 this.text,
                 this.options.stream()
                         .map(Option::toViewModel)
-                        .collect(Collectors.toList())
+                        .collect(Collectors.toList()),
+                this.topic.getId().toString(),
+                this.topic.getName(),
+                this.writer.getId().toString(),
+                this.writer.getFirstName() + " " + this.writer.getLastName()
         );
     }
 

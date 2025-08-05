@@ -127,7 +127,22 @@ export default function EditQuizPage() {
 
   const getQuestionsForTopic = () => {
     if (!selectedTopicId) return []
-    return questions.filter((q) => q.topic.id === selectedTopicId)
+    
+    // Get all descendant topic IDs (including the selected topic itself)
+    const getAllDescendantTopicIds = (topicId: string): string[] => {
+      const result = [topicId]
+      const childTopics = topics.filter(t => t.parentTopic?.id === topicId)
+      
+      childTopics.forEach(childTopic => {
+        result.push(...getAllDescendantTopicIds(childTopic.id))
+      })
+      
+      return result
+    }
+    
+    const allRelevantTopicIds = getAllDescendantTopicIds(selectedTopicId)
+    
+    return questions.filter((q) => allRelevantTopicIds.includes(q.topic.id))
   }
 
   const handleQuestionToggle = (questionId: string, checked: boolean) => {
@@ -194,6 +209,44 @@ export default function EditQuizPage() {
     return topic.name
   }
 
+  // Get parent topics (root topics)
+  const getParentTopics = () => {
+    return topics.filter((topic) => !topic.parentTopic)
+  }
+
+  // Get child topics for a parent
+  const getChildTopics = (parentId: string) => {
+    return topics.filter((topic) => topic.parentTopic?.id === parentId)
+  }
+
+  // Recursive function to render all topics for selection
+  const renderTopicOptionsRecursively = (topic: Topic, level: number = 0): JSX.Element[] => {
+    const result: JSX.Element[] = []
+    const indent = "  ".repeat(level) + (level > 0 ? "└─ " : "")
+    
+    // Add current topic to options
+    result.push(
+      <SelectItem key={topic.id} value={topic.id}>
+        <div className="flex items-center space-x-2">
+          {level === 0 ? (
+            <div className="w-3 h-3 rounded-full bg-purple-400"></div>
+          ) : (
+            <div className="w-3 h-3 rounded-full bg-blue-400"></div>
+          )}
+          <span style={{ marginLeft: `${level * 0.5}rem` }}>{indent}{topic.name}</span>
+        </div>
+      </SelectItem>
+    )
+    
+    // Add all child topics recursively
+    const childTopics = getChildTopics(topic.id)
+    childTopics.forEach(childTopic => {
+      result.push(...renderTopicOptionsRecursively(childTopic, level + 1))
+    })
+    
+    return result
+  }
+
   const isQuestionSelected = (questionId: string) => {
     return selectedQuestions.some((q) => q.questionId === questionId)
   }
@@ -258,11 +311,7 @@ export default function EditQuizPage() {
                     <SelectValue placeholder="Select a topic" />
                   </SelectTrigger>
                   <SelectContent>
-                    {topics.map((topic) => (
-                      <SelectItem key={topic.id} value={topic.id}>
-                        {getTopicDisplayName(topic)}
-                      </SelectItem>
-                    ))}
+                    {getParentTopics().flatMap(topic => renderTopicOptionsRecursively(topic, 0))}
                   </SelectContent>
                 </Select>
               </div>
@@ -270,7 +319,12 @@ export default function EditQuizPage() {
               {selectedTopicId && (
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <Label>Select Questions ({selectedQuestions.length} selected)</Label>
+                    <div>
+                      <Label>Select Questions ({selectedQuestions.length} selected)</Label>
+                      <p className="text-xs text-gray-500 mt-1">
+                        Questions from selected topic and all its subtopics
+                      </p>
+                    </div>
                   </div>
 
                   <div className="max-h-96 overflow-y-auto space-y-3 border rounded-lg p-4">
@@ -288,7 +342,12 @@ export default function EditQuizPage() {
                           />
                           <div className="flex-1">
                             <p className="text-sm font-medium">{question.text}</p>
-                            <p className="text-xs text-gray-500 mt-1">{question.options.length} options</p>
+                            <div className="flex items-center justify-between mt-1">
+                              <p className="text-xs text-gray-500">{question.options.length} options</p>
+                              <p className="text-xs text-blue-600 bg-blue-50 px-2 py-1 rounded">
+                                {getTopicDisplayName(question.topic)}
+                              </p>
+                            </div>
                           </div>
                         </div>
                       ))

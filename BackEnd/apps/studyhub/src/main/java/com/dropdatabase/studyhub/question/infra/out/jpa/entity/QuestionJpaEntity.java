@@ -8,6 +8,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 @Entity
 @Table(name = "question")
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class QuestionJpaEntity {
@@ -31,11 +33,11 @@ public class QuestionJpaEntity {
     @OneToMany(mappedBy = "questionJpaEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<OptionJpaEntity> options;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "writer_id", referencedColumnName = "id", nullable = false)
     private WriterJpaEntity writerJpaEntity;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "topic_id", referencedColumnName = "id", nullable = false)
     private TopicJpaEntity topicJpaEntity;
 
@@ -69,5 +71,23 @@ public class QuestionJpaEntity {
                 this.topicJpaEntity.toDomainEntity(),
                 this.writerJpaEntity.toDomainEntity()
         );
+    }
+
+    public void updateOptions(List<Option> newOptions) {
+        // Clear existing options
+        if (this.options != null) {
+            this.options.clear();
+        } else {
+            this.options = new ArrayList<>();
+        }
+        
+        // Add new options
+        if (newOptions != null) {
+            this.options.addAll(
+                newOptions.stream()
+                    .map(option -> new OptionJpaEntity(option, this))
+                    .collect(Collectors.toList())
+            );
+        }
     }
 }

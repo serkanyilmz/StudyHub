@@ -293,9 +293,7 @@ export default function HomeworkPage() {
     return Math.round(totalScore / completedResults.length)
   }
 
-  const getCorrectAnswer = (question: Question) => {
-    return question.options.find((option) => option.isCorrect)
-  }
+ 
 
   function formatAIExplanation(text: string) {
   return text
@@ -334,8 +332,7 @@ export default function HomeworkPage() {
   // Quiz taking mode
   if (isQuizMode && currentQuestion) {
     const selectedAnswer = answers[currentQuestion.question.id]
-    const correctAnswer = getCorrectAnswer(currentQuestion.question)
-    const showCorrectAnswer = isReviewMode && selectedAnswer
+    
 
     return (
       <Layout>
@@ -546,6 +543,7 @@ export default function HomeworkPage() {
                 const result = quizResults[quiz.id]
                 const isCompleted = result?.completed || false
                 const score = result?.score || 0
+                const isExpired = new Date(homework.deadline) < new Date()
 
                 return (
                   <div
@@ -567,12 +565,19 @@ export default function HomeworkPage() {
                             <Badge variant="outline">Score: {score}%</Badge>
                           </>
                         ) : (
-                          <Badge variant="secondary">Not started</Badge>
+                          <Badge variant={isExpired ? "destructive" : "secondary"}>Not started</Badge>
                         )}
                       </div>
                     </div>
                     <div className="flex space-x-2">
                       {isCompleted ? (
+                        <>
+                          <Button variant="outline" size="sm" onClick={() => reviewQuiz(index)}>
+                            <BookOpen className="h-4 w-4 mr-2" />
+                            Review
+                          </Button>
+                        </>
+                      ) : isExpired ? (
                         <>
                           <Button variant="outline" size="sm" onClick={() => reviewQuiz(index)}>
                             <BookOpen className="h-4 w-4 mr-2" />

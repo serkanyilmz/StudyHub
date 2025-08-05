@@ -177,7 +177,6 @@ INSERT INTO topic (id, name, parent_topic_id) VALUES
     ON CONFLICT (id) DO NOTHING;
 -- Generated Questions
 INSERT INTO question (id, text, topic_id, writer_id) VALUES
-    ('a7b9c1d3-e5f7-8a9b-c0d2-e4f6a8b0c2d4', 'What is a core concept in Introduction to Algebra?', '0e9f8e7d-6c5b-4a32-10fe-dcba98765432', '11111111-2222-3333-4444-555555555555'),
     ('b8c0d2e4-f6a8-9b0c-d1e3-f5a7b9c1d3e5', 'How do you solve Linear Equations in One Variable?', '9c0d1e2f-3a4b-5c6d-7e8f-9a0b1c2d3e4f', '11111111-2222-3333-4444-555555555555'),
     ('c9d1e3f5-a7b9-0c1d-e2f4-a6b8c0d2e4f6', 'Which of these is a property of Exponents and Their Properties?', 'c8d9e0f1-a2b3-4c5d-6e7f-8a9b0c1d2e3f', '11111111-2222-3333-4444-555555555555'),
     ('dae2f4a6-b8c0-1d2e-3f4a-5b6c7d8e9f01', 'What event marked the beginning of The National Struggle (Kurtuluş Savaşı)?', 'c7d8e9f0-1234-5678-90ab-cdef01234567', '11111111-2222-3333-4444-555555555555'),
@@ -227,16 +226,11 @@ INSERT INTO question (id, text, topic_id, writer_id) VALUES
     ('964e1a2b-d2e3-5678-9018-bcdef0123456', 'What does Populism (Halkçılık) entail?', '56789012-bcde-f012-3456-789abcdef012', '11111111-2222-3333-4444-555555555555'),
     ('a75f2b3c-e3f4-6789-0129-cdef01234567', 'What defines Variables and Constants?', '5e6f7a8b-9c0d-1e2f-3a4b-5c6d7e8f9a0b', '11111111-2222-3333-4444-555555555555'),
     ('b8603c4d-f4a5-7890-123a-def012345678', 'How are Algebraic Expressions simplified?', '8b9c0d1e-2f3a-4b5c-6d7e-8f9a0b1c2d3e', '11111111-2222-3333-4444-555555555555'),
-    ('c9714d5e-a5b6-8901-234b-ef0123456789', 'What is a core concept in Introduction to Algebra?', '0e9f8e7d-6c5b-4a32-10fe-dcba98765432', '11111111-2222-3333-4444-555555555555'),
     ('da825e6f-b6c7-9012-345c-f0123456789a', 'How do you solve Linear Equations in One Variable?', '9c0d1e2f-3a4b-5c6d-7e8f-9a0b1c2d3e4f', '11111111-2222-3333-4444-555555555555')
     ON CONFLICT (id) DO NOTHING;
 
 -- Generated Options
 INSERT INTO option (id, text, is_correct, question_id) VALUES
-    ('d5e7f9a1-b3c5-7d9e-f1a3-b5c7d9e0f2a4', 'Variables', TRUE, 'a7b9c1d3-e5f7-8a9b-c0d2-e4f6a8b0c2d4'),
-    ('e6f8a0b2-c4d6-8e9f-01b4-d6e8f0a2b4c6', 'Functions', FALSE, 'a7b9c1d3-e5f7-8a9b-c0d2-e4f6a8b0c2d4'),
-    ('f7a9b1c3-d5e7-9f01-23c5-e7f9a1b3c5d7', 'Geometry', FALSE, 'a7b9c1d3-e5f7-8a9b-c0d2-e4f6a8b0c2d4'),
-    ('08b0c2d4-e6f8-0a12-34d6-f8a0b2c4d6e8', 'Calculus', FALSE, 'a7b9c1d3-e5f7-8a9b-c0d2-e4f6a8b0c2d4'),
     ('19c1d3e5-f7a9-1b23-45e7-a9b1c3d5e7f9', 'Isolation of the variable', TRUE, 'b8c0d2e4-f6a8-9b0c-d1e3-f5a7b9c1d3e5'),
     ('2ad2e4f6-a8b0-2c34-56f8-b0c2d4e6f8a0', 'Graphing', FALSE, 'b8c0d2e4-f6a8-9b0c-d1e3-f5a7b9c1d3e5'),
     ('3be3f5a7-b9c1-3d45-67a9-c1d3e5f7a9b1', 'Substitution', FALSE, 'b8c0d2e4-f6a8-9b0c-d1e3-f5a7b9c1d3e5'),

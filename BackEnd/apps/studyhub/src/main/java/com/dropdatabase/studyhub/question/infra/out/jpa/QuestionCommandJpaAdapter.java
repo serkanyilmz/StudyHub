@@ -56,14 +56,24 @@ public class QuestionCommandJpaAdapter implements QuestionCommandPort {
     @Override
     @Transactional
     public void update(Question updatedQuestion) {
+        // Get the existing entity from database
+        QuestionJpaEntity existingEntity = questionJpaRepository.findById(updatedQuestion.getId().toString())
+                .orElseThrow(() -> new RuntimeException("Question not found"));
+        
+        // Get related entities
         TopicJpaEntity topicJpaEntity = topicJpaRepository.findById(updatedQuestion.getTopic().getId().toString())
                 .orElseThrow(() -> new RuntimeException("Topic not found"));
         WriterJpaEntity writerJpaEntity = writerJpaRepository.findById(updatedQuestion.getWriter().getId().toString())
-                .orElseThrow(() -> new RuntimeException("Writer not found with"));
-        QuestionJpaEntity updatedQuestionJpaEntity = new QuestionJpaEntity(updatedQuestion,
-                topicJpaEntity,
-                writerJpaEntity);
-        questionJpaRepository.save(updatedQuestionJpaEntity);
+                .orElseThrow(() -> new RuntimeException("Writer not found"));
+        
+        // Update fields on existing entity
+        existingEntity.setText(updatedQuestion.getText());
+        existingEntity.setTopicJpaEntity(topicJpaEntity);
+        existingEntity.setWriterJpaEntity(writerJpaEntity);
+        existingEntity.updateOptions(updatedQuestion.getOptions());
+        
+        // Save the updated entity
+        questionJpaRepository.save(existingEntity);
     }
 
     @Override
