@@ -17,9 +17,9 @@ interface Question {
   id: string
   text: string
   options: Array<{
-    id: string
-    text: string
-    isCorrect: boolean
+  id: string
+  text: string
+  correct: boolean
   }>
   topic: {
     id: string
@@ -265,16 +265,16 @@ export default function QuestionsPage() {
                           <Badge variant="outline">{question.topic.name}</Badge>
                           <Badge variant="secondary">{question.options.length} options</Badge>
                           <Badge variant="default">
-                            {question.options.filter((opt) => opt.isCorrect).length} correct
+                            {question.options.filter((opt) => opt.correct).length} correct
                           </Badge>
                         </div>
                         <div className="space-y-1">
                           {question.options.map((option, index) => (
                             <div key={option.id} className="text-sm flex items-center space-x-2">
                               <span
-                                className={`w-2 h-2 rounded-full ${option.isCorrect ? "bg-green-500" : "bg-gray-300"}`}
+                                className={`w-2 h-2 rounded-full ${option.correct ? "bg-green-500" : "bg-gray-300"}`}
                               />
-                              <span className={option.isCorrect ? "text-green-700 font-medium" : "text-gray-600"}>
+                              <span className={option.correct ? "text-green-700 font-medium" : "text-gray-600"}>
                                 {option.text}
                               </span>
                             </div>
