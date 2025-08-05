@@ -82,7 +82,7 @@ export default function WriterDashboard() {
         setTopics(topicsData)
       } catch (error) {
         console.error("Error fetching writer data:", error)
-        // Don't show error toast on dashboard load - just log it
+        
       } finally {
         setLoading(false)
       }
@@ -100,12 +100,13 @@ export default function WriterDashboard() {
   }
 
   const handleAIAction = (action: string) => {
-    
     toast({
       title: "AI Assistant",
       description: `${action} feature coming soon!`,
     })
   }
+
+ 
 
   if (loading) {
     return (
@@ -313,16 +314,17 @@ export default function WriterDashboard() {
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="p-4 border rounded-lg text-center connection-line">
-                <h3 className="font-medium mb-2">Question Suggestions</h3>
-                <p className="text-sm text-gray-600 mb-4">Get AI-generated question ideas based on topics</p>
-                <div className="relative">
-                  <Button variant="outline" size="sm" onClick={() => handleAIAction("Question Suggestions")}>
-                    Get Suggestions
-                  </Button>
-                  <GeminiComponent />
+              <Link href="/writer/question/new">
+                <div className="p-4 border rounded-lg text-center connection-line">
+                  <h3 className="font-medium mb-2">Question Suggestions</h3>
+                  <p className="text-sm text-gray-600 mb-4">Get AI-generated question ideas based on topics</p>
+                  <div className="relative">
+                    <Button variant="outline" size="sm">
+                      Get Suggestions
+                    </Button>
+                  </div>
                 </div>
-              </div>
+              </Link>
               <div className="p-4 border rounded-lg text-center connection-line">
                 <h3 className="font-medium mb-2">Content Quality Check</h3>
                 <p className="text-sm text-gray-600 mb-4">Analyze your questions for clarity and difficulty</p>
@@ -330,7 +332,7 @@ export default function WriterDashboard() {
                   <Button variant="outline" size="sm" onClick={() => handleAIAction("Content Quality Check")}>
                     Check Quality
                   </Button>
-                  <GeminiComponent />
+                  
                 </div>
               </div>
               <div className="p-4 border rounded-lg text-center connection-line">
@@ -340,7 +342,7 @@ export default function WriterDashboard() {
                   <Button variant="outline" size="sm" onClick={() => handleAIAction("Topic Insights")}>
                     View Insights
                   </Button>
-                  <GeminiComponent />
+                  
                 </div>
               </div>
             </div>
@@ -376,17 +378,19 @@ export default function WriterDashboard() {
                   <p className="text-sm text-gray-600">Organize content topics</p>
                 </div>
               </Link>
-              <div className="p-4 border rounded-lg text-center hover:bg-gray-50 cursor-pointer connection-line" onClick={() => handleAIAction("AI Assistant")}>
-                <Image
-                                src="/gemini-logo.svg" 
-                                alt="Gemini Icon"
-                                width={30}
-                                height={30}
-                                className="object-contain  mx-auto mb-2"
-                              />
-                <h3 className="font-medium mb-1">AI Assistant</h3>
-                <p className="text-sm text-gray-600">Get content suggestions</p>
-              </div>
+              <Link href="/writer/question/new">
+                <div className="p-4 border rounded-lg text-center hover:bg-gray-50 cursor-pointer connection-line" onClick={() => handleAIAction("More AI Assistant")}>
+                  <Image
+                    src="/gemini-logo.svg" 
+                    alt="Gemini Icon"
+                    width={30}
+                    height={30}
+                    className="object-contain  mx-auto mb-2"
+                  />
+                  <h3 className="font-medium mb-1">AI Assistant</h3>
+                  <p className="text-sm text-gray-600">Get content suggestions</p>
+                </div>
+              </Link>
             </div>
           </CardContent>
         </Card>

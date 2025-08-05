@@ -171,7 +171,10 @@ export default function NewQuestionPage() {
 
   const handleAISuggestion = async () => {
     if (!selectedTopicId) {
-      setError("Please select a topic before requesting AI suggestion")
+      toast({
+        title: "Select Topic",
+        description: "Please select a topic before requesting AI suggestion",
+      })
       return
     }
 
