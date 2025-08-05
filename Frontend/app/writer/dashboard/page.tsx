@@ -11,6 +11,7 @@ import { PenTool, FileText, Layers, Plus, Brain } from "lucide-react"
 import Link from "next/link"
 import { useToast } from "@/hooks/use-toast"
 import { useGeminiAnimation } from "@/components/GeminiAnimation"
+import Image from "next/image"
 
 interface Question {
   id: string
@@ -98,6 +99,14 @@ export default function WriterDashboard() {
     return quizzes.slice(0, 3)
   }
 
+  const handleAIAction = (action: string) => {
+    
+    toast({
+      title: "AI Assistant",
+      description: `${action} feature coming soon!`,
+    })
+  }
+
   if (loading) {
     return (
       <Layout>
@@ -175,7 +184,7 @@ export default function WriterDashboard() {
           <Card className="ai-enhanced border-2">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">AI Assistance</CardTitle>
-              <Brain className="h-4 w-4 text-blue-600" />
+              <Image src="/gemini-logo.svg" alt="Gemini" width={20} height={20} />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-blue-600">Active</div>
@@ -291,7 +300,13 @@ export default function WriterDashboard() {
         <Card className="ai-enhanced border-2">
           <CardHeader>
             <CardTitle className="flex items-center">
-              <Brain className="h-5 w-5 mr-2 text-blue-600" />
+              <Image
+                              src="/gemini-logo.svg" 
+                              alt="Gemini Icon"
+                              width={30}
+                              height={30}
+                              className="object-contain mr-2"
+                            />
               AI Content Assistant
             </CardTitle>
             <CardDescription>Get AI-powered suggestions for creating better educational content</CardDescription>
@@ -361,8 +376,14 @@ export default function WriterDashboard() {
                   <p className="text-sm text-gray-600">Organize content topics</p>
                 </div>
               </Link>
-              <div className="p-4 border rounded-lg text-center hover:bg-gray-50 cursor-pointer connection-line">
-                <Brain className="h-8 w-8 text-blue-600 mx-auto mb-2" />
+              <div className="p-4 border rounded-lg text-center hover:bg-gray-50 cursor-pointer connection-line" onClick={() => handleAIAction("AI Assistant")}>
+                <Image
+                                src="/gemini-logo.svg" 
+                                alt="Gemini Icon"
+                                width={30}
+                                height={30}
+                                className="object-contain  mx-auto mb-2"
+                              />
                 <h3 className="font-medium mb-1">AI Assistant</h3>
                 <p className="text-sm text-gray-600">Get content suggestions</p>
               </div>
