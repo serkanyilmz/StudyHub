@@ -42,6 +42,7 @@ export default function TeacherDashboard() {
   const { toast } = useToast()
   const [classrooms, setClassrooms] = useState<Classroom[]>([])
   const [allHomework, setAllHomework] = useState<Homework[]>([])
+  const [uniqueStudentsCount, setUniqueStudentsCount] = useState<number>(0)
   const [loading, setLoading] = useState(true)
   const router = useRouter()
 
@@ -69,6 +70,15 @@ export default function TeacherDashboard() {
           }
         }
         setAllHomework(homework)
+
+        // Fetch unique students count for this teacher
+        try {
+          const uniqueCount = await api.getTeacherUniqueStudentsCount(user.id)
+          setUniqueStudentsCount(uniqueCount)
+        } catch (error) {
+          console.error("Error fetching unique students count:", error)
+          // Don't show error toast for this, just keep it at 0
+        }
       } catch (error) {
         console.error("Error fetching teacher data:", error)
         toast({
@@ -149,7 +159,7 @@ export default function TeacherDashboard() {
               <BookOpen className="h-4 w-4 teacher-accent" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold teacher-accent">-</div>
+              <div className="text-2xl font-bold teacher-accent">{uniqueStudentsCount}</div>
               <p className="text-xs text-muted-foreground">Enrolled students</p>
             </CardContent>
           </Card>

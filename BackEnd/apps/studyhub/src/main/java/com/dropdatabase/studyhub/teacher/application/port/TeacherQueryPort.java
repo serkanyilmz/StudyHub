@@ -8,4 +8,5 @@ import java.util.UUID;
 public interface TeacherQueryPort {
     Teacher get(UUID id);
     List<Teacher> getAll();
+    int getUniqueStudentsCount(UUID teacherId);
 }

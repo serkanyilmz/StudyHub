@@ -22,4 +22,8 @@ public class TeacherQueryUseCase {
 
     public Teacher get(UUID id) {return teacherQueryPort.get(id);
     }
+
+    public int getUniqueStudentsCount(UUID teacherId) {
+        return teacherQueryPort.getUniqueStudentsCount(teacherId);
+    }
 }
