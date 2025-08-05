@@ -456,8 +456,8 @@ INSERT INTO option (id, text, is_correct, question_id) VALUES
     ON CONFLICT (id) DO NOTHING;
 
 INSERT INTO quiz (id, name, topic_id, writer_id) VALUES
-    ('0c1861a2-2b60-4ce2-bc80-2214ac783a07', 'Test1', '6406b56f-2480-47a4-9604-37d967b5556e', '37318be1-2d85-491d-8a19-8618b9256045'),
-    ('8bfb4bea-e842-4ce0-82bf-58b1099c0b02', 'Functions', '6406b56f-2480-47a4-9604-37d967b5556e', '37318be1-2d85-491d-8a19-8618b9256045'),
+    ('0c1861a2-2b60-4ce2-bc80-2214ac783a07', 'Test1', '12345678-7890-abcd-ef01-23456789abcd', '37318be1-2d85-491d-8a19-8618b9256045'),
+    ('8bfb4bea-e842-4ce0-82bf-58b1099c0b02', 'Functions', 'f5a6b7c8-d9e0-1f2a-3b4c-5d6e7f8a9b0c', '37318be1-2d85-491d-8a19-8618b9256045'),
     ('8bfb4bea-e842-4ce0-82bf-58b1099c0b03', 'Polynomial Quiz', 'f5a6b7c8-d9e0-1f2a-3b4c-5d6e7f8a9b0c', '37318be1-2d85-491d-8a19-8618b9256045')
     ON CONFLICT (id) DO NOTHING;
 
