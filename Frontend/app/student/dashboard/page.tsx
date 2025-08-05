@@ -108,7 +108,7 @@ export default function StudentDashboard() {
   if (!user?.id) return
   setProgressLoading(true)
   try {
-    const result = await api.getStudentProgress(user.id)
+    const result = await api.getStudentProgress(user.id) as [string, string]
     // result örneğin: ["Good", "Keep it up!"]
     setProgressData(result)
     localStorage.setItem("progressData", JSON.stringify(result))
@@ -224,10 +224,11 @@ useEffect(() => {
 
   const handleAIAction = (action: string) => {
     
-    toast({
-      title: "AI Assistant",
-      description: `${action} feature coming soon!`,
-    })
+      toast({
+        title: "AI Assistant",
+        description: `${action} feature coming soon!`,
+      })
+    
   }
 
   if (loading) {
@@ -331,17 +332,19 @@ useEffect(() => {
     )}
   </CardContent>
 </Card>
-          
-          <Card className="ai-enhanced border-2">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">AI Assistance</CardTitle>
-               <Image src="/gemini-logo.svg" alt="Gemini" width={20} height={20} />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-blue-600">Available</div>
-              <p className="text-xs text-muted-foreground">Get explanations</p>
-            </CardContent>
-          </Card>
+          <Link href="/student/ai-review">
+            <Card className="ai-enhanced border-2">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">AI Assistance</CardTitle>
+                  <Image src="/gemini-logo.svg" alt="Gemini" width={20} height={20} />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold text-blue-600">Available</div>
+                <p className="text-xs text-muted-foreground">Get explanations</p>
+              </CardContent>
+            </Card>
+          </Link>
+            
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -510,10 +513,11 @@ useEffect(() => {
                 <h3 className="font-medium mb-2">Smart Explanations</h3>
                 <p className="text-sm text-gray-600 mb-4">Get AI-powered explanations for any question you encounter</p>
                 <div className="relative">
-                  <Button variant="outline" size="sm" onClick={() => handleAIAction("Smart Explanations")}>
-                    Learn More
-                  </Button>
-                  
+                  <Link href="/student/ai-review">
+                    <Button variant="outline" size="sm">
+                      Learn More
+                    </Button>
+                  </Link>
                 </div>
               </div>
               <div className="p-4 border rounded-lg text-center connection-line">
