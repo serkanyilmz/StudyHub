@@ -3,6 +3,7 @@
 import type React from "react"
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
+import Image from "next/image"
 import { useAuth } from "@/contexts/AuthContext"
 import { api } from "@/lib/api"
 import Layout from "@/components/Layout"
@@ -57,6 +58,7 @@ export default function NewQuestionPage() {
   const [selectedTopicId, setSelectedTopicId] = useState("")
   const [topics, setTopics] = useState<Topic[]>([])
   const [loading, setLoading] = useState(false)
+  const [loadingAISuggestion, setLoadingAISuggestion] = useState(false)
   const [error, setError] = useState("")
 
   useEffect(() => {
@@ -178,7 +180,7 @@ export default function NewQuestionPage() {
       return
     }
 
-    setLoading(true)
+    setLoadingAISuggestion(true)
     setError("")
 
     try {
@@ -205,7 +207,7 @@ export default function NewQuestionPage() {
         variant: "destructive"
       })
     } finally {
-      setLoading(false)
+      setLoadingAISuggestion(false)
     }
   }
 
@@ -226,9 +228,19 @@ export default function NewQuestionPage() {
                 type="button"
                 variant="secondary"
                 onClick={handleAISuggestion}
-                disabled={loading}
+                disabled={loadingAISuggestion}
+                className="ai-enhanced flex items-center"
               >
-                Get AI Suggestion
+                <span className={loadingAISuggestion ? "mr-2 animate-pulse" : "mr-2"}>
+                  <Image
+                    src="/gemini-logo.svg"
+                    alt="Gemini Logo"
+                    width={16}
+                    height={16}
+                    className="h-4 w-4"
+                  />
+                </span>
+                {loadingAISuggestion ? "Getting AI suggestion..." : "Get AI Suggestion"}
               </Button>
             </div>
           </CardHeader>

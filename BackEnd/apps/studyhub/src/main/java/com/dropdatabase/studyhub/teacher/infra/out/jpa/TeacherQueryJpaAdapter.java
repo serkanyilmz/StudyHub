@@ -7,9 +7,9 @@ import com.dropdatabase.studyhub.classroom.infra.out.jpa.entity.ClassroomJpaEnti
 import com.dropdatabase.studyhub.homework.infra.out.jpa.HomeworkJpaRepository;
 import com.dropdatabase.studyhub.homework.infra.out.jpa.entity.HomeworkJpaEntity;
 import com.dropdatabase.studyhub.student.infra.out.jpa.entity.StudentJpaEntity;
-import com.dropdatabase.studyhub.teacher.application.command.AddTeacherCommand;
 import com.dropdatabase.studyhub.teacher.application.port.TeacherQueryPort;
 import com.dropdatabase.studyhub.teacher.domain.Teacher;
+import com.dropdatabase.studyhub.teacher.application.command.ClassroomStatsCommand;
 import com.dropdatabase.studyhub.teacher.infra.out.jpa.entity.TeacherJpaEntity;
 import org.springframework.stereotype.Component;
 
@@ -74,25 +74,25 @@ public class TeacherQueryJpaAdapter implements TeacherQueryPort {
     }
 
     @Override
-    public AddTeacherCommand.ClassroomStatsCommand getClassroomStats(UUID teacherId, UUID classroomId) {
+    public ClassroomStatsCommand getClassroomStats(UUID teacherId, UUID classroomId) {
         // Get the classroom
         Optional<ClassroomJpaEntity> classroomOpt = classroomJpaRepository.findById(classroomId.toString());
         if (classroomOpt.isEmpty()) {
-            return new AddTeacherCommand.ClassroomStatsCommand(0.0, 0.0, 0, 0, 0);
+            return new ClassroomStatsCommand(0.0, 0.0, 0, 0, 0);
         }
 
         ClassroomJpaEntity classroom = classroomOpt.get();
         
         // Verify teacher owns this classroom
         if (!classroom.getTeacher().getId().equals(teacherId.toString())) {
-            return new AddTeacherCommand.ClassroomStatsCommand(0.0, 0.0, 0, 0, 0);
+            return new ClassroomStatsCommand(0.0, 0.0, 0, 0, 0);
         }
 
         List<StudentJpaEntity> students = classroom.getStudents();
         int totalStudents = students.size();
 
         if (totalStudents == 0) {
-            return new AddTeacherCommand.ClassroomStatsCommand(0.0, 0.0, 0, 0, 0);
+            return new ClassroomStatsCommand(0.0, 0.0, 0, 0, 0);
         }
 
         // Get homework for this classroom
@@ -113,42 +113,32 @@ public class TeacherQueryJpaAdapter implements TeacherQueryPort {
         // Get all answers for students in this classroom
         List<AnswerJpaEntity> allAnswers = answerJpaRepository.findAll();
 
-        // Filter answers for students in this classroom and calculate scores properly
+        // Filter answers for students in this classroom
         for (StudentJpaEntity student : students) {
             List<AnswerJpaEntity> studentAnswers = allAnswers.stream()
                     .filter(answer -> answer.getStudent().getId().equals(student.getId()))
                     .collect(Collectors.toList());
 
-            // Group answers by quiz to calculate quiz scores
+            // Group by quiz to count completed quizzes and calculate scores
             Set<String> completedQuizIds = new HashSet<>();
             
-            // Group answers by quiz
-            var answersByQuiz = studentAnswers.stream()
-                    .filter(answer -> {
-                        String quizId = answer.getQuiz().getId();
-                        return homeworkList.stream()
-                                .anyMatch(hw -> hw.getQuizzes().stream()
-                                        .anyMatch(quiz -> quiz.getId().equals(quizId)));
-                    })
-                    .collect(Collectors.groupingBy(answer -> answer.getQuiz().getId()));
-            
-            // Calculate score for each completed quiz
-            for (var entry : answersByQuiz.entrySet()) {
-                String quizId = entry.getKey();
-                List<AnswerJpaEntity> quizAnswers = entry.getValue();
+            for (AnswerJpaEntity answer : studentAnswers) {
+                String quizId = answer.getQuiz().getId();
                 
-                completedQuizIds.add(quizId);
+                // Check if this quiz belongs to any homework in this classroom
+                boolean belongsToClassroom = homeworkList.stream()
+                        .anyMatch(hw -> hw.getQuizzes().stream()
+                                .anyMatch(quiz -> quiz.getId().equals(quizId)));
                 
-                // Calculate score for this quiz
-                long correctAnswers = quizAnswers.stream()
-                        .mapToLong(answer -> answer.getOption().isCorrect() ? 1 : 0)
-                        .sum();
-                
-                double quizScore = quizAnswers.size() > 0 ? 
-                        (double) correctAnswers / quizAnswers.size() * 100.0 : 0.0;
-                
-                totalScore += quizScore;
-                scoredAnswers++;
+                if (belongsToClassroom) {
+                    completedQuizIds.add(quizId);
+                    
+                    // Add to score calculation (assuming option.isCorrect indicates correct answer)
+                    if (answer.getOption().isCorrect()) {
+                        totalScore += 100.0; // 100% for correct answer
+                    }
+                    scoredAnswers++;
+                }
             }
             
             completedQuizzes += completedQuizIds.size();
@@ -159,6 +149,6 @@ public class TeacherQueryJpaAdapter implements TeacherQueryPort {
         double completionRate = (totalStudents * totalQuizzes) > 0 ? 
                 (double) completedQuizzes / (totalStudents * totalQuizzes) * 100.0 : 0.0;
 
-        return new AddTeacherCommand.ClassroomStatsCommand(averageScore, completionRate, totalStudents, totalQuizzes, completedQuizzes);
+        return new ClassroomStatsCommand(averageScore, completionRate, totalStudents, totalQuizzes, completedQuizzes);
     }
 }

@@ -11,14 +11,4 @@ public record AddTeacherCommand(String firstName, String lastName, String email,
         return new Teacher(firstName, lastName, email, phoneNumber);
     }
 
-    @Getter
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class ClassroomStatsCommand {
-        private double averageScore;
-        private double completionRate;
-        private int totalStudents;
-        private int totalQuizzes;
-        private int completedQuizzes;
-    }
 }
