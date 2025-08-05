@@ -38,6 +38,11 @@ interface Homework {
   }>
 }
 
+interface QuizResult {
+  completed: boolean
+  score: number
+}
+
 export default function StudentDashboard() {
   const { user } = useAuth()
   const { toast } = useToast()
@@ -50,6 +55,7 @@ export default function StudentDashboard() {
   const [joining, setJoining] = useState(false)
   const [progressData, setProgressData] = useState<[string, string] | null>(null)
   const [progressLoading, setProgressLoading] = useState(false)
+  const [homeworkQuizResults, setHomeworkQuizResults] = useState<Record<string, Record<string, QuizResult>>>({})
 
   const fetchData = async () => {
     if (!user?.id) return
@@ -70,6 +76,22 @@ export default function StudentDashboard() {
         }
       }
       setHomework(allHomework)
+
+      // Fetch quiz results for all homework
+      const quizResults: Record<string, Record<string, QuizResult>> = {}
+      for (const hw of allHomework) {
+        quizResults[hw.id] = {}
+        for (const quiz of hw.quizzes) {
+          try {
+            const result = await api.getStudentQuizResult(user.id, quiz.id)
+            quizResults[hw.id][quiz.id] = result
+          } catch (error) {
+            // If error, assume not completed
+            quizResults[hw.id][quiz.id] = { completed: false, score: 0 }
+          }
+        }
+      }
+      setHomeworkQuizResults(quizResults)
     } catch (error) {
       console.error("Error fetching student data:", error)
       toast({
@@ -86,7 +108,7 @@ export default function StudentDashboard() {
   if (!user?.id) return
   setProgressLoading(true)
   try {
-    const result = await api.getStudentProgress(user.id)
+    const result = await api.getStudentProgress(user.id) as [string, string]
     // result örneğin: ["Good", "Keep it up!"]
     setProgressData(result)
     localStorage.setItem("progressData", JSON.stringify(result))
@@ -169,6 +191,13 @@ useEffect(() => {
       .slice(0, 5)
   }
 
+  const isHomeworkCompleted = (homeworkId: string, quizzes: Array<{id: string, name: string}>) => {
+    const hwResults = homeworkQuizResults[homeworkId]
+    if (!hwResults) return false
+    
+    return quizzes.every(quiz => hwResults[quiz.id]?.completed === true)
+  }
+
   const formatDeadline = (deadline: string) => {
     const date = new Date(deadline)
     const now = new Date()
@@ -195,10 +224,11 @@ useEffect(() => {
 
   const handleAIAction = (action: string) => {
     
-    toast({
-      title: "AI Assistant",
-      description: `${action} feature coming soon!`,
-    })
+      toast({
+        title: "AI Assistant",
+        description: `${action} feature coming soon!`,
+      })
+    
   }
 
   if (loading) {
@@ -302,17 +332,19 @@ useEffect(() => {
     )}
   </CardContent>
 </Card>
-          
-          <Card className="ai-enhanced border-2">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">AI Assistance</CardTitle>
-               <Image src="/gemini-logo.svg" alt="Gemini" width={20} height={20} />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-blue-600">Available</div>
-              <p className="text-xs text-muted-foreground">Get explanations</p>
-            </CardContent>
-          </Card>
+          <Link href="/student/ai-review">
+            <Card className="ai-enhanced border-2">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">AI Assistance</CardTitle>
+                  <Image src="/gemini-logo.svg" alt="Gemini" width={20} height={20} />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold text-blue-600">Available</div>
+                <p className="text-xs text-muted-foreground">Get explanations</p>
+              </CardContent>
+            </Card>
+          </Link>
+            
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -419,27 +451,41 @@ useEffect(() => {
                 </div>
               ) : (
                 <div className="space-y-4">
-                  {getUpcomingHomework().map((hw) => (
-                    <div
-                      key={hw.id}
-                      className="flex items-center justify-between p-4 border rounded-lg connection-line"
-                    >
-                      <div className="flex-1">
-                        <h3 className="font-medium">{hw.name}</h3>
-                        <p className="text-sm text-gray-600">
-                          {hw.quizzes.length} quiz{hw.quizzes.length !== 1 ? "es" : ""}
-                        </p>
-                        <Badge variant={getDeadlineColor(hw.deadline)} className="mt-2">
-                          {formatDeadline(hw.deadline)}
-                        </Badge>
+                  {getUpcomingHomework().map((hw) => {
+                    const isCompleted = isHomeworkCompleted(hw.id, hw.quizzes)
+                    return (
+                      <div
+                        key={hw.id}
+                        className="flex items-center justify-between p-4 border rounded-lg connection-line"
+                      >
+                        <div className="flex-1">
+                          <h3 className="font-medium">{hw.name}</h3>
+                          <p className="text-sm text-gray-600">
+                            {hw.quizzes.length} quiz{hw.quizzes.length !== 1 ? "es" : ""}
+                          </p>
+                          <div className="flex items-center space-x-2 mt-2">
+                            <Badge variant={getDeadlineColor(hw.deadline)} className="mt-2">
+                              {formatDeadline(hw.deadline)}
+                            </Badge>
+                            {isCompleted && (
+                              <Badge variant="default" className="student-bg mt-2">
+                                Completed
+                              </Badge>
+                            )}
+                          </div>
+                        </div>
+                        <Link href={`/student/homework/${hw.id}`}>
+                          <Button 
+                            size="sm" 
+                            variant={isCompleted ? "outline" : "default"}
+                            className={isCompleted ? "" : "bg-green-600 hover:bg-green-700"}
+                          >
+                            {isCompleted ? "Review" : "Start"}
+                          </Button>
+                        </Link>
                       </div>
-                      <Link href={`/student/homework/${hw.id}`}>
-                        <Button size="sm" className="bg-green-600 hover:bg-green-700">
-                          Start
-                        </Button>
-                      </Link>
-                    </div>
-                  ))}
+                    )
+                  })}
                 </div>
               )}
             </CardContent>
@@ -467,10 +513,11 @@ useEffect(() => {
                 <h3 className="font-medium mb-2">Smart Explanations</h3>
                 <p className="text-sm text-gray-600 mb-4">Get AI-powered explanations for any question you encounter</p>
                 <div className="relative">
-                  <Button variant="outline" size="sm" onClick={() => handleAIAction("Smart Explanations")}>
-                    Learn More
-                  </Button>
-                  
+                  <Link href="/student/ai-review">
+                    <Button variant="outline" size="sm">
+                      Learn More
+                    </Button>
+                  </Link>
                 </div>
               </div>
               <div className="p-4 border rounded-lg text-center connection-line">

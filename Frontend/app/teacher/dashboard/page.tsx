@@ -99,12 +99,21 @@ export default function TeacherDashboard() {
   }
 
   const formatDeadline = (deadline: string) => {
-    return new Date(deadline).toLocaleDateString("en-US", {
+    const deadlineDate = new Date(deadline)
+    const now = new Date()
+    const isOverdue = deadlineDate < now
+    
+    const formattedDate = deadlineDate.toLocaleDateString("en-US", {
       month: "short",
       day: "numeric",
       hour: "2-digit",
       minute: "2-digit",
     })
+    
+    return {
+      text: isOverdue ? `Overdue: ${formattedDate}` : `Due: ${formattedDate}`,
+      isOverdue
+    }
   }
 
   if (loading) {
@@ -278,7 +287,12 @@ export default function TeacherDashboard() {
                           <Badge variant="outline">
                             {homework.quizzes.length} quiz{homework.quizzes.length !== 1 ? "es" : ""}
                           </Badge>
-                          <Badge variant="secondary">Due: {formatDeadline(homework.deadline)}</Badge>
+                          <Badge 
+                            variant={formatDeadline(homework.deadline).isOverdue ? "outline" : "secondary"}
+                            className={formatDeadline(homework.deadline).isOverdue ? "bg-red-50 text-red-600 border-red-200" : ""}
+                          >
+                            {formatDeadline(homework.deadline).text}
+                          </Badge>
                         </div>
                       </div>
                       <Link href={`/teacher/homework/${homework.id}`}>
