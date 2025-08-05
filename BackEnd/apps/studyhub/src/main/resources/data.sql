@@ -18,26 +18,28 @@ DELETE FROM users;
 INSERT INTO users (id, username, password, full_name, role, created_at, updated_at, approved) VALUES
       ('37318be1-2d85-491d-8a19-8618b9256045', 'serkan.yilmaz', '$2a$10$05SqRAfMrjH7wH7PZvAUmel9kWnJZMYURaXJyuax1w0JO8OIclJFO', 'Serkan Yilmaz', 'WRITER', CURRENT_TIMESTAMP, NULL, true),
       ('37318be1-2d85-491d-8a19-8618b9256046', 'deniz.celik', '$2a$10$05SqRAfMrjH7wH7PZvAUmel9kWnJZMYURaXJyuax1w0JO8OIclJFO', 'Deniz Çelik', 'WRITER', CURRENT_TIMESTAMP, NULL, true),
-      ('5adee6b9-da8d-4039-8f5c-11c0d3255c09', 'asli.mansur', '$2a$10$05SqRAfMrjH7wH7PZvAUmel9kWnJZMYURaXJyuax1w0JO8OIclJFO', 'Asli Mansur', 'WRITER', CURRENT_TIMESTAMP, NULL, true),
+      ('5adee6b9-da8d-4039-8f5c-11c0d3255c09', 'asli.mansur', '$2a$10$05SqRAfMrjH7wH7PZvAUmel9kWnJZMYURaXJyuax1w0JO8OIclJFO', 'Aslı Mansur', 'WRITER', CURRENT_TIMESTAMP, NULL, true),
       ('6ac7e45f-6860-454a-a349-a031a7abb979', 'erkim.berk', '$2a$10$05SqRAfMrjH7wH7PZvAUmel9kWnJZMYURaXJyuax1w0JO8OIclJFO', 'Erkim Berk Unsal', 'TEACHER', CURRENT_TIMESTAMP, NULL, true),
-      ('f3087d3e-d436-489e-ba96-fc8b36e71582', 'burak.can', '$2a$10$05SqRAfMrjH7wH7PZvAUmel9kWnJZMYURaXJyuax1w0JO8OIclJFO', 'Burak Can', 'TEACHER', CURRENT_TIMESTAMP, NULL, true),
-      ('253493d6-0cf0-4b3b-a2db-e189abee4e6d', 'zeynep.kaya', '$2a$10$05SqRAfMrjH7wH7PZvAUmel9kWnJZMYURaXJyuax1w0JO8OIclJFO', 'Zeynep Kaya', 'TEACHER', CURRENT_TIMESTAMP, NULL, true),
-      ('02ce1001-197a-420a-b88d-7f60c0646020', 'sumeyye.sakar', '$2a$10$05SqRAfMrjH7wH7PZvAUmel9kWnJZMYURaXJyuax1w0JO8OIclJFO', 'Sumeyye Sakar', 'STUDENT', CURRENT_TIMESTAMP, NULL, true)
+      ('f3087d3e-d436-489e-ba96-fc8b36e71582', 'burak.can', '$2a$10$05SqRAfMrjH7wH7PZvAUmel9kWnJZMYURaXJyuax1w0JO8OIclJFO', 'Burak Can', 'STUDENT', CURRENT_TIMESTAMP, NULL, true),
+      ('253493d6-0cf0-4b3b-a2db-e189abee4e6d', 'zeynep.kaya', '$2a$10$05SqRAfMrjH7wH7PZvAUmel9kWnJZMYURaXJyuax1w0JO8OIclJFO', 'Zeynep Kaya', 'STUDENT', CURRENT_TIMESTAMP, NULL, true),
+      ('02ce1001-197a-420a-b88d-7f60c0646020', 'sumeyye.sakar', '$2a$10$05SqRAfMrjH7wH7PZvAUmel9kWnJZMYURaXJyuax1w0JO8OIclJFO', 'Sümeyye Şakar', 'STUDENT', CURRENT_TIMESTAMP, NULL, true),
+      ('c5d6e7f8-a9b0-1c2d-3e4f-567890abcdef', 'erdinc.uysal', '$2a$10$05SqRAfMrjH7wH7PZvAUmel9kWnJZMYURaXJyuax1w0JO8OIclJFO', 'Erdinç Uysal', 'TEACHER', CURRENT_TIMESTAMP, NULL, true),
+      ('d6e7f8a9-b0c1-2d3e-4f5a-6789abcdef01', 'sumbul.sukur', '$2a$10$05SqRAfMrjH7wH7PZvAUmel9kWnJZMYURaXJyuax1w0JO8OIclJFO', 'Sümbül Şükür', 'TEACHER', CURRENT_TIMESTAMP, NULL, true)
     ON CONFLICT (id) DO NOTHING;
 
 --Teacher
 INSERT INTO teacher (id, first_name, last_name, email, phone_number, registration_date) VALUES
-    ('6ac7e45f-6860-454a-a349-a031a7abb979', 'Erkim Berk', 'Unsal', 'elif.demir@studyhub.com', '5301234567', CURRENT_TIMESTAMP),
-    ('f3087d3e-d436-489e-ba96-fc8b36e71582', 'Burak', 'Can', 'burak.can@studyhub.com', '5329876543', CURRENT_TIMESTAMP),
-    ('253493d6-0cf0-4b3b-a2db-e189abee4e6d', 'Zeynep', 'Kaya', 'zeynep.kaya@studyhub.com', '5351122334', CURRENT_TIMESTAMP)
+    ('6ac7e45f-6860-454a-a349-a031a7abb979', 'Erkim Berk', 'Unsal', 'erkim.berk@studyhub.com', '5301234567', CURRENT_TIMESTAMP),
+    ('c5d6e7f8-a9b0-1c2d-3e4f-567890abcdef', 'Erdinç', 'Uysal', 'erdinc.uysal@studyhub.com', '5329876543', CURRENT_TIMESTAMP),
+    ('d6e7f8a9-b0c1-2d3e-4f5a-6789abcdef01', 'Sümbül', 'Şükür', 'sumbul.sukur@studyhub.com', '5351122334', CURRENT_TIMESTAMP)
     ON CONFLICT (id) DO NOTHING;
 
 --Classroom
 INSERT INTO classroom (id, code, name, teacher_id) VALUES
     ('6afc06b9-8b54-4ae8-ad61-21afb5541b6c', 'ALGEB101', 'Introduction to Algebra', '6ac7e45f-6860-454a-a349-a031a7abb979'),
     ('4af50907-aad0-443d-926a-335acc58ef93', 'INTEG101', 'Introduction to Integral', '6ac7e45f-6860-454a-a349-a031a7abb979'),
-    ('b6d74e9e-1f21-4f73-a500-da0cd1d9b242', 'LOG101', 'Introduction to Logarithms', '6ac7e45f-6860-454a-a349-a031a7abb979'),
-    ('753de14c-3fad-4f6c-96d0-2b8512ce2be6', 'SCI101', 'General Science', 'f3087d3e-d436-489e-ba96-fc8b36e71582')
+    ('b6d74e9e-1f21-4f73-a500-da0cd1d9b242', 'LOG101', 'Introduction to Logarithms', 'c5d6e7f8-a9b0-1c2d-3e4f-567890abcdef'),
+    ('753de14c-3fad-4f6c-96d0-2b8512ce2be6', 'SCI101', 'General Science', 'd6e7f8a9-b0c1-2d3e-4f5a-6789abcdef01')
     ON CONFLICT (id) DO NOTHING;
 
 --Writer
@@ -473,17 +475,19 @@ ON CONFLICT (quiz_id, question_id) DO NOTHING;
 
 INSERT INTO homework (id, name, classroom_id, deadline) VALUES
     ('c435b74f-98dc-4ce3-a043-a7b46ec6411a', 'HW1', '6afc06b9-8b54-4ae8-ad61-21afb5541b6c', '2025-08-15T20:59:59Z'),
-    ('96bdad4a-79d1-496b-b159-9d235906740c', 'HW2', '6afc06b9-8b54-4ae8-ad61-21afb5541b6c', '2025-08-15T23:59:59+03:00[Europe/Istanbul]')
+    ('96bdad4a-79d1-496b-b159-9d235906740c', 'HW2', '6afc06b9-8b54-4ae8-ad61-21afb5541b6c', '2025-08-15T23:59:59+03:00[Europe/Istanbul]'),
+    ('a5b6c7d8-e9f0-1234-5678-9abcdef01234', 'Algebra Quiz', '6afc06b9-8b54-4ae8-ad61-21afb5541b6c', '2025-07-30T23:59:59Z')
 ON CONFLICT (id) DO NOTHING;
 
 INSERT INTO homework_quiz (homework_id, quiz_id) VALUES
     ('c435b74f-98dc-4ce3-a043-a7b46ec6411a', '0c1861a2-2b60-4ce2-bc80-2214ac783a07'),
     ('c435b74f-98dc-4ce3-a043-a7b46ec6411a', '8bfb4bea-e842-4ce0-82bf-58b1099c0b02'),
-    ('96bdad4a-79d1-496b-b159-9d235906740c', '8bfb4bea-e842-4ce0-82bf-58b1099c0b03')
+    ('96bdad4a-79d1-496b-b159-9d235906740c', '8bfb4bea-e842-4ce0-82bf-58b1099c0b03'),
+    ('a5b6c7d8-e9f0-1234-5678-9abcdef01234', '0c1861a2-2b60-4ce2-bc80-2214ac783a07')
 ;
 
 INSERT INTO student (id, first_name, last_name, email, phone_number, registration_date) VALUES
-    ('02ce1001-197a-420a-b88d-7f60c0646020', 'Sumeyye', 'Sakar', 'sumeyye.sakar@studyhub.com', '5301234567', CURRENT_TIMESTAMP),
+    ('02ce1001-197a-420a-b88d-7f60c0646020', 'Sümeyye', 'Şakar', 'sumeyye.sakar@studyhub.com', '5301234567', CURRENT_TIMESTAMP),
     ('f3087d3e-d436-489e-ba96-fc8b36e71582', 'Burak', 'Can', 'burak.can@studyhub.com', '5329876543', CURRENT_TIMESTAMP),
     ('253493d6-0cf0-4b3b-a2db-e189abee4e6d', 'Zeynep', 'Kaya', 'zeynep.kaya@studyhub.com', '5351122334', CURRENT_TIMESTAMP)
     ON CONFLICT (id) DO NOTHING;
