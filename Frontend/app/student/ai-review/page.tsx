@@ -285,33 +285,26 @@ export default function AIReviewPage() {
   }
 
   const formatAIExplanation = (text: string) => {
-    return text.split('\n').map((line, index) => {
+    // First apply the formatting transformations
+    const formattedText = text
+      .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+      .replace(/\$(.*?)\$/g, "<span style='font-family:monospace'>$1</span>")
+      .replace(/\n/g, "<br/>")
+    
+    // Then split by <br/> tags and create JSX elements
+    return formattedText.split('<br/>').map((line, index) => {
       const trimmedLine = line.trim()
-      
-      if (trimmedLine.startsWith('**') && trimmedLine.endsWith('**')) {
-        return (
-          <h3 key={index} className="font-semibold text-lg mb-2 text-blue-800">
-            {trimmedLine.slice(2, -2)}
-          </h3>
-        )
-      }
-      
-      if (trimmedLine.startsWith('*') && trimmedLine.endsWith('*')) {
-        return (
-          <h4 key={index} className="font-medium text-base mb-1 text-blue-700">
-            {trimmedLine.slice(1, -1)}
-          </h4>
-        )
-      }
       
       if (trimmedLine === '') {
         return <br key={index} />
       }
       
       return (
-        <p key={index} className="mb-2 text-gray-700 leading-relaxed">
-          {trimmedLine}
-        </p>
+        <p 
+          key={index} 
+          className="mb-2 text-gray-700 leading-relaxed"
+          dangerouslySetInnerHTML={{ __html: trimmedLine }}
+        />
       )
     })
   }

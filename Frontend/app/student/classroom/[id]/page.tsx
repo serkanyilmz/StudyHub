@@ -244,7 +244,7 @@ export default function ClassroomPage() {
                           <p className="text-sm text-gray-600">
                             {hw.quizzes.length} quiz{hw.quizzes.length !== 1 ? "es" : ""}
                           </p>
-                          <Badge variant="outline" className="mt-2">
+                          <Badge variant="destructive" className="mt-2">
                             {formatDeadline(hw.deadline)}
                           </Badge>
                         </div>

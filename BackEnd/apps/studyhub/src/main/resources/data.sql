@@ -483,7 +483,7 @@ INSERT INTO homework_quiz (homework_id, quiz_id) VALUES
     ('c435b74f-98dc-4ce3-a043-a7b46ec6411a', '0c1861a2-2b60-4ce2-bc80-2214ac783a07'),
     ('c435b74f-98dc-4ce3-a043-a7b46ec6411a', '8bfb4bea-e842-4ce0-82bf-58b1099c0b02'),
     ('96bdad4a-79d1-496b-b159-9d235906740c', '8bfb4bea-e842-4ce0-82bf-58b1099c0b03'),
-    ('a5b6c7d8-e9f0-1234-5678-9abcdef01234', '0c1861a2-2b60-4ce2-bc80-2214ac783a07')
+    ('a5b6c7d8-e9f0-1234-5678-9abcdef01234', '8bfb4bea-e842-4ce0-82bf-58b1099c0b02')
 ;
 
 INSERT INTO student (id, first_name, last_name, email, phone_number, registration_date) VALUES
@@ -498,3 +498,13 @@ INSERT INTO classroom_student (classroom_id, student_id) VALUES
     ('6afc06b9-8b54-4ae8-ad61-21afb5541b6c', 'f3087d3e-d436-489e-ba96-fc8b36e71582'),
     ('6afc06b9-8b54-4ae8-ad61-21afb5541b6c', '253493d6-0cf0-4b3b-a2db-e189abee4e6d')
 ;
+-- Sumeyye Sakar'ın Test1 quiz'indeki cevapları (2 doğru, 1 yanlış)
+INSERT INTO answer (id, student_id, quiz_id, question_id, option_id) VALUES
+    ('a1b2c3d4-e5f6-7a8b-9c0d-e1f2a3b4c5d6', '02ce1001-197a-420a-b88d-7f60c0646020', '0c1861a2-2b60-4ce2-bc80-2214ac783a07', '1ec6d0e1-f2a3-5b6c-7d8e-9f0123456789', '9129f510-fb12-f5a7-8905-6d35e7f9a1b3'), -- Doğru: Turkish victory against Greek forces
+    ('b2c3d4e5-f6a7-8b9c-0d1e-f2a3b4c5d6e7', '02ce1001-197a-420a-b88d-7f60c0646020', '0c1861a2-2b60-4ce2-bc80-2214ac783a07', '853d7e8f-a9b0-2345-6789-abcde0f12345', '6e705253-c84b-c2f5-7892-3a12848b9c5e'), -- Yanlış: Accepting foreign occupation (doğru: Calling for national unity and resistance)
+    ('c3d4e5f6-a7b8-9c0d-1e2f-a3b4c5d6e7f8', '02ce1001-197a-420a-b88d-7f60c0646020', '0c1861a2-2b60-4ce2-bc80-2214ac783a07', '2fd7b8c9-e9f0-2345-6781-456789abcdef', 'd5e7c92a-3fb2-396c-6789-a18f1b1c16c5'), -- Doğru: Inequalities involving absolute values
+
+-- Burak Can'ın Test1 quiz'indeki cevapları (1 doğru, 2 yanlış)
+    ('d4e5f6a7-b8c9-0d1e-2f3a-4b5c6d7e8f9a', 'f3087d3e-d436-489e-ba96-fc8b36e71582', '0c1861a2-2b60-4ce2-bc80-2214ac783a07', '1ec6d0e1-f2a3-5b6c-7d8e-9f0123456789', 'a23a0621-0c23-06b8-9016-7e46f8a0b2c4'), -- Yanlış: Allied occupation of Istanbul (doğru: Turkish victory against Greek forces)
+    ('e5f6a7b8-c9d0-1e2f-3a4b-5c6d7e8f9a0b', 'f3087d3e-d436-489e-ba96-fc8b36e71582', '0c1861a2-2b60-4ce2-bc80-2214ac783a07', '853d7e8f-a9b0-2345-6789-abcde0f12345', '5d6f4142-b73a-b1e4-6781-2901737a8b4d'), -- Doğru: Calling for national unity and resistance
+    ('f6a7b8c9-d0e1-2f3a-4b5c-6d7e8f9a0b1c', 'f3087d3e-d436-489e-ba96-fc8b36e71582', '0c1861a2-2b60-4ce2-bc80-2214ac783a07', '2fd7b8c9-e9f0-2345-6781-456789abcdef', 'e6f8da3b-40c3-4a7d-7890-b2902c2d27d6'); -- Yanlış: Basic linear equations (doğru: Inequalities involving absolute values)
