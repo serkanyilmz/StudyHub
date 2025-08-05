@@ -33,11 +33,11 @@ public class QuestionJpaEntity {
     @OneToMany(mappedBy = "questionJpaEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<OptionJpaEntity> options;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "writer_id", referencedColumnName = "id", nullable = false)
     private WriterJpaEntity writerJpaEntity;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "topic_id", referencedColumnName = "id", nullable = false)
     private TopicJpaEntity topicJpaEntity;
 

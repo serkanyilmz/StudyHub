@@ -80,8 +80,14 @@ CREATE TABLE IF NOT EXISTS quiz (
     name VARCHAR(255) NOT NULL,
     topic_id VARCHAR(255) NOT NULL,
     writer_id VARCHAR(255) NOT NULL,
-    FOREIGN KEY (topic_id) REFERENCES topic(id),
-    FOREIGN KEY (writer_id) REFERENCES writer(id)
+    CONSTRAINT fk_quiz_topic
+    FOREIGN KEY (topic_id) 
+    REFERENCES topic(id) 
+    ON DELETE RESTRICT,
+    CONSTRAINT fk_quiz_writer
+    FOREIGN KEY (writer_id) 
+    REFERENCES writer(id) 
+    ON DELETE RESTRICT
     );
 
 CREATE TABLE IF NOT EXISTS quiz_question (
@@ -89,7 +95,14 @@ CREATE TABLE IF NOT EXISTS quiz_question (
     question_id VARCHAR(255) NOT NULL,
     question_no INT NOT NULL,
     PRIMARY KEY (quiz_id, question_id),
-    FOREIGN KEY (quiz_id) REFERENCES quiz(id)
+    CONSTRAINT fk_quiz_question_quiz
+    FOREIGN KEY (quiz_id) 
+    REFERENCES quiz(id) 
+    ON DELETE CASCADE,
+    CONSTRAINT fk_quiz_question_question
+    FOREIGN KEY (question_id) 
+    REFERENCES question(id) 
+    ON DELETE RESTRICT
     );
 
 CREATE TABLE IF NOT EXISTS homework (
@@ -106,8 +119,14 @@ CREATE TABLE IF NOT EXISTS homework_quiz (
     homework_id VARCHAR(255) NOT NULL,
     quiz_id VARCHAR(255) NOT NULL,
     PRIMARY KEY (quiz_id, homework_id),
-    FOREIGN KEY (quiz_id) REFERENCES quiz(id),
-    FOREIGN KEY (homework_id) REFERENCES homework(id)
+    CONSTRAINT fk_homework_quiz_quiz
+    FOREIGN KEY (quiz_id) 
+    REFERENCES quiz(id) 
+    ON DELETE CASCADE,
+    CONSTRAINT fk_homework_quiz_homework
+    FOREIGN KEY (homework_id) 
+    REFERENCES homework(id) 
+    ON DELETE CASCADE
     );
 
 CREATE TABLE IF NOT EXISTS student (
@@ -133,8 +152,20 @@ CREATE TABLE IF NOT EXISTS answer (
     quiz_id VARCHAR(255) NOT NULL,
     question_id VARCHAR(255) NOT NULL,
     option_id VARCHAR(255) NOT NULL,
-    FOREIGN KEY (student_id) REFERENCES student(id),
-    FOREIGN KEY (quiz_id) REFERENCES quiz(id),
-    FOREIGN KEY (question_id) REFERENCES question(id),
-    FOREIGN KEY (option_id) REFERENCES option(id)
+    CONSTRAINT fk_answer_student
+    FOREIGN KEY (student_id) 
+    REFERENCES student(id) 
+    ON DELETE CASCADE,
+    CONSTRAINT fk_answer_quiz
+    FOREIGN KEY (quiz_id) 
+    REFERENCES quiz(id) 
+    ON DELETE CASCADE,
+    CONSTRAINT fk_answer_question
+    FOREIGN KEY (question_id) 
+    REFERENCES question(id) 
+    ON DELETE CASCADE,
+    CONSTRAINT fk_answer_option
+    FOREIGN KEY (option_id) 
+    REFERENCES option(id) 
+    ON DELETE CASCADE
     );
