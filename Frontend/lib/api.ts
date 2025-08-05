@@ -282,6 +282,16 @@ class ApiClient {
     return this.request<number>(`/teacher/${teacherId}/unique-students-count`)
   }
 
+  async getTeacherClassroomStats(teacherId: string, classroomId: string) {
+    return this.request<{
+      averageScore: number
+      completionRate: number
+      totalStudents: number
+      totalQuizzes: number
+      completedQuizzes: number
+    }>(`/teacher/${teacherId}/classroom/${classroomId}/stats`)
+  }
+
   // Writers
   async getWriters() {
     return this.request<any[]>("/writer")
@@ -337,28 +347,23 @@ class ApiClient {
   //   }
   // }
 
-  // Students
+  // Get all quiz results for a student using backend endpoints (optimized)
   async getStudentAllQuizResults(studentId: string) {
     try {
-      const allAnswers = await this.getAnswers()
-      const studentAnswers = allAnswers.filter((answer: any) => answer.student?.id === studentId)
-
+      // First get all quizzes to know what to check
+      const allQuizzes = await this.getQuizzes()
       const quizResults: Record<string, { completed: boolean; score: number }> = {}
 
-      // Group answers by quiz
-      const answersByQuiz = studentAnswers.reduce((acc: any, answer: any) => {
-        const quizId = answer.quiz?.id
-        if (!acc[quizId]) acc[quizId] = []
-        acc[quizId].push(answer)
-        return acc
-      }, {})
-
-      // Calculate results for each quiz
-      Object.entries(answersByQuiz).forEach(([quizId, answers]: [string, any]) => {
-        const correctAnswers = answers.filter((answer: any) => answer.isCorrect === true)
-        const score = answers.length > 0 ? Math.round((correctAnswers.length / answers.length) * 100) : 0
-        quizResults[quizId] = { completed: true, score }
-      })
+      // Check each quiz result using the backend endpoint
+      for (const quiz of allQuizzes) {
+        try {
+          const result = await this.getStudentQuizResult(studentId, quiz.id)
+          quizResults[quiz.id] = result
+        } catch (error) {
+          // If error, assume not completed
+          quizResults[quiz.id] = { completed: false, score: 0 }
+        }
+      }
 
       return quizResults
     } catch (error) {
@@ -374,7 +379,7 @@ class ApiClient {
  async getStudentQuizResult(studentId: string, quizId: string) {
   try {
     const answers = await this.getStudentAnswers(studentId, quizId)
-    if (!answers || answers.length === 0) {
+    if (!answers || (Array.isArray(answers) && answers.length === 0)) {
       return { completed: false, score: 0 }
     }
     const score = await this.getQuizScore(studentId, quizId)
