@@ -171,6 +171,44 @@ export default function NewQuestionPage() {
     return topic.name
   }
 
+  // Get parent topics (root topics)
+  const getParentTopics = () => {
+    return topics.filter((topic) => !topic.parentTopic)
+  }
+
+  // Get child topics for a parent
+  const getChildTopics = (parentId: string) => {
+    return topics.filter((topic) => topic.parentTopic?.id === parentId)
+  }
+
+  // Recursive function to render all topics for selection
+  const renderTopicOptionsRecursively = (topic: Topic, level: number = 0): JSX.Element[] => {
+    const result: JSX.Element[] = []
+    const indent = "  ".repeat(level) + (level > 0 ? "└─ " : "")
+    
+    // Add current topic to options
+    result.push(
+      <SelectItem key={topic.id} value={topic.id}>
+        <div className="flex items-center space-x-2">
+          {level === 0 ? (
+            <div className="w-3 h-3 rounded-full bg-purple-400"></div>
+          ) : (
+            <div className="w-3 h-3 rounded-full bg-blue-400"></div>
+          )}
+          <span style={{ marginLeft: `${level * 0.5}rem` }}>{indent}{topic.name}</span>
+        </div>
+      </SelectItem>
+    )
+    
+    // Add all child topics recursively
+    const childTopics = getChildTopics(topic.id)
+    childTopics.forEach(childTopic => {
+      result.push(...renderTopicOptionsRecursively(childTopic, level + 1))
+    })
+    
+    return result
+  }
+
   const handleAISuggestion = async () => {
     if (!selectedTopicId) {
       toast({
@@ -272,11 +310,7 @@ export default function NewQuestionPage() {
                     <SelectValue placeholder="Select a topic" />
                   </SelectTrigger>
                   <SelectContent>
-                    {topics.map((topic) => (
-                      <SelectItem key={topic.id} value={topic.id}>
-                        {getTopicDisplayName(topic)}
-                      </SelectItem>
-                    ))}
+                    {getParentTopics().flatMap(topic => renderTopicOptionsRecursively(topic, 0))}
                   </SelectContent>
                 </Select>
               </div>
@@ -300,7 +334,7 @@ export default function NewQuestionPage() {
                 <div className="space-y-3">
                   {options.map((option, index) => (
                     <div
-                      key={`${index}-${option.text}-${option.isCorrect}`}
+                      key={index}
                       className="flex items-center space-x-3 p-3 border rounded-lg"
                     >
                       <div className="flex items-center space-x-2">
