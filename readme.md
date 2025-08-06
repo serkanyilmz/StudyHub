@@ -58,15 +58,6 @@ StudyHub is a well-constructed AI-powered educatıonal platform for writers, tea
 
 - A comprehensive interface for creating detailed questions and quizzes
 
-## Build With
-
-* [![Spring Boot][Spring]][Spring-url]
-* [![Docker][Docker]][Docker-url]
-* [![PostgreSQL][Postgres]][Postgres-url]
-* [![React][React.js]][React-url]
-* [![Next][Next.js]][Next-url]
-
-
 ### 👨‍🏫 Effective Classroom Management:
 
 - Easily create and manage virtual classrooms.
@@ -82,6 +73,14 @@ StudyHub is a well-constructed AI-powered educatıonal platform for writers, tea
 - Fully Responsive and Cross-Platform FrontEnd Design
 
 - Scalable, Maintable and Flexible BackEnd Design with Hexagonal Archictecture and Domain Driven Design (DDD)
+
+## Built With
+
+* [![Spring Boot][Spring]][Spring-url]
+* [![Docker][Docker]][Docker-url]
+* [![PostgreSQL][Postgres]][Postgres-url]
+* [![React][React.js]][React-url]
+* [![Next][Next.js]][Next-url]
 
 
 ## Getting Started
