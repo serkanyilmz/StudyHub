@@ -2,18 +2,66 @@
 
 import { useAuth } from "@/contexts/AuthContext"
 import { useRouter } from "next/navigation"
-import { useEffect } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { BookOpen, Users, PenTool, Brain } from "lucide-react"
+import { BookOpen, Users, PenTool, Brain, Play, Pause, RotateCcw } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
 
 export default function HomePage() {
   const { user  } = useAuth()
   const router = useRouter()
+  
+  const audioRef = useRef<HTMLAudioElement>(null)
+  const [isPlaying, setIsPlaying] = useState(false)
+  const [currentTime, setCurrentTime] = useState(0)
+  const [duration, setDuration] = useState(0)
 
- 
+  const toggleAudio = () => {
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.pause()
+      } else {
+        audioRef.current.play()
+      }
+      setIsPlaying(!isPlaying)
+    }
+  }
+
+  const restartAudio = () => {
+    if (audioRef.current) {
+      audioRef.current.currentTime = 0
+      setCurrentTime(0)
+      if (!isPlaying) {
+        audioRef.current.play()
+        setIsPlaying(true)
+      }
+    }
+  }
+
+  const handleTimeUpdate = () => {
+    if (audioRef.current) {
+      setCurrentTime(audioRef.current.currentTime)
+    }
+  }
+
+  const handleLoadedMetadata = () => {
+    if (audioRef.current) {
+      setDuration(audioRef.current.duration)
+    }
+  }
+
+  const handleEnded = () => {
+    setIsPlaying(false)
+    setCurrentTime(0)
+  }
+
+  const formatTime = (time: number) => {
+    const minutes = Math.floor(time / 60)
+    const seconds = Math.floor(time % 60)
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
@@ -29,7 +77,8 @@ export default function HomePage() {
             />
           </div>
           <p className="text-xl text-gray-600 mb-8">AI-Powered Learning Platform for Students, Teachers and Writers</p>
-          <div className="flex gap-4 justify-center">
+          
+          <div className="flex gap-4 justify-center mb-6">
             <Link href="/auth/login">
               <Button size="lg" className="px-8">
                 Sign In
@@ -41,6 +90,39 @@ export default function HomePage() {
               </Button>
             </Link>
           </div>
+
+          {/* Audio Introduction - Below buttons */}
+          <div className="flex items-center justify-center ">
+            {(isPlaying || currentTime > 0) && (
+              <Button
+                onClick={restartAudio}
+                size="sm"
+                variant="ghost"
+                className="text-gray-500 hover:text-gray-700 p-2"
+              >
+                <RotateCcw className="h-4 w-4" />
+              </Button>
+            )}
+            <Button
+              onClick={toggleAudio}
+              size="sm"
+              variant="ghost"
+              className="flex items-center gap-2 text-blue-600 hover:text-blue-700"
+            >
+              {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
+              Hear Our Story
+            </Button>
+          </div>
+          
+          {/* Hidden Audio Element */}
+          <audio
+            ref={audioRef}
+            src="/introduction.mp3"
+            onTimeUpdate={handleTimeUpdate}
+            onLoadedMetadata={handleLoadedMetadata}
+            onEnded={handleEnded}
+            preload="metadata"
+          />
         </div>
 
         <div className="grid md:grid-cols-3 gap-8 mb-16">
