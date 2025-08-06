@@ -85,7 +85,7 @@ export default function TopicsPage() {
       }
 
       setFormData({ name: "", parentTopicId: "" })
-      alert(formData)
+      
       setShowCreateForm(false)
       setEditingTopic(null)
       fetchTopics()
