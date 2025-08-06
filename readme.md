@@ -69,8 +69,6 @@ StudyHub is a well-constructed AI-powered educatıonal platform for writers, tea
     <a href="https://aistudio.google.com/apikey">API Key</a>
     for use of Gemini API.
     - Create environmental variable for configuration:
-    <br/>
-
       ```
       GOOGLE_API_KEY='your-api-key'
       ```
@@ -100,7 +98,7 @@ StudyHub is more than a tool—it's a dynamic, interconnected community where co
 
 ## Next Features
 - AI Chat Bot for all Users
-### Admin
+###  Admin
 - Admin page for statistics and approvement for registers of writers and teachers.
 ### Writer
 - Bulk question and quiz upload from PDFs.
