@@ -19,6 +19,25 @@
   </h3>
 </div>
 
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#studyhub">About The Project</a>
+      <ul>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#built-with">Built With</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+    </li>
+    <li><a href="#theme">Theme</a></li>
+    <li><a href="#next-features">Next Features</a></li>
+  </ol>
+</details>
+
+
 # StudyHub
 
 StudyHub is a well-constructed AI-powered educatıonal platform for writers, teachers and students. The platform offers intelligent tools to automate and enrich content creation, classroom management, and student assessment.
@@ -38,6 +57,14 @@ StudyHub is a well-constructed AI-powered educatıonal platform for writers, tea
 - Organizing topics and sub-topics effectively
 
 - A comprehensive interface for creating detailed questions and quizzes
+
+## Build With
+
+* [![Spring Boot][Spring]][Spring-url]
+* [![Docker][Docker]][Docker-url]
+* [![PostgreSQL][Postgres]][Postgres-url]
+* [![React][React.js]][React-url]
+* [![Next][Next.js]][Next-url]
 
 
 ### 👨‍🏫 Effective Classroom Management:
@@ -108,3 +135,19 @@ StudyHub is more than a tool—it's a dynamic, interconnected community where co
 - Detailed AI analysises for students and classrooms
 ### Student
 - Personalized study recommendations
+
+
+[Next.js]: https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white
+[Next-url]: https://nextjs.org/
+
+[React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
+[React-url]: https://reactjs.org/
+
+[Spring]: https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=spring&logoColor=white
+[Spring-url]: https://spring.io/projects/spring-boot
+
+[Docker]: https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white
+[Docker-url]: https://www.docker.com/
+
+[Postgres]: https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white
+[Postgres-url]: https://www.postgresql.org/
