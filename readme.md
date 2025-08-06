@@ -9,7 +9,7 @@
     <br />
     AI-Powered Learning Platform
     <br />
-    <a href=""><strong>View Demo »</strong></a>
+    <a href="https://study-hub-5-lemon.vercel.app/"><strong>View Demo »</strong></a>
     <br />
     <h4>Developed for Hackathon 2025 by Drop Database</>
     <br />
