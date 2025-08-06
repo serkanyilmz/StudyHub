@@ -106,7 +106,7 @@ StudyHub is a well-constructed AI-powered educatıonal platform for writers, tea
       ```
 3. Starting FrontEnd application:
     ```bash
-    cd .\FrontEnd\
+    cd .\Frontend\
     npm install
 
     npm run dev
