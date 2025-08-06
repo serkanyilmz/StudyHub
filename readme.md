@@ -9,7 +9,7 @@
     <br />
     AI-Powered Learning Platform
     <br />
-    <a href="https://github.com/serkanyilmz/StudyHub"><strong>View Demo »</strong></a>
+    <a href=""><strong>View Demo »</strong></a>
     <br />
     <h4>Developed for Hackathon 2025 by Drop Database</>
     <br />
@@ -27,34 +27,34 @@ StudyHub is a well-constructed AI-powered educatıonal platform for writers, tea
 
 ### ✨ Artificial Intelligence Integration:
 
-- AI-powered question suggestions for topics.
+- Generating intelligent questions for any topic using AI
 
-- AI-generated performance summaries for classes and individual students.
+- AI-generated performance summaries for classes and individual students
 
-- Question explanations after quizzes.
+- Question explanations after quizzes
 
 ### 📚 Rich Content Management:
 
-- Topic and sub-topic management.
+- Organizing topics and sub-topics effectively
 
-- A comprehensive interface for creating detailed questions and quizzes.
+- A comprehensive interface for creating detailed questions and quizzes
 
 
 ### 👨‍🏫 Effective Classroom Management:
 
 - Easily create and manage virtual classrooms.
 
-- Assign homeworks wıth quizzes to classes with specific due dates.
+- Assign homeworks with quizzes to classes with specific due dates.
 
 - Track student performance in real-time.
 
 ### 👨🏻‍💻 Rich and Sustainable Development:
 
-- JWT Token Security
+- Secure authentication with JWT tokens
 
-- Responsive & Cross-Platform FrontEnd Design
+- Fully Responsive and Cross-Platform FrontEnd Design
 
-- Maintable and Flexible BackEnd Design with Hexagonal Archictecture and Domain Driven Design
+- Scalable, Maintable and Flexible BackEnd Design with Hexagonal Archictecture and Domain Driven Design (DDD)
 
 
 ## Getting Started
@@ -65,21 +65,23 @@ StudyHub is a well-constructed AI-powered educatıonal platform for writers, tea
     ```
 2. Starting BackEnd application:
 
-    Get your 
+    - Get your 
     <a href="https://aistudio.google.com/apikey">API Key</a>
     for use of Gemini API.
-    Create environmental variable for configuration:
-    ```
-    GOOGLE_API_KEY='your-api-key'
-    ```
-    Start Spring Boot:
-    ```bash
-    cd .\Backend\
-    .\gradlew.bat bootRun
-    ```
+    - Create environmental variable for configuration:
+    <br/>
+
+      ```
+      GOOGLE_API_KEY='your-api-key'
+      ```
+    - Run the Spring Boot application:
+      ```bash
+      cd .\BackEnd\
+      .\gradlew.bat bootRun
+      ```
 3. Starting FrontEnd application:
     ```bash
-    cd .\Frontend\
+    cd .\FrontEnd\
     npm install
 
     npm run dev
@@ -87,16 +89,17 @@ StudyHub is a well-constructed AI-powered educatıonal platform for writers, tea
 
 ## Theme
 
-The StudyHub logo and theme colors symbolizes a dynamic, AI-powered educational ecosystem that unites three key roles: the Writer, Teacher, and Student. Represented by three colored dots, the energetic orange signifies the creative Writer, the wise blue represents the guiding Teacher, and the vibrant green embodies the growing Student. Dark gray lines depict the seamless flow of information—first from the Writer to the Teacher, and then from the Teacher to the Student. This entire interaction is framed by a light bluish-gray square, representing the intelligent and supportive AI foundation that personalizes and optimizes the entire learning process. 
+The StudyHub logo and theme colors symbolizes a dynamic, AI-powered educational ecosystem that unites three key roles: the Writer, Teacher, and Student. Represented by three colored dots, the energetic orange signifies the creative Writer, the wise blue represents the guiding Teacher, and the vibrant green embodies the growing Student. Dark gray lines represent the seamless knowledge transfer from Writer → Teacher → Student. This entire interaction is framed by a light bluish-gray square, representing the intelligent and supportive AI foundation that personalizes and optimizes the entire learning process. 
 
 <div align="center">
   <img src="Frontend\public\studyhub-banner.png" alt="StudyHub Theme Banner"  width="640" height="360">
 </div>
 <br/>
 
-Ultimately, the logo portrays StudyHub not just as a platform, but as a balanced and interconnected community where knowledge, collaboration, and artificial intelligence intersect.
+StudyHub is more than a tool—it's a dynamic, interconnected community where collaboration, knowledge, and AI converge.
 
 ## Next Features
+- AI Chat Bot for all Users
 ### Admin
 - Admin page for statistics and approvement for registers of writers and teachers.
 ### Writer
