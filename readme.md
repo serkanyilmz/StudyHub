@@ -40,7 +40,7 @@
 
 # StudyHub
 
-StudyHub is a well-constructed AI-powered educatıonal platform for writers, teachers and students. The platform offers intelligent tools to automate and enrich content creation, classroom management, and student assessment.
+StudyHub is a well-constructed AI-powered educatıonal platform for writers, teachers and students. The platform offers intelligent tools to automate and enrich content creation, classroom management and student assessment.
 
 ## Features
 
@@ -115,14 +115,14 @@ StudyHub is a well-constructed AI-powered educatıonal platform for writers, tea
 
 ## Theme
 
-The StudyHub logo and theme colors symbolizes a dynamic, AI-powered educational ecosystem that unites three key roles: the Writer, Teacher, and Student. Represented by three colored dots, the energetic orange signifies the creative Writer, the wise blue represents the guiding Teacher, and the vibrant green embodies the growing Student. Dark gray lines represent the seamless knowledge transfer from Writer → Teacher → Student. This entire interaction is framed by a light bluish-gray square, representing the intelligent and supportive AI foundation that personalizes and optimizes the entire learning process. 
+The StudyHub logo and theme colors symbolizes a dynamic, AI-powered educational ecosystem that unites three key roles: the Writer, Teacher and Student. Represented by three colored dots, the energetic orange signifies the creative Writer, the wise blue represents the guiding Teacher and the vibrant green embodies the growing Student. Dark gray lines represent the seamless knowledge transfer from Writer → Teacher → Student. This entire interaction is framed by a light bluish-gray square, representing the intelligent and supportive AI foundation that personalizes and optimizes the entire learning process. 
 
 <div align="center">
   <img src="Frontend\public\studyhub-banner.png" alt="StudyHub Theme Banner"  width="640" height="360">
 </div>
 <br/>
 
-StudyHub is more than a tool—it's a dynamic, interconnected community where collaboration, knowledge, and AI converge.
+StudyHub is more than a tool—it's a dynamic, interconnected community where collaboration, knowledge and AI converge.
 
 ## Next Features
 - AI Chat Bot for all Users
