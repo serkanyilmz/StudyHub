@@ -81,7 +81,6 @@ public class AuthCommandController {
     @PostMapping("/logout")
     public ResponseEntity<Void> logout(@RequestBody TokensCommand tokens) {
         authCommandUseCase.blacklistRefreshToken(tokens.refreshToken());
-        System.out.println("AuthCommandController.logout");
         return ResponseEntity.ok().build();
     }
 

@@ -18,6 +18,10 @@ export default function Layout({ children }: LayoutProps) {
   const { user, logout } = useAuth()
   const pathname = usePathname()
 
+  const handleLogout = async () => {
+    await logout()
+  }
+
   const getRoleColor = (role: string) => {
     switch (role) {
       case "STUDENT":
@@ -81,7 +85,7 @@ export default function Layout({ children }: LayoutProps) {
                     {user.role}
                   </span>
                 </div>
-                <Button variant="outline" size="sm" onClick={logout}>
+                <Button variant="outline" size="sm" onClick={handleLogout}>
                   <LogOut className="h-4 w-4 mr-2" />
                   Logout
                 </Button>

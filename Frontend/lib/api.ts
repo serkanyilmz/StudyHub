@@ -1,8 +1,21 @@
 class ApiClient {
   private baseURL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8080"
+  private ensureValidTokenFn: (() => Promise<string | null>) | null = null
+
+  // Method to set the token validation function from AuthContext
+  setTokenValidator(fn: () => Promise<string | null>) {
+    this.ensureValidTokenFn = fn
+  }
 
   private async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
-    const accessToken = localStorage.getItem("accessToken")
+    let accessToken: string | null = null
+
+    // Use AuthContext's ensureValidToken if available, otherwise fallback to localStorage
+    if (this.ensureValidTokenFn) {
+      accessToken = await this.ensureValidTokenFn()
+    } else {
+      accessToken = localStorage.getItem("accessToken")
+    }
 
     const config: RequestInit = {
       ...options,
@@ -16,6 +29,15 @@ class ApiClient {
     const response = await fetch(`${this.baseURL}${endpoint}`, config)
 
     if (!response.ok) {
+      // If we get 401 unauthorized, redirect to login
+      if (response.status === 401) {
+        console.log("Got 401, authentication failed...")
+        localStorage.removeItem("accessToken")
+        localStorage.removeItem("refreshToken")
+        window.location.href = "/auth/login"
+        throw new Error("Authentication failed")
+      }
+      
       throw new Error(`API Error: ${response.status} ${response.statusText}`)
     }
 
