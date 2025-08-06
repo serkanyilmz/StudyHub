@@ -77,17 +77,14 @@ export default function TeacherClassroomPage() {
           api.getClassroom(params.id as string),
           api.getHomeworkByClassroom(params.id as string),
           api.getQuizzes(),
-          api.getStudents(),
+          api.getEnrolledStudents(params.id as string),
         ])
 
         setClassroom(classroomData)
         setHomework(homeworkData)
         setQuizzes(quizzesData)
-
-        // Filter students enrolled in this classroom
-        // Note: In a real implementation, there should be an API endpoint to get students by classroom
-        // For now, we'll get all students as a placeholder
-        setStudents(allStudents.slice(0, 10)) // Limit for demo purposes
+        setStudents(allStudents.slice(0, 10)) 
+      
       } catch (error) {
         console.error("Error fetching classroom data:", error)
         toast({
