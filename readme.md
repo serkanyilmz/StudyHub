@@ -102,6 +102,7 @@ StudyHub is a well-constructed AI-powered educatıonal platform for writers, tea
     - Run the Spring Boot application:
       ```bash
       cd .\BackEnd\
+      docker-compose up -d 
       .\gradlew.bat bootRun
       ```
 3. Starting FrontEnd application:
