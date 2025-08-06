@@ -84,7 +84,7 @@ export default function TeacherClassroomPage() {
         setHomework(homeworkData)
         setQuizzes(quizzesData)
         setStudents(allStudents.slice(0, 10)) 
-        
+
       } catch (error) {
         console.error("Error fetching classroom data:", error)
         toast({

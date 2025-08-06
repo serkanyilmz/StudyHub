@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 public class StudentQueryJpaAdapter implements StudentQueryPort {
 
     private final StudentJpaRepository studentJpaRepository;
-
     private final ClassroomJpaRepository classroomJpaRepository;
 
     public StudentQueryJpaAdapter(StudentJpaRepository studentJpaRepository,
@@ -38,7 +37,8 @@ public class StudentQueryJpaAdapter implements StudentQueryPort {
                 .collect(Collectors.toList());
         return students;
     }
-     @Override
+
+    @Override
     public List<Student> getAllByClassroomId(UUID classroomId) {
         ClassroomJpaEntity classroomJpaEntity = classroomJpaRepository.findById(classroomId.toString()).get();
         List<Student> students = classroomJpaEntity.getStudents().stream()
