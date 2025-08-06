@@ -81,6 +81,7 @@ StudyHub is a well-constructed AI-powered educatıonal platform for writers, tea
 * [![PostgreSQL][Postgres]][Postgres-url]
 * [![React][React.js]][React-url]
 * [![Next][Next.js]][Next-url]
+* [![Gemini API][Gemini]][Gemini-url]
 
 
 ## Getting Started
@@ -150,3 +151,6 @@ StudyHub is more than a tool—it's a dynamic, interconnected community where co
 
 [Postgres]: https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white
 [Postgres-url]: https://www.postgresql.org/
+
+[Gemini]: https://img.shields.io/badge/Gemini%20API-4285F4?style=for-the-badge&logo=google&logoColor=white
+[Gemini-url]: https://ai.google.dev/
