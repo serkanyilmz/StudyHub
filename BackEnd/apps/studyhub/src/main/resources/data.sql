@@ -19,7 +19,7 @@ INSERT INTO users (id, username, password, full_name, role, created_at, updated_
       ('37318be1-2d85-491d-8a19-8618b9256045', 'serkan.yilmaz', '$2a$10$05SqRAfMrjH7wH7PZvAUmel9kWnJZMYURaXJyuax1w0JO8OIclJFO', 'Serkan Yilmaz', 'WRITER', CURRENT_TIMESTAMP, NULL, true),
       ('37318be1-2d85-491d-8a19-8618b9256046', 'deniz.celik', '$2a$10$05SqRAfMrjH7wH7PZvAUmel9kWnJZMYURaXJyuax1w0JO8OIclJFO', 'Deniz Çelik', 'WRITER', CURRENT_TIMESTAMP, NULL, true),
       ('5adee6b9-da8d-4039-8f5c-11c0d3255c09', 'asli.mansur', '$2a$10$05SqRAfMrjH7wH7PZvAUmel9kWnJZMYURaXJyuax1w0JO8OIclJFO', 'Aslı Mansur', 'WRITER', CURRENT_TIMESTAMP, NULL, true),
-      ('6ac7e45f-6860-454a-a349-a031a7abb979', 'erkim.berk', '$2a$10$05SqRAfMrjH7wH7PZvAUmel9kWnJZMYURaXJyuax1w0JO8OIclJFO', 'Erkim Berk Unsal', 'TEACHER', CURRENT_TIMESTAMP, NULL, true),
+      ('6ac7e45f-6860-454a-a349-a031a7abb979', 'erkim.berk', '$2a$10$05SqRAfMrjH7wH7PZvAUmel9kWnJZMYURaXJyuax1w0JO8OIclJFO', 'Erkim Berk Ünsal', 'TEACHER', CURRENT_TIMESTAMP, NULL, true),
       ('f3087d3e-d436-489e-ba96-fc8b36e71582', 'burak.can', '$2a$10$05SqRAfMrjH7wH7PZvAUmel9kWnJZMYURaXJyuax1w0JO8OIclJFO', 'Burak Can', 'STUDENT', CURRENT_TIMESTAMP, NULL, true),
       ('253493d6-0cf0-4b3b-a2db-e189abee4e6d', 'zeynep.kaya', '$2a$10$05SqRAfMrjH7wH7PZvAUmel9kWnJZMYURaXJyuax1w0JO8OIclJFO', 'Zeynep Kaya', 'STUDENT', CURRENT_TIMESTAMP, NULL, true),
       ('02ce1001-197a-420a-b88d-7f60c0646020', 'sumeyye.sakar', '$2a$10$05SqRAfMrjH7wH7PZvAUmel9kWnJZMYURaXJyuax1w0JO8OIclJFO', 'Sümeyye Şakar', 'STUDENT', CURRENT_TIMESTAMP, NULL, true),
@@ -458,7 +458,9 @@ INSERT INTO option (id, text, is_correct, question_id) VALUES
 INSERT INTO quiz (id, name, topic_id, writer_id) VALUES
     ('0c1861a2-2b60-4ce2-bc80-2214ac783a07', 'Test1', '12345678-7890-abcd-ef01-23456789abcd', '37318be1-2d85-491d-8a19-8618b9256045'),
     ('8bfb4bea-e842-4ce0-82bf-58b1099c0b02', 'Functions', 'f5a6b7c8-d9e0-1f2a-3b4c-5d6e7f8a9b0c', '37318be1-2d85-491d-8a19-8618b9256045'),
-    ('8bfb4bea-e842-4ce0-82bf-58b1099c0b03', 'Polynomial Quiz', 'f5a6b7c8-d9e0-1f2a-3b4c-5d6e7f8a9b0c', '37318be1-2d85-491d-8a19-8618b9256045')
+    ('8bfb4bea-e842-4ce0-82bf-58b1099c0b03', 'Polynomial Quiz', 'f5a6b7c8-d9e0-1f2a-3b4c-5d6e7f8a9b0c', '37318be1-2d85-491d-8a19-8618b9256045'),
+    ('1a2b3c4d-5e6f-7a8b-9c0d-e1f2a3b4c5d6', 'Advanced Physics Quiz', '12345678-7890-abcd-ef01-23456789abcd', '37318be1-2d85-491d-8a19-8618b9256045'),
+    ('2b3c4d5e-6f7a-8b9c-0d1e-f2a3b4c5d6e7', 'Physics Applications', '12345678-7890-abcd-ef01-23456789abcd', '37318be1-2d85-491d-8a19-8618b9256045')
     ON CONFLICT (id) DO NOTHING;
 
 INSERT INTO quiz_question (quiz_id, question_id, question_no) VALUES
@@ -470,20 +472,29 @@ INSERT INTO quiz_question (quiz_id, question_id, question_no) VALUES
     ('8bfb4bea-e842-4ce0-82bf-58b1099c0b02', '30e8c9d0-f0a1-3456-7892-56789abcdef0', 3),
     ('8bfb4bea-e842-4ce0-82bf-58b1099c0b03', 'da82c3d4-f4a5-7890-1cde-f0123456789a', 1),
     ('8bfb4bea-e842-4ce0-82bf-58b1099c0b03', '30e8c9d0-f0a1-3456-7892-56789abcdef0', 2),
-    ('8bfb4bea-e842-4ce0-82bf-58b1099c0b03', 'eb936f7a-c7d8-0123-456d-123456789abc', 3)
+    ('8bfb4bea-e842-4ce0-82bf-58b1099c0b03', 'eb936f7a-c7d8-0123-456d-123456789abc', 3),
+    ('1a2b3c4d-5e6f-7a8b-9c0d-e1f2a3b4c5d6', '1ec6d0e1-f2a3-5b6c-7d8e-9f0123456789', 1),
+    ('1a2b3c4d-5e6f-7a8b-9c0d-e1f2a3b4c5d6', '2fd7b8c9-e9f0-2345-6781-456789abcdef', 2),
+    ('1a2b3c4d-5e6f-7a8b-9c0d-e1f2a3b4c5d6', '30e8c9d0-f0a1-3456-7892-56789abcdef0', 3),
+    ('2b3c4d5e-6f7a-8b9c-0d1e-f2a3b4c5d6e7', '41f9d0e1-a1b2-4567-8903-6789abcdef01', 1),
+    ('2b3c4d5e-6f7a-8b9c-0d1e-f2a3b4c5d6e7', '520a1e2f-b2c3-5678-9014-789abcdef012', 2),
+    ('2b3c4d5e-6f7a-8b9c-0d1e-f2a3b4c5d6e7', '631b2f3a-c3d4-6789-0125-89abcdef0123', 3)
 ON CONFLICT (quiz_id, question_id) DO NOTHING;
 
 INSERT INTO homework (id, name, classroom_id, deadline) VALUES
-    ('c435b74f-98dc-4ce3-a043-a7b46ec6411a', 'HW1', '6afc06b9-8b54-4ae8-ad61-21afb5541b6c', '2025-08-15T20:59:59Z'),
-    ('96bdad4a-79d1-496b-b159-9d235906740c', 'HW2', '6afc06b9-8b54-4ae8-ad61-21afb5541b6c', '2025-08-15T23:59:59+03:00[Europe/Istanbul]'),
-    ('a5b6c7d8-e9f0-1234-5678-9abcdef01234', 'Algebra Quiz', '6afc06b9-8b54-4ae8-ad61-21afb5541b6c', '2025-07-30T23:59:59Z')
+    ('c435b74f-98dc-4ce3-a043-a7b46ec6411a', 'HW1', '6afc06b9-8b54-4ae8-ad61-21afb5541b6c', '2025-10-15T20:59:59Z'),
+    ('96bdad4a-79d1-496b-b159-9d235906740c', 'HW2', '6afc06b9-8b54-4ae8-ad61-21afb5541b6c', '2025-10-26T23:59:59+03:00[Europe/Istanbul]'),
+    ('a5b6c7d8-e9f0-1234-5678-9abcdef01234', 'Algebra Quiz', '6afc06b9-8b54-4ae8-ad61-21afb5541b6c', '2025-07-30T23:59:59Z'),
+    ('3c4d5e6f-7a8b-9c0d-1e2f-a3b4c5d6e7f8', 'Physics Midterm Assignment', '753de14c-3fad-4f6c-96d0-2b8512ce2be6', '2025-11-26T23:59:59+03:00[Europe/Istanbul]')
 ON CONFLICT (id) DO NOTHING;
 
 INSERT INTO homework_quiz (homework_id, quiz_id) VALUES
     ('c435b74f-98dc-4ce3-a043-a7b46ec6411a', '0c1861a2-2b60-4ce2-bc80-2214ac783a07'),
     ('c435b74f-98dc-4ce3-a043-a7b46ec6411a', '8bfb4bea-e842-4ce0-82bf-58b1099c0b02'),
     ('96bdad4a-79d1-496b-b159-9d235906740c', '8bfb4bea-e842-4ce0-82bf-58b1099c0b03'),
-    ('a5b6c7d8-e9f0-1234-5678-9abcdef01234', '8bfb4bea-e842-4ce0-82bf-58b1099c0b02')
+    ('a5b6c7d8-e9f0-1234-5678-9abcdef01234', '8bfb4bea-e842-4ce0-82bf-58b1099c0b02'),
+    ('3c4d5e6f-7a8b-9c0d-1e2f-a3b4c5d6e7f8', '1a2b3c4d-5e6f-7a8b-9c0d-e1f2a3b4c5d6'),
+    ('3c4d5e6f-7a8b-9c0d-1e2f-a3b4c5d6e7f8', '2b3c4d5e-6f7a-8b9c-0d1e-f2a3b4c5d6e7')
 ;
 
 INSERT INTO student (id, first_name, last_name, email, phone_number, registration_date) VALUES
