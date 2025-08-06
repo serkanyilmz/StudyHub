@@ -23,7 +23,6 @@ public class StudentQueryJpaAdapter implements StudentQueryPort {
         this.studentJpaRepository = studentJpaRepository;
         this.classroomJpaRepository = classroomJpaRepository;
     }
-
     @Override
     public Student get(UUID id) {
         Optional<StudentJpaEntity> studentJpaEntityOptional = studentJpaRepository.findById(id.toString());

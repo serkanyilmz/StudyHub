@@ -279,7 +279,7 @@ class ApiClient {
     return this.request<any>(`/student/${id}`)
   }
 
-  async getEnrolledStudents(classroomId: string) {
+ async getEnrolledStudents(classroomId: string) {
     return this.request<any[]>(`/student/classroom/${classroomId}`)
   }
 
