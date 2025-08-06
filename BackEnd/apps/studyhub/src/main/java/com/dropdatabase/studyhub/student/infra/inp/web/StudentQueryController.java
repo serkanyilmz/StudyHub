@@ -29,4 +29,8 @@ public class StudentQueryController {
     public List<Student> getAll(){
         return studentQueryUseCase.getAll();
     }
+    @GetMapping("/classroom/{classroomId}")
+    public List<Student> getAllByClassroomId(@PathVariable UUID classroomId){
+        return studentQueryUseCase.getAllByClassroomId(classroomId);
+    }
 }

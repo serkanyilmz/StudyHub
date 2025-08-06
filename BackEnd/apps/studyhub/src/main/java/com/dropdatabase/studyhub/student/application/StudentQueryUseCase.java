@@ -22,4 +22,7 @@ public class StudentQueryUseCase {
 
     public Student get(UUID id) {return studentQueryPort.get(id);
     }
+     public List<Student> getAllByClassroomId(UUID classroomId) {
+        return studentQueryPort.getAllByClassroomId(classroomId);
+    }
 }

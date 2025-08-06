@@ -8,4 +8,5 @@ import java.util.UUID;
 public interface StudentQueryPort {
     Student get(UUID id);
     List<Student> getAll();
+    List<Student> getAllByClassroomId(UUID classroomId);
 }
